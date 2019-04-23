@@ -21,11 +21,13 @@ var frameNumber = 0;  // Frame number is advanced by 1 for each frame while anim
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
 
+// we declare variables for our balls
+// this way they are global and we can manipulate them from anywhere
 var red_ball ;
 var green_ball ;
 var blue_ball ;
 
-
+// these variables are checked in the animation loop to determine whether we should move the balls
 var red_controls = {
     moveForward: false,
     moveBackward: false,
@@ -49,8 +51,8 @@ var green_controls = {
 
 
 
-            
-
+// here we detect when a key is pressed down or up
+// A full list can be found at: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 function onKeyDown( event ) {
     event.stopPropagation();
     switch ( event.keyCode ) {
@@ -83,6 +85,7 @@ function onKeyUp( event ) {
     //console.log("KEY_UP")    
 }
                 
+// here we have some helper functions that were present in the lab that this code was adapted from
 
 function makeTexture(imageURL, material) {
     function callback() { // Function to react when image load is done.
@@ -116,12 +119,13 @@ function loadModel(modelURL,target,scale_factor) {
     }
 }
 
+//  this function makes a plain white ball with a white emissive light
 function makeBall()
 {
     var geometry = new THREE.SphereGeometry( 5, 32, 32 );
     var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
-                                                    emissive: 0xff0000,
-                                                    emissiveIntensity: 100,
+                                                    emissive: 0xffffff,
+                                                    emissiveIntensity: 1,
                                                     side: THREE.DoubleSide
                                                     } );
     var sphere = new THREE.Mesh( geometry, material );
@@ -130,12 +134,14 @@ function makeBall()
     return sphere;
 }
 
+// this function checks the x values of the balls
+// we should probably change this to work off of the whole position
+// I've done it this way because using red_ball.position == blue_ball.position didn't work for some reason
+
+// The commented lines change the color of the balls in addition to changing the emissive colours
 function handleColours()
 {
-    //console.log(red_ball.position);
-    //console.log(green_ball.position);
-    //console.log(blue_ball.position);
-    if(red_ball.position == green_ball.position && red_ball.position == green_ball.position)
+    if(red_ball.position.x == green_ball.position.x && red_ball.position.x == blue_ball.position.x)
     {
         red_ball.material.emissive.setHex(0xffffff);
         green_ball.material.emissive.setHex(0xffffff);
@@ -145,6 +151,7 @@ function handleColours()
     else if(red_ball.position.x == green_ball.position.x)
     {
         red_ball.material.emissive.setHex(0xffff00);
+
         //red_ball.material.color.setHex(0xaaaa00);
         
         green_ball.material.emissive.setHex(0xffff00);
@@ -172,7 +179,6 @@ function handleColours()
         red_ball.material.emissive.setHex(0xff0000);
         green_ball.material.emissive.setHex(0x00ff00);
         blue_ball.material.emissive.setHex(0x0000ff);
-
     }
 }
 
@@ -210,6 +216,7 @@ function createWorld() {
     //scene.add(makeCylinder());
     //MGR = makeTrack()
     red_ball = makeBall();
+    red_ball.material.emissive.setHex(0xff0000)
     scene.add(red_ball);
     green_ball = makeBall();
     green_ball.translateX(7);
