@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>COMS3006 Game</title>
+<script src="three.js"></script>
+<script src="OrbitControls.js"></script>
+<script src="stats.min.js"></script>
+<script>
+
+"use strict";
+var stats;
+var canvas, renderer, scene, camera; // Standard three.js requirements.
+
+var controls;  // An OrbitControls object that is used to implement
+               // rotation of the scene using the mouse.  (It actually rotates
+               // the camera around the scene.)
+
+var animating = false;  // Set to true when an animation is in progress.
+var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
+
+document.addEventListener( 'keydown', onKeyDown, false );
+document.addEventListener( 'keyup', onKeyUp, false );
+
+var red_ball ;
+var green_ball ;
+var blue_ball ;
+
+
+var red_controls = {
+    moveForward: false,
+    moveBackward: false,
+    moveLeft: false,
+    moveRight: false
+};
+
+var blue_controls = {
+    moveForward: false,
+    moveBackward: false,
+    moveLeft: false,
+    moveRight: false
+};
+
+var green_controls = {
+    moveForward: false,
+    moveBackward: false,
+    moveLeft: false,
+    moveRight: false
+};
+
+
+
+            
+
+function onKeyDown( event ) {
+    event.stopPropagation();
+    switch ( event.keyCode ) {
+        case 38: /*up*/
+        case 87: /*W*/ 	red_controls.moveForward = true; break;
+        case 40: /*down*/
+        case 83: /*S*/ 	 red_controls.moveBackward = true; break;
+        case 37: /*left*/
+        case 65: /*A*/ red_controls.moveLeft = true; break;
+        case 39: /*right*/
+        case 68: /*D*/ red_controls.moveRight = true; break;
+        //case 67: /*C*/     controls.crouch = true; break;
+        //case 32: /*space*/ controls.jump = true; break;
+        //case 17: /*ctrl*/  controls.attack = true; break;
+    }
+    //console.log("KEY_DOWN")
+}
+function onKeyUp( event ) {
+    event.stopPropagation();
+    switch ( event.keyCode ) {
+        case 38: /*up*/
+        case 87: /*W*/ red_controls.moveForward = false; break;
+        case 40: /*down*/
+        case 83: /*S*/ 	 red_controls.moveBackward = false; break;
+        case 37: /*left*/
+        case 65: /*A*/ 	 red_controls.moveLeft = false; break;
+        case 39: /*right*/
+        case 68: /*D*/ red_controls.moveRight = false; break;
+    }
+    //console.log("KEY_UP")    
+}
+                
+
+function makeTexture(imageURL, material) {
+    function callback() { // Function to react when image load is done.
+        if (material) {
+            material.map = texture;  // Add texture to material.
+            material.needsUpdate = true;  // Required when material changes.
+        }
+        render();  // Render scene with texture that has just been loaded.
+    }
+    var texture = THREE.ImageUtils.loadTexture(imageURL, undefined, callback);
+    return texture;
+}
+
+function loadModel(modelURL,target,scale_factor) {
+    function callback(geometry) {
+        // To be executed when the model has fully loaded.  The parameter
+        // is geometry that can be used for a THREE.Mesh object.
+        var object = new THREE.Mesh(geometry,materialWithCloudTexture);
+        object.scale.set(scale_factor, scale_factor, scale_factor); 
+        target.add(object);
+        //render();  // Render the scene with the newly added objects.
+        
+    }
+    var loader = new THREE.JSONLoader();
+    try {
+        loader.load(modelURL, callback);
+    }
+    catch (e) {
+        // Note: Chrome gives an error if loading from local file system.
+        console.log("Error loading model from " + modelURL);
+    }
+}
+
+function makeBall()
+{
+    var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+    var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
+                                                    emissive: 0xff0000,
+                                                    emissiveIntensity: 100,
+                                                    side: THREE.DoubleSide
+                                                    } );
+    var sphere = new THREE.Mesh( geometry, material );
+    sphere.scale.set(0.5,0.5,0.5);
+
+    return sphere;
+}
+
+function handleColours()
+{
+    //console.log(red_ball.position);
+    //console.log(green_ball.position);
+    //console.log(blue_ball.position);
+    if(red_ball.position == green_ball.position && red_ball.position == green_ball.position)
+    {
+        red_ball.material.emissive.setHex(0xffffff);
+        green_ball.material.emissive.setHex(0xffffff);
+        blue_ball.material.emissive.setHex(0xffffff);
+        
+    }
+    else if(red_ball.position.x == green_ball.position.x)
+    {
+        red_ball.material.emissive.setHex(0xffff00);
+        //red_ball.material.color.setHex(0xaaaa00);
+        
+        green_ball.material.emissive.setHex(0xffff00);
+        //green_ball.material.color.setHex(0xaaaa00);
+
+    }
+    else if(red_ball.position.x == blue_ball.position.x)
+    {
+        red_ball.material.emissive.setHex(0xff00ff);
+        //red_ball.material.color.setHex(0xff00ff);
+
+        blue_ball.material.emissive.setHex(0xff00ff);
+        //blue_ball.material.color.setHex(0xff00ff);
+
+    }
+    else if(blue_ball.position == green_ball.position)
+    {
+        blue_ball.material.emissive.setHex(0x00ffff);
+        //blue_ball.material.color.setHex(0x00ffff);
+        green_ball.material.emissive.setHex(0x00ffff);
+        //green_ball.material.color.setHex(0x00ffff);
+    }
+    else 
+    {
+        red_ball.material.emissive.setHex(0xff0000);
+        green_ball.material.emissive.setHex(0x00ff00);
+        blue_ball.material.emissive.setHex(0x0000ff);
+
+    }
+}
+
+
+
+
+/**
+ *  The render function draws the scene.
+ */
+function render() {
+    renderer.render(scene, camera);
+}
+
+
+/**
+ * This function is called by the init() method to create the world. 
+ */
+function createWorld() {
+    
+    renderer.setClearColor("black"); // Background color for scene.
+    scene = new THREE.Scene();
+    
+    // ------------------- Make a camera with viewpoint light ----------------------
+    
+    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 100);
+    camera.position.z = 30;
+    var light;  // A light shining from the direction of the camera; moves with the camera.
+    light = new THREE.DirectionalLight();
+    light.position.set(0,0,1);
+    camera.add(light);
+    scene.add(camera);
+    
+    //------------------- Create the scene's visible objects ----------------------
+    //loadModel("resources/horse.js");
+    //scene.add(makeCylinder());
+    //MGR = makeTrack()
+    red_ball = makeBall();
+    scene.add(red_ball);
+    green_ball = makeBall();
+    green_ball.translateX(7);
+    //green_ball.material.color.setHex(0x00ff00)
+    green_ball.material.emissive.setHex(0x00ff00)
+    scene.add(green_ball);
+    blue_ball = makeBall();
+    blue_ball.translateX(-7);
+    //blue_ball.material.color.setHex(0x0000ff)
+    blue_ball.material.emissive.setHex(0x0000ff)
+    scene.add(blue_ball);
+
+    render()
+    
+} // end function createWorld()
+
+
+/**
+ *  This function is called once for each frame of the animation, before
+ *  the render() function is called for that frame.  It updates any
+ *  animated properties.  The value of the global variable frameNumber
+ *  is incrementd 1 before this function is called.
+ */
+function updateForFrame() {
+    
+    if (red_controls.moveLeft && red_ball.position.x >= 0)
+    {
+        red_ball.translateX(-7);
+    }
+
+    if (red_controls.moveRight && red_ball.position.x <= 0)
+    {
+        red_ball.translateX(7);
+    }
+
+    handleColours();
+
+    stats.update();
+    
+}
+
+
+/* ---------------------------- MOUSE AND ANIMATION SUPPORT ------------------
+
+/**
+ *  This page uses THREE.OrbitControls to let the user use the mouse to rotate
+ *  the view.  OrbitControls are designed to be used during an animation, where
+ *  the rotation is updated as part of preparing for the next frame.  The scene
+ *  is not automatically updated just because the user drags the mouse.  To get
+ *  the rotation to work without animation, I add another mouse listener to the
+ *  canvas, just to call the render() function when the user drags the mouse.
+ *  The same thing holds for touch events -- I call render for any mouse move
+ *  event with one touch.
+ */
+function installOrbitControls() {
+    controls = new THREE.OrbitControls(camera,canvas);
+    controls.noPan = true; 
+    controls.noZoom = true;
+    controls.staticMoving = true;
+    function move() {
+        controls.update();
+        if (! animating) {
+            render();
+        }
+    }
+    function down() {
+        document.addEventListener("mousemove", move, false);
+    }
+    function up() {
+        document.removeEventListener("mousemove", move, false);
+    }
+    function touch(event) {
+        if (event.touches.length == 1) {
+            move();
+        }
+    }
+    canvas.addEventListener("mousedown", down, false);
+    canvas.addEventListener("touchmove", touch, false);
+}
+
+/*  Called when user changes setting of the Animate checkbox. */
+function doAnimateCheckbox() {
+   var run = document.getElementById("animateCheckbox").checked;
+   if (run != animating) {
+       animating = run;
+       if (animating) {
+           requestAnimationFrame(doFrame);
+       }
+   }
+}
+
+/*  Drives the animation, called by system through requestAnimationFrame() */
+function doFrame() {
+    if (animating) {
+        frameNumber++;
+        updateForFrame();
+        render();
+        requestAnimationFrame(doFrame);
+    }
+}
+
+/*----------------------------- INITIALIZATION ----------------------------------------
+
+/**
+ *  This function is called by the onload event so it will run after the
+ *  page has loaded.  It creates the renderer, canvas, and scene objects,
+ *  calls createWorld() to add objects to the scene, and renders the
+ *  initial view of the scene.  If an error occurs, it is reported.
+ */
+function init() {
+
+    stats = new Stats();
+    document.body.appendChild( stats.domElement );  
+
+    try {
+        canvas = document.getElementById("glcanvas");
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: false
+        });
+    }
+    catch (e) {
+        document.getElementById("message").innerHTML="<b>Sorry, an error occurred:<br>" +
+                e + "</b>";
+        return;
+    }
+    document.getElementById("animateCheckbox").checked = false;
+    document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
+    createWorld();
+    installOrbitControls();
+    render();
+
+}
+
+</script>
+</head>
+<body onload="init()">
+
+<h2>_</h2>
+
+<noscript>
+   <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>
+</noscript>
+
+<p style="color:#AA0000; font-weight: bold" id="message">
+</p>
+
+<p>
+   <label><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
+   <b style="margin-left:50px">Use the mouse to rotate the model.</b>
+</p>
+
+<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white">
+   <canvas width=1200 height=600 id="glcanvas"></canvas>
+</div>
+
+</body>
+</html>
