@@ -5,6 +5,7 @@
 <script src="three.js"></script>
 <script src="OrbitControls.js"></script>
 <script src="stats.min.js"></script>
+<script src="player.js"></script>
 <script>
 
 "use strict";
@@ -49,6 +50,13 @@ var green_controls = {
     moveRight: false
 };
 
+// stuff for movement
+var red_dest = 1;
+var green_dest = 2;
+var blue_dest = 3;
+
+var destinations = [-10,-5,0,5,10];
+
 
 
 // here we detect when a key is pressed down or up
@@ -56,19 +64,15 @@ var green_controls = {
 function onKeyDown( event ) {
     event.stopPropagation();
     switch ( event.keyCode ) {
-        case 38: /*up*/
+        case 38: /*up*/blue_controls.moveForward = true; break;
         case 87: /*W*/ 	red_controls.moveForward = true; break;
-        case 40: /*down*/
+        case 40: /*down*/blue_controls.moveBackward = true; break;
         case 83: /*S*/ 	 red_controls.moveBackward = true; break;
-        case 37: /*left*/
+        case 37: /*left*/blue_controls.moveLeft = true; break;
         case 65: /*A*/ red_controls.moveLeft = true; break;
-        case 39: /*right*/
+        case 39: /*right*/blue_controls.moveRight = true; break;
         case 68: /*D*/ red_controls.moveRight = true; break;
-        //case 67: /*C*/     controls.crouch = true; break;
-        //case 32: /*space*/ controls.jump = true; break;
-        //case 17: /*ctrl*/  controls.attack = true; break;
     }
-    //console.log("KEY_DOWN")
 }
 function onKeyUp( event ) {
     event.stopPropagation();
@@ -182,7 +186,17 @@ function handleColours()
     }
 }
 
-
+function handleMovement()
+{
+    if (red_ball.position.x > destinations[red_dest])
+    {
+        red_ball.translateX(-1);
+    }
+    else if (red_ball.position.x < destinations[red_dest])
+    {
+        red_ball.translateX(1);
+    }
+}
 
 
 /**
@@ -212,22 +226,27 @@ function createWorld() {
     scene.add(camera);
     
     //------------------- Create the scene's visible objects ----------------------
-    //loadModel("resources/horse.js");
-    //scene.add(makeCylinder());
-    //MGR = makeTrack()
+    /*
     red_ball = makeBall();
     red_ball.material.emissive.setHex(0xff0000)
     scene.add(red_ball);
+
     green_ball = makeBall();
     green_ball.translateX(7);
-    //green_ball.material.color.setHex(0x00ff00)
     green_ball.material.emissive.setHex(0x00ff00)
     scene.add(green_ball);
+
     blue_ball = makeBall();
     blue_ball.translateX(-7);
-    //blue_ball.material.color.setHex(0x0000ff)
     blue_ball.material.emissive.setHex(0x0000ff)
     scene.add(blue_ball);
+    */
+
+    red_ball = new PlayerBall("red",3);
+    red_ball = red_ball.get_model();
+    scene.add(red_ball);
+
+
 
     render()
     
@@ -241,17 +260,28 @@ function createWorld() {
  *  is incrementd 1 before this function is called.
  */
 function updateForFrame() {
+    if (destinations.includes(red_ball.position.x))
+    {
+        console.log(red_dest);
+        console.log(destinations[red_dest]);
+        if (red_controls.moveLeft == true)
+        {
+            if(red_dest > 0)
+            {
+                red_dest = red_dest -1;
+            }
+        }
+        else if (red_controls.moveRight == true)
+        {
+            if(red_dest < 5)
+            {
+                red_dest = red_dest +1;
+            }
+        }
+    }
+
     
-    if (red_controls.moveLeft && red_ball.position.x >= 0)
-    {
-        red_ball.translateX(-7);
-    }
-
-    if (red_controls.moveRight && red_ball.position.x <= 0)
-    {
-        red_ball.translateX(7);
-    }
-
+    handleMovement();
     handleColours();
 
     stats.update();
@@ -299,7 +329,7 @@ function installOrbitControls() {
 
 /*  Called when user changes setting of the Animate checkbox. */
 function doAnimateCheckbox() {
-   var run = document.getElementById("animateCheckbox").checked;
+   var run = true;
    if (run != animating) {
        animating = run;
        if (animating) {
