@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 69697cc2cc6e9484abc82e23c8d6565a
+timeCreated: 1528450057
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Bala Cynwyd NF
+  fontNames:
+  - Bala Cynwyd NF
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
