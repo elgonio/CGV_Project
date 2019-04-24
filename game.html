@@ -28,63 +28,53 @@ var red_ball ;
 var green_ball ;
 var blue_ball ;
 
-// these variables are checked in the animation loop to determine whether we should move the balls
-var red_controls = {
-    moveForward: false,
-    moveBackward: false,
-    moveLeft: false,
-    moveRight: false
-};
-
-var blue_controls = {
-    moveForward: false,
-    moveBackward: false,
-    moveLeft: false,
-    moveRight: false
-};
-
-var green_controls = {
-    moveForward: false,
-    moveBackward: false,
-    moveLeft: false,
-    moveRight: false
-};
-
-// stuff for movement
-var red_dest = 1;
-var green_dest = 2;
-var blue_dest = 3;
-
-var destinations = [-10,-5,0,5,10];
-
-
-
+function debug()
+{
+    console.log(red_ball.colour);
+    console.log(red_ball.dest);
+    console.log(red_ball.sphere.position.x);
+    console.log(red_ball.isMoving)
+}
 // here we detect when a key is pressed down or up
 // A full list can be found at: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 function onKeyDown( event ) {
     event.stopPropagation();
     switch ( event.keyCode ) {
-        case 38: /*up*/blue_controls.moveForward = true; break;
-        case 87: /*W*/ 	red_controls.moveForward = true; break;
-        case 40: /*down*/blue_controls.moveBackward = true; break;
-        case 83: /*S*/ 	 red_controls.moveBackward = true; break;
-        case 37: /*left*/blue_controls.moveLeft = true; break;
-        case 65: /*A*/ red_controls.moveLeft = true; break;
-        case 39: /*right*/blue_controls.moveRight = true; break;
-        case 68: /*D*/ red_controls.moveRight = true; break;
+        case 38: /*up*/blue_ball.controls.moveForward = true; break;
+        case 40: /*down*/blue_ball.controls.moveBackward = true; break;
+        case 37: /*left*/blue_ball.controls.moveLeft = true; break;
+        case 39: /*right*/blue_ball.controls.moveRight = true; break;
+
+        case 87: /*W*/ red_ball.controls.moveForward = true; break;
+        case 83: /*S*/ red_ball.controls.moveBackward = true; break;
+        case 65: /*A*/ red_ball.controls.moveLeft = true; break;
+        case 68: /*D*/ red_ball.controls.moveRight = true; break;
+
+        case 73: /*I*/ green_ball.controls.moveForward = true; break;
+        case 75: /*K*/ green_ball.controls.moveBackward = true; break;
+        case 74: /*J*/ green_ball.controls.moveLeft = true; break;
+        case 76: /*L*/ green_ball.controls.moveRight = true; break;
+
+        case 32: /*SPACEBAR*/ debug();break;
     }
 }
 function onKeyUp( event ) {
     event.stopPropagation();
     switch ( event.keyCode ) {
-        case 38: /*up*/
-        case 87: /*W*/ red_controls.moveForward = false; break;
-        case 40: /*down*/
-        case 83: /*S*/ 	 red_controls.moveBackward = false; break;
-        case 37: /*left*/
-        case 65: /*A*/ 	 red_controls.moveLeft = false; break;
-        case 39: /*right*/
-        case 68: /*D*/ red_controls.moveRight = false; break;
+        case 38: /*up*/blue_ball.controls.moveForward = false; break;
+        case 40: /*down*/blue_ball.controls.moveBackward = false; break;
+        case 37: /*left*/blue_ball.controls.moveLeft = false; break;
+        case 39: /*right*/blue_ball.controls.moveRight = false; break;
+
+        case 87: /*W*/ red_ball.controls.moveForward = false; break;
+        case 83: /*S*/ red_ball.controls.moveBackward = false; break;
+        case 65: /*A*/ red_ball.controls.moveLeft = false; break;
+        case 68: /*D*/ red_ball.controls.moveRight = false; break;
+
+        case 73: /*I*/ green_ball.controls.moveForward = false; break;
+        case 75: /*K*/ green_ball.controls.moveBackward = false; break;
+        case 74: /*J*/ green_ball.controls.moveLeft = false; break;
+        case 76: /*L*/ green_ball.controls.moveRight = false; break;
     }
     //console.log("KEY_UP")    
 }
@@ -123,79 +113,48 @@ function loadModel(modelURL,target,scale_factor) {
     }
 }
 
-//  this function makes a plain white ball with a white emissive light
-function makeBall()
-{
-    var geometry = new THREE.SphereGeometry( 5, 32, 32 );
-    var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
-                                                    emissive: 0xffffff,
-                                                    emissiveIntensity: 1,
-                                                    side: THREE.DoubleSide
-                                                    } );
-    var sphere = new THREE.Mesh( geometry, material );
-    sphere.scale.set(0.5,0.5,0.5);
-
-    return sphere;
-}
-
-// this function checks the x values of the balls
-// we should probably change this to work off of the whole position
-// I've done it this way because using red_ball.position == blue_ball.position didn't work for some reason
-
 // The commented lines change the color of the balls in addition to changing the emissive colours
 function handleColours()
 {
-    if(red_ball.position.x == green_ball.position.x && red_ball.position.x == blue_ball.position.x)
+    // BACK TO NORMAL
+    red_ball.sphere.material.emissive.setHex(0xff0000);
+    green_ball.sphere.material.emissive.setHex(0x00ff00);
+    blue_ball.sphere.material.emissive.setHex(0x0000ff);
+
+    if(red_ball.dest == green_ball.dest && red_ball.dest== blue_ball.dest)
     {
-        red_ball.material.emissive.setHex(0xffffff);
-        green_ball.material.emissive.setHex(0xffffff);
-        blue_ball.material.emissive.setHex(0xffffff);
+        //WHITE
+        red_ball.sphere.material.emissive.setHex(0xffffff);
+        green_ball.sphere.material.emissive.setHex(0xffffff);
+        blue_ball.sphere.material.emissive.setHex(0xffffff);
         
     }
-    else if(red_ball.position.x == green_ball.position.x)
+    else if(red_ball.dest== green_ball.dest)
     {
-        red_ball.material.emissive.setHex(0xffff00);
-
-        //red_ball.material.color.setHex(0xaaaa00);
-        
-        green_ball.material.emissive.setHex(0xffff00);
-        //green_ball.material.color.setHex(0xaaaa00);
+        //YELLOW
+        red_ball.sphere.material.emissive.setHex(0xffff00);
+        green_ball.sphere.material.emissive.setHex(0xffff00);
+    }
+    else if(red_ball.dest == blue_ball.dest)
+    {
+        //PURPLE
+        red_ball.sphere.material.emissive.setHex(0xff00ff);
+        blue_ball.sphere.material.emissive.setHex(0xff00ff);
 
     }
-    else if(red_ball.position.x == blue_ball.position.x)
+    else if(blue_ball.dest == green_ball.dest)
     {
-        red_ball.material.emissive.setHex(0xff00ff);
-        //red_ball.material.color.setHex(0xff00ff);
-
-        blue_ball.material.emissive.setHex(0xff00ff);
-        //blue_ball.material.color.setHex(0xff00ff);
-
-    }
-    else if(blue_ball.position == green_ball.position)
-    {
-        blue_ball.material.emissive.setHex(0x00ffff);
-        //blue_ball.material.color.setHex(0x00ffff);
-        green_ball.material.emissive.setHex(0x00ffff);
-        //green_ball.material.color.setHex(0x00ffff);
-    }
-    else 
-    {
-        red_ball.material.emissive.setHex(0xff0000);
-        green_ball.material.emissive.setHex(0x00ff00);
-        blue_ball.material.emissive.setHex(0x0000ff);
+        //CYAN
+        blue_ball.sphere.material.emissive.setHex(0x00ffff);
+        green_ball.sphere.material.emissive.setHex(0x00ffff);
     }
 }
 
 function handleMovement()
 {
-    if (red_ball.position.x > destinations[red_dest])
-    {
-        red_ball.translateX(-1);
-    }
-    else if (red_ball.position.x < destinations[red_dest])
-    {
-        red_ball.translateX(1);
-    }
+    red_ball.handleMovement();
+    blue_ball.handleMovement();
+    green_ball.handleMovement();
 }
 
 
@@ -226,26 +185,15 @@ function createWorld() {
     scene.add(camera);
     
     //------------------- Create the scene's visible objects ----------------------
-    /*
-    red_ball = makeBall();
-    red_ball.material.emissive.setHex(0xff0000)
-    scene.add(red_ball);
 
-    green_ball = makeBall();
-    green_ball.translateX(7);
-    green_ball.material.emissive.setHex(0x00ff00)
-    scene.add(green_ball);
+    red_ball = new PlayerBall("red",1);
+    scene.add(red_ball.get_mesh());
 
-    blue_ball = makeBall();
-    blue_ball.translateX(-7);
-    blue_ball.material.emissive.setHex(0x0000ff)
-    scene.add(blue_ball);
-    */
+    blue_ball = new PlayerBall("blue",2);
+    scene.add(blue_ball.get_mesh());
 
-    red_ball = new PlayerBall("red",3);
-    red_ball = red_ball.get_model();
-    scene.add(red_ball);
-
+    green_ball = new PlayerBall("green",3);
+    scene.add(green_ball.get_mesh());
 
 
     render()
@@ -260,26 +208,6 @@ function createWorld() {
  *  is incrementd 1 before this function is called.
  */
 function updateForFrame() {
-    if (destinations.includes(red_ball.position.x))
-    {
-        console.log(red_dest);
-        console.log(destinations[red_dest]);
-        if (red_controls.moveLeft == true)
-        {
-            if(red_dest > 0)
-            {
-                red_dest = red_dest -1;
-            }
-        }
-        else if (red_controls.moveRight == true)
-        {
-            if(red_dest < 5)
-            {
-                red_dest = red_dest +1;
-            }
-        }
-    }
-
     
     handleMovement();
     handleColours();
@@ -363,6 +291,10 @@ function init() {
 
     try {
         canvas = document.getElementById("glcanvas");
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        doAnimateCheckbox();
         renderer = new THREE.WebGLRenderer({
             canvas: canvas,
             antialias: true,
@@ -377,7 +309,8 @@ function init() {
     document.getElementById("animateCheckbox").checked = false;
     document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
     createWorld();
-    installOrbitControls();
+    // we don't actually need to change the camera view
+    //installOrbitControls();
     render();
 
 }
@@ -386,7 +319,6 @@ function init() {
 </head>
 <body onload="init()">
 
-<h2>_</h2>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>
@@ -396,12 +328,13 @@ function init() {
 </p>
 
 <p>
-   <label><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
-   <b style="margin-left:50px">Use the mouse to rotate the model.</b>
+    <!--removing the checkbox breaks things-->
+   <label hidden><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
+   <!--<b style="margin-left:50px">Use the mouse to rotate the model.</b>-->
 </p>
 
 <div id="canvas-holder" style="float:left; border: thin solid black; background-color: white">
-   <canvas width=1200 height=600 id="glcanvas"></canvas>
+   <canvas width=1920 height=1080 id="glcanvas"></canvas>
 </div>
 
 </body>
