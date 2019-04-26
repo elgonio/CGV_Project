@@ -4,7 +4,9 @@ class SceneInit {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
+        //this.controls = controls;
     }
+
 
     initScene() {
         // create the scene
@@ -22,9 +24,11 @@ class SceneInit {
         // add support for shadow mapping in renderer
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        // append as dominant element
+
+        // append renderer as dominant element
         document.body.appendChild( this.renderer.domElement );
     }
+
 
     addCube() {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -43,6 +47,7 @@ class SceneInit {
         this.scene.add( cube );
     }
     
+
     addFloor() {
         let material = new THREE.MeshPhongMaterial( { color: "rgb(220, 220, 220)", dithering: true } );
         let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
@@ -55,6 +60,7 @@ class SceneInit {
         
         this.scene.add( floor );
     }
+
 
     addLight() {
         // ambient light example setup
@@ -88,10 +94,13 @@ class SceneInit {
         this.scene.add( spotLight );
     }
 
+
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
         this.render();
+        //this.controls.update();
     }
+
 
     render() {
         this.renderer.render( this.scene, this.camera );
