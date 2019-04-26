@@ -23,15 +23,23 @@ class SceneInit {
 
 
         // ambient light example setup
-        let ambientLight = new THREE.AmbientLight(0xffffff, 0.50);
+        let ambientLight = new THREE.AmbientLight( "rgba(255, 255, 255)", 0.55 );
         ambientLight.castShadow = false;
         this.scene.add( ambientLight );
+
+        // point light example setup
+        let pointLight = new THREE.PointLight( "rgba(255, 255, 255)", 1, 100 );
+        pointLight.position.set ( 5, 5, 5 );
+        this.scene.add( pointLight );
     }
 
     addCube() {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        let material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        let material = new THREE.MeshPhongMaterial( { color: "rgb(20, 130, 200)" } );
         let cube = new THREE.Mesh( geometry, material );
+
+        cube.rotation.x = 45;
+        cube.rotation.y = 45;
     
         this.scene.add( cube );
 }
@@ -47,7 +55,7 @@ class SceneInit {
 }
 
 
-// instantiate the test scene
+// instructions to instantiate the test scene
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
