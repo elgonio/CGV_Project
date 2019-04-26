@@ -19,30 +19,74 @@ class SceneInit {
             {canvas: document.getElementById( 'renderer' ), antialias: true} // setup antialias here
         );
         this.renderer.setSize( window.innerWidth, window.innerHeight );
+        // add support for shadow mapping in renderer
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        // append as dominant element
         document.body.appendChild( this.renderer.domElement );
-
-
-        // ambient light example setup
-        let ambientLight = new THREE.AmbientLight( "rgba(255, 255, 255)", 0.55 );
-        ambientLight.castShadow = false;
-        this.scene.add( ambientLight );
-
-        // point light example setup
-        let pointLight = new THREE.PointLight( "rgba(255, 255, 255)", 1, 100 );
-        pointLight.position.set ( 5, 5, 5 );
-        this.scene.add( pointLight );
     }
 
     addCube() {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        let material = new THREE.MeshPhongMaterial( { color: "rgb(20, 130, 200)" } );
+        let material = new THREE.MeshPhongMaterial( { color: "rgb(20, 130, 200)", dithering: true } );
         let cube = new THREE.Mesh( geometry, material );
 
+        // cube shadow properties
+            cube.castShadow = true;
+            cube.receiveShadow = false;
+
+        // demo cube positioning
+        cube.position.set( 0, 0, 2 );
         cube.rotation.x = 45;
         cube.rotation.y = 45;
     
         this.scene.add( cube );
-}
+    }
+    
+    addFloor() {
+        let material = new THREE.MeshPhongMaterial( { color: "rgb(220, 220, 220)", dithering: true } );
+        let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
+        let floor = new THREE.Mesh( geometry, material );
+
+        floor.position.set( 0, -1, 0 );
+        
+        // floor shadow properties
+            floor.receiveShadow = true;
+        
+        this.scene.add( floor );
+    }
+
+    addLight() {
+        // ambient light example setup
+        let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
+            ambientLight.castShadow = false;
+        this.scene.add( ambientLight );
+
+        // point light example setup
+        let pointLight = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
+            pointLight.position.set ( 5, 5, 5 );
+        // point light shadow properties
+            pointLight.shadow.mapSize.width = 512;
+            pointLight.shadow.mapSize.height = 512;
+            pointLight.shadow.camera.near = 0.5;
+            pointLight.shadow.camera.far = 500;
+        this.scene.add( pointLight );
+
+        // spot light example setup
+        let spotLight = new THREE.SpotLight( "rgb(255, 0, 0)", 1 );
+            spotLight.position.set( 15, 40, 35 );
+            spotLight.angle = ( Math.PI/4 );
+            spotLight.penumbra = 0.05;
+            spotLight.decay = 2;
+            spotLight.distance = 200;
+        // spot light shadow properties
+            spotLight.castShadow = true;
+            spotLight.shadow.mapSize.width = 1024;
+            spotLight.shadow.mapSize.height = 1024;
+            spotLight.shadow.camera.near = 10;
+            spotLight.shadow.camera.far = 200;
+        this.scene.add( spotLight );
+    }
 
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
@@ -59,4 +103,6 @@ class SceneInit {
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
+test01.addFloor();
+test01.addLight();
 test01.animate();
