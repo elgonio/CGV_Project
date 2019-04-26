@@ -5,8 +5,9 @@
         - ambient lighting
 */
 
-class Light {
-    constructor() {
-        
+class LightShadow {
+    constructor(colour, type) {
+        this.colour = colour;
+        this.type = type;
     }
 }
