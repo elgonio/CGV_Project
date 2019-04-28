@@ -32,6 +32,7 @@ var red_ball ;
 var yellow_ball ;
 var blue_ball ;
 var tracks ;
+var level_Manager ;
 
 function debug()
 {
@@ -210,6 +211,17 @@ function createWorld() {
 
     tracks = new Tracks();
     scene.add(tracks.get_TrackMeshes());
+
+    // level_Manager = new LevelManager("easy", -100);
+
+    // level_Manager.instantiateRow(); //Delay this function in a loop so it continiously instatiates rows of obstacles
+
+    // scene.add(level_Manager.get_row());
+
+    var block = new BlockObstacle("blue", 2, "standard");
+    block.get_mesh().position.z = -200;
+    scene.add(block.get_mesh());
+
 
     render()
     
