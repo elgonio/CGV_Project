@@ -1,10 +1,11 @@
-//Object to group the individial tracks together
-var trackObjects = THREE.Object3D();
 
 class Tracks{
-	constructor{
+
+	constructor(){
 
 		var trackGeometry, trackMaterial;
+		this.trackObjects = new THREE.Group(); //Object to group the individial tracks together
+
 		this.obsTrackMeshArray = []
 		this.playerTrackMeshArray = [];
 
@@ -20,7 +21,7 @@ class Tracks{
 		for (var i = 0; i <= 4; i++) {
 			this.obsTrackMeshArray[i] = new THREE.Mesh(trackGeometry, trackMaterial);
 			this.obsTrackMeshArray[i].position.set(xPos, -2, 50);
-			trackObjects.add(this.obsTrackMeshArray[i]);
+			this.trackObjects.add(this.obsTrackMeshArray[i]);
 			xPos += 5;
 		}
 
@@ -32,13 +33,13 @@ class Tracks{
 		for (var i = 0; i <= 1; i++) {
 			this.playerTrackMeshArray[i] = new THREE.Mesh(trackGeometry, trackMaterial);
 			this.playerTrackMeshArray[i].position.set(0, -2, zPos);
-			trackObjects.add(this.playerTrackMeshArray[i]);
+			this.trackObjects.add(this.playerTrackMeshArray[i]);
 			zPos -= 5;
 		}
 
 	}
 
-	get_Tracks(){
-		return trackObjects;
+	get_TrackMeshes(){
+		return this.trackObjects;
 	}
 }

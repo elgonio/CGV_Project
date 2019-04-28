@@ -22,7 +22,7 @@ class PlayerBall {
         var geometry = new THREE.SphereGeometry( 1.5, 32, 32 );
         var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
-                                                        emissiveIntensity: 0.8,
+                                                        emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
                                                         } );
         this.sphere = new THREE.Mesh( geometry, material );

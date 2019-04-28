@@ -8,6 +8,7 @@
 <script src="plugins/threejs/stats.min.js"></script>
 <script src="js/player.js"></script>
 <script src="js/block.js"></script>
+<script src="js/tracklines.js"></script>
 <script>
 
 "use strict";
@@ -29,6 +30,7 @@ document.addEventListener( 'keyup', onKeyUp, false );
 var red_ball ;
 var yellow_ball ;
 var blue_ball ;
+var tracks ;
 
 function debug()
 {
@@ -197,6 +199,8 @@ function createWorld() {
     blue_ball = new PlayerBall("blue",3);
     scene.add(blue_ball.get_mesh());
 
+    tracks = new Tracks();
+    scene.add(tracks.get_TrackMeshes());
 
     render()
     
