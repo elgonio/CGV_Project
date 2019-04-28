@@ -9,7 +9,7 @@ class Tracks{
 		this.obsTrackMeshArray = []
 		this.playerTrackMeshArray = [];
 
-		var trackGeometry = new THREE.BoxGeometry( 0.2, 0.2, 100);
+		var trackGeometry = new THREE.BoxGeometry( 0.2, 0.2, 500);
 		var trackMaterial = new THREE.MeshLambertMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
