@@ -26,7 +26,7 @@ document.addEventListener( 'keyup', onKeyUp, false );
 // we declare variables for our balls
 // this way they are global and we can manipulate them from anywhere
 var red_ball ;
-var green_ball ;
+var yellow_ball ;
 var blue_ball ;
 
 function debug()
@@ -46,15 +46,15 @@ function onKeyDown( event ) {
         case 37: /*left*/blue_ball.controls.moveLeft = true; break;
         case 39: /*right*/blue_ball.controls.moveRight = true; break;
 
+        case 73: /*I*/ yellow_ball.controls.moveForward = true; break;
+        case 75: /*K*/ yellow_ball.controls.moveBackward = true; break;
+        case 74: /*J*/ yellow_ball.controls.moveLeft = true; break;
+        case 76: /*L*/ yellow_ball.controls.moveRight = true; break;
+
         case 87: /*W*/ red_ball.controls.moveForward = true; break;
         case 83: /*S*/ red_ball.controls.moveBackward = true; break;
         case 65: /*A*/ red_ball.controls.moveLeft = true; break;
         case 68: /*D*/ red_ball.controls.moveRight = true; break;
-
-        case 73: /*I*/ green_ball.controls.moveForward = true; break;
-        case 75: /*K*/ green_ball.controls.moveBackward = true; break;
-        case 74: /*J*/ green_ball.controls.moveLeft = true; break;
-        case 76: /*L*/ green_ball.controls.moveRight = true; break;
 
         case 32: /*SPACEBAR*/ debug();break;
     }
@@ -67,15 +67,15 @@ function onKeyUp( event ) {
         case 37: /*left*/blue_ball.controls.moveLeft = false; break;
         case 39: /*right*/blue_ball.controls.moveRight = false; break;
 
+        case 73: /*I*/ yellow_ball.controls.moveForward = false; break;
+        case 75: /*K*/ yellow_ball.controls.moveBackward = false; break;
+        case 74: /*J*/ yellow_ball.controls.moveLeft = false; break;
+        case 76: /*L*/ yellow_ball.controls.moveRight = false; break;
+
         case 87: /*W*/ red_ball.controls.moveForward = false; break;
         case 83: /*S*/ red_ball.controls.moveBackward = false; break;
         case 65: /*A*/ red_ball.controls.moveLeft = false; break;
         case 68: /*D*/ red_ball.controls.moveRight = false; break;
-
-        case 73: /*I*/ green_ball.controls.moveForward = false; break;
-        case 75: /*K*/ green_ball.controls.moveBackward = false; break;
-        case 74: /*J*/ green_ball.controls.moveLeft = false; break;
-        case 76: /*L*/ green_ball.controls.moveRight = false; break;
     }
     //console.log("KEY_UP")    
 }
@@ -118,36 +118,36 @@ function loadModel(modelURL,target,scale_factor) {
 function handleColours()
 {
     // BACK TO NORMAL
-    red_ball.sphere.material.emissive.setHex(0xff0000);
-    green_ball.sphere.material.emissive.setHex(0x00ff00);
-    blue_ball.sphere.material.emissive.setHex(0x0000ff);
+    red_ball.sphere.material.emissive.setHex(0xdd0000);
+    yellow_ball.sphere.material.emissive.setHex(0xdddd00);
+    blue_ball.sphere.material.emissive.setHex(0x0000dd);
 
-    if(red_ball.dest == green_ball.dest && red_ball.dest== blue_ball.dest)
+    if(red_ball.dest == yellow_ball.dest && red_ball.dest== blue_ball.dest)
     {
         //WHITE
-        red_ball.sphere.material.emissive.setHex(0xffffff);
-        green_ball.sphere.material.emissive.setHex(0xffffff);
-        blue_ball.sphere.material.emissive.setHex(0xffffff);
+        red_ball.sphere.material.emissive.setHex(0xcccccc);
+        yellow_ball.sphere.material.emissive.setHex(0xcccccc);
+        blue_ball.sphere.material.emissive.setHex(0xcccccc);
         
     }
-    else if(red_ball.dest== green_ball.dest)
+    else if(red_ball.dest== yellow_ball.dest)
     {
-        //YELLOW
-        red_ball.sphere.material.emissive.setHex(0xffff00);
-        green_ball.sphere.material.emissive.setHex(0xffff00);
+        //ORANGE
+        red_ball.sphere.material.emissive.setHex(0xce6800);
+        yellow_ball.sphere.material.emissive.setHex(0xce6800);
     }
     else if(red_ball.dest == blue_ball.dest)
     {
         //PURPLE
-        red_ball.sphere.material.emissive.setHex(0xff00ff);
-        blue_ball.sphere.material.emissive.setHex(0xff00ff);
+        red_ball.sphere.material.emissive.setHex(0xdd00dd);
+        blue_ball.sphere.material.emissive.setHex(0xdd00dd);
 
     }
-    else if(blue_ball.dest == green_ball.dest)
+    else if(blue_ball.dest == yellow_ball.dest)
     {
-        //CYAN
-        blue_ball.sphere.material.emissive.setHex(0x00ffff);
-        green_ball.sphere.material.emissive.setHex(0x00ffff);
+        //GREEN
+        blue_ball.sphere.material.emissive.setHex(0x00dd00);
+        yellow_ball.sphere.material.emissive.setHex(0x00dd00);
     }
 }
 
@@ -155,7 +155,7 @@ function handleMovement()
 {
     red_ball.handleMovement();
     blue_ball.handleMovement();
-    green_ball.handleMovement();
+    yellow_ball.handleMovement();
 }
 
 
@@ -190,11 +190,11 @@ function createWorld() {
     red_ball = new PlayerBall("red",1);
     scene.add(red_ball.get_mesh());
 
-    blue_ball = new PlayerBall("blue",2);
-    scene.add(blue_ball.get_mesh());
+    yellow_ball = new PlayerBall("yellow",2);
+    scene.add(yellow_ball.get_mesh());
 
-    green_ball = new PlayerBall("green",3);
-    scene.add(green_ball.get_mesh());
+    blue_ball = new PlayerBall("blue",3);
+    scene.add(blue_ball.get_mesh());
 
 
     render()

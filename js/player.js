@@ -1,6 +1,6 @@
 class PlayerBall {
     
-    // colour is of the form "red","green" or "blue"
+    // colour is of the form "blue","red" or "yellow"
     // position is the position in the detination array
     constructor(colour,position) {
         this.colour = colour;
@@ -22,7 +22,7 @@ class PlayerBall {
         var geometry = new THREE.SphereGeometry( 1.5, 32, 32 );
         var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
-                                                        emissiveIntensity: 1,
+                                                        emissiveIntensity: 0.8,
                                                         side: THREE.DoubleSide
                                                         } );
         this.sphere = new THREE.Mesh( geometry, material );
@@ -31,15 +31,15 @@ class PlayerBall {
 
         if(colour == "red")
         {
-            this.sphere.material.emissive.setHex(0xff0000);
+            this.sphere.material.emissive.setHex(0xdd0000);
         }
         else if (colour == "blue")
         {
-            this.sphere.material.emissive.setHex(0x0000ff);
+            this.sphere.material.emissive.setHex(0x0000dd);
         }
-        else if (colour == "green")
+        else if (colour == "yellow")
         {
-            this.sphere.material.emissive.setHex(0x00ff00);
+            this.sphere.material.emissive.setHex(0xdddd00);
         }
     }
 
