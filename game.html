@@ -43,6 +43,9 @@ function debug()
 // A full list can be found at: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 function onKeyDown( event ) {
     event.stopPropagation();
+
+    
+
     switch ( event.keyCode ) {
         case 38: /*up*/blue_ball.controls.moveForward = true; break;
         case 40: /*down*/blue_ball.controls.moveBackward = true; break;
@@ -61,6 +64,7 @@ function onKeyDown( event ) {
 
         case 32: /*SPACEBAR*/ debug();break;
     }
+    
 }
 function onKeyUp( event ) {
     event.stopPropagation();
@@ -180,8 +184,10 @@ function createWorld() {
     
     // ------------------- Make a camera with viewpoint light ----------------------
     
-    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 100);
-    camera.position.z = 30;
+    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 200);
+    camera.position.z = -25;
+    camera.position.y = 5;
+    camera.lookAt(new THREE.Vector3(0,0,50));
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
@@ -348,9 +354,7 @@ function init() {
    <!--<b style="margin-left:50px">Use the mouse to rotate the model.</b>-->
 </p>
 
-<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white;">
-   <canvas width=1920 height=1080 id="glcanvas"></canvas>
-</div>
+<canvas width=1920 height=1080 id="glcanvas"></canvas>
 
 </body>
 </html>
