@@ -20,7 +20,7 @@ class Tracks{
 		var xPos = -10;
 		for (var i = 0; i <= 4; i++) {
 			this.obsTrackMeshArray[i] = new THREE.Mesh(trackGeometry, trackMaterial);
-			this.obsTrackMeshArray[i].position.set(xPos, -2, 50);
+			this.obsTrackMeshArray[i].position.set(xPos, -1.5, -50);
 			this.trackObjects.add(this.obsTrackMeshArray[i]);
 			xPos += 5;
 		}
@@ -29,12 +29,12 @@ class Tracks{
 		trackGeometry = new THREE.BoxGeometry( 25, 0.2, 0.2);
 
 		//Create track lines indicate the paths of that the player can move on horizontally
-		var zPos = 5;
+		var zPos = -7.5;
 		for (var i = 0; i <= 1; i++) {
 			this.playerTrackMeshArray[i] = new THREE.Mesh(trackGeometry, trackMaterial);
-			this.playerTrackMeshArray[i].position.set(0, -2, zPos);
+			this.playerTrackMeshArray[i].position.set(0, -1.5, zPos);
 			this.trackObjects.add(this.playerTrackMeshArray[i]);
-			zPos -= 5;
+			zPos += 7.5;
 		}
 
 	}
