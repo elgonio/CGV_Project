@@ -20,7 +20,7 @@ class Tracks{
 		var xPos = -10;
 		for (var i = 0; i <= 4; i++) {
 			this.obsTrackMeshArray[i] = new THREE.Mesh(trackGeometry, trackMaterial);
-			this.obsTrackMeshArray[i].position.set(xPos, -1.5, -50);
+			this.obsTrackMeshArray[i].position.set(xPos, -1.5, -225);
 			this.trackObjects.add(this.obsTrackMeshArray[i]);
 			xPos += 5;
 		}

@@ -7,8 +7,9 @@
 <script src="plugins/threejs/OrbitControls.js"></script>
 <script src="plugins/threejs/stats.min.js"></script>
 <script src="js/player.js"></script>
-<script src="js/block.js"></script>
 <script src="js/tracklines.js"></script>
+<script src="js/level.js"></script>
+<script src="js/block.js"></script>
 <script>
 
 "use strict";
@@ -47,20 +48,20 @@ function onKeyDown( event ) {
     
 
     switch ( event.keyCode ) {
-        case 38: /*up*/blue_ball.controls.moveForward = true; break;
-        case 40: /*down*/blue_ball.controls.moveBackward = true; break;
-        case 37: /*left*/blue_ball.controls.moveLeft = true; break;
-        case 39: /*right*/blue_ball.controls.moveRight = true; break;
+        case 87: /*W*/ blue_ball.controls.moveForward = true; break;
+        case 83: /*S*/ blue_ball.controls.moveBackward = true; break;
+        case 65: /*A*/ blue_ball.controls.moveLeft = true; break;
+        case 68: /*D*/ blue_ball.controls.moveRight = true; break;
 
-        case 73: /*I*/ yellow_ball.controls.moveForward = true; break;
-        case 75: /*K*/ yellow_ball.controls.moveBackward = true; break;
-        case 74: /*J*/ yellow_ball.controls.moveLeft = true; break;
-        case 76: /*L*/ yellow_ball.controls.moveRight = true; break;
+        case 73: /*I*/ red_ball.controls.moveForward = true; break;
+        case 75: /*K*/ red_ball.controls.moveBackward = true; break;
+        case 74: /*J*/ red_ball.controls.moveLeft = true; break;
+        case 76: /*L*/ red_ball.controls.moveRight = true; break;
 
-        case 87: /*W*/ red_ball.controls.moveForward = true; break;
-        case 83: /*S*/ red_ball.controls.moveBackward = true; break;
-        case 65: /*A*/ red_ball.controls.moveLeft = true; break;
-        case 68: /*D*/ red_ball.controls.moveRight = true; break;
+        case 38: /*up*/yellow_ball.controls.moveForward = true; break;
+        case 40: /*down*/yellow_ball.controls.moveBackward = true; break;
+        case 37: /*left*/yellow_ball.controls.moveLeft = true; break;
+        case 39: /*right*/yellow_ball.controls.moveRight = true; break;
 
         case 32: /*SPACEBAR*/ debug();break;
     }
@@ -69,20 +70,20 @@ function onKeyDown( event ) {
 function onKeyUp( event ) {
     event.stopPropagation();
     switch ( event.keyCode ) {
-        case 38: /*up*/blue_ball.controls.moveForward = false; break;
-        case 40: /*down*/blue_ball.controls.moveBackward = false; break;
-        case 37: /*left*/blue_ball.controls.moveLeft = false; break;
-        case 39: /*right*/blue_ball.controls.moveRight = false; break;
+        case 87: /*W*/ blue_ball.controls.moveForward = false; break;
+        case 83: /*S*/ blue_ball.controls.moveBackward = false; break;
+        case 65: /*A*/ blue_ball.controls.moveLeft = false; break;
+        case 68: /*D*/ blue_ball.controls.moveRight = false; break;
 
-        case 73: /*I*/ yellow_ball.controls.moveForward = false; break;
-        case 75: /*K*/ yellow_ball.controls.moveBackward = false; break;
-        case 74: /*J*/ yellow_ball.controls.moveLeft = false; break;
-        case 76: /*L*/ yellow_ball.controls.moveRight = false; break;
+        case 73: /*I*/ red_ball.controls.moveForward = false; break;
+        case 75: /*K*/ red_ball.controls.moveBackward = false; break;
+        case 74: /*J*/ red_ball.controls.moveLeft = false; break;
+        case 76: /*L*/ red_ball.controls.moveRight = false; break;
 
-        case 87: /*W*/ red_ball.controls.moveForward = false; break;
-        case 83: /*S*/ red_ball.controls.moveBackward = false; break;
-        case 65: /*A*/ red_ball.controls.moveLeft = false; break;
-        case 68: /*D*/ red_ball.controls.moveRight = false; break;
+        case 38: /*up*/yellow_ball.controls.moveForward = false; break;
+        case 40: /*down*/yellow_ball.controls.moveBackward = false; break;
+        case 37: /*left*/yellow_ball.controls.moveLeft = false; break;
+        case 39: /*right*/yellow_ball.controls.moveRight = false; break;
     }
     //console.log("KEY_UP")    
 }
@@ -186,8 +187,8 @@ function createWorld() {
     
     camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 500);
     camera.position.z = 25;
-    camera.position.y = 10;
-    camera.lookAt(new THREE.Vector3(0,-10,-50));
+    camera.position.y = 9;
+    camera.lookAt(new THREE.Vector3(0,-10,-60));
 
     
     var light;  // A light shining from the direction of the camera; moves with the camera.
@@ -198,14 +199,14 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
 
-    red_ball = new PlayerBall("red",1);
+    blue_ball = new PlayerBall("blue",0); //Start on far left
+    scene.add(blue_ball.get_mesh());
+
+    red_ball = new PlayerBall("red",2); //Start in the middle
     scene.add(red_ball.get_mesh());
 
-    yellow_ball = new PlayerBall("yellow",2);
+    yellow_ball = new PlayerBall("yellow",4); //Start on far right
     scene.add(yellow_ball.get_mesh());
-
-    blue_ball = new PlayerBall("blue",3);
-    scene.add(blue_ball.get_mesh());
 
     tracks = new Tracks();
     scene.add(tracks.get_TrackMeshes());
