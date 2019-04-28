@@ -2,6 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <title>COMS3006 Game</title>
+<link rel="stylesheet" href="css/style.css">
 <script src="plugins/threejs/three.js"></script>
 <script src="plugins/threejs/OrbitControls.js"></script>
 <script src="plugins/threejs/stats.min.js"></script>
@@ -301,6 +302,14 @@ function init() {
             antialias: true,
             alpha: false
         });
+
+        //Responsive canvas that scales with window size
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+
+            camera.updateProjectionMatrix();
+        })
     }
     catch (e) {
         document.getElementById("message").innerHTML="<b>Sorry, an error occurred:<br>" +
@@ -318,6 +327,7 @@ function init() {
 
 </script>
 </head>
+
 <body onload="init()">
 
 
@@ -334,7 +344,7 @@ function init() {
    <!--<b style="margin-left:50px">Use the mouse to rotate the model.</b>-->
 </p>
 
-<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white">
+<div id="canvas-holder" style="float:left; border: thin solid black; background-color: white;">
    <canvas width=1920 height=1080 id="glcanvas"></canvas>
 </div>
 
