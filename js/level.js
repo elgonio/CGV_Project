@@ -84,14 +84,13 @@ class LevelManager{
 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
 				//try
 				//{
-					var block = this.rowObjGroupArray[i].children[k];
+					var block = this.rowObjGroupArray[i][k];
 					var block_pos = new THREE.Vector3( );
-					block.getWorldPosition(block_pos);
+					block.get_mesh().getWorldPosition(block_pos);
 
 					var size = 4; // size of block there, should be a way to get this dynamically
 					if(block_pos.distanceTo(player_pos) < player_ball.size + size){
 						// COLLIDE
-						
 						// now we check if the colours are matching		
 						if(block.get_colour() == player_ball.get_colour()){
 							// do nothing

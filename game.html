@@ -61,10 +61,10 @@ function onKeyDown( event ) {
         case 74: /*J*/ red_ball.controls.moveLeft = true; break;
         case 76: /*L*/ red_ball.controls.moveRight = true; break;
 
-        case 38: /*up*/yellow_ball.controls.moveForward = true; break;
-        case 40: /*down*/yellow_ball.controls.moveBackward = true; break;
-        case 37: /*left*/yellow_ball.controls.moveLeft = true; break;
-        case 39: /*right*/yellow_ball.controls.moveRight = true; break;
+        case 38: /*up*/yellow_ball.controls.moveForward = true; event.preventDefault();break;
+        case 40: /*down*/yellow_ball.controls.moveBackward = true; event.preventDefault();break;
+        case 37: /*left*/yellow_ball.controls.moveLeft = true; event.preventDefault();break;
+        case 39: /*right*/yellow_ball.controls.moveRight = true; event.preventDefault();break;
 
         case 32: /*SPACEBAR*/ debug();break;
     }
@@ -184,9 +184,7 @@ function handleCollisions()
     {
         // LOSE THE GAME
         console.log("YOU LOST");
-
         alert("YOU LOST");
-        document.getElementById("animateCheckbox").checked = false;
         animating=false;
     }
     
@@ -370,12 +368,11 @@ function init() {
                 e + "</b>";
         return;
     }
-    document.getElementById("animateCheckbox").checked = false;
-    document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
     createWorld();
     // we don't actually need to change the camera view
     //installOrbitControls();
     render();
+    requestAnimationFrame(doFrame);
 
 }
 
@@ -391,13 +388,6 @@ function init() {
 
 <p style="color:#AA0000; font-weight: bold" id="message">
 </p>
-
-<p>
-    <!--removing the checkbox breaks things-->
-   <label hidden><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
-   <!--<b style="margin-left:50px">Use the mouse to rotate the model.</b>-->
-</p>
-
 <canvas width=1920 height=1080 id="glcanvas"></canvas>
 
 </body>
