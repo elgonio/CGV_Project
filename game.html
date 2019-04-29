@@ -165,6 +165,7 @@ function handleMovement()
     red_ball.handleMovement();
     blue_ball.handleMovement();
     yellow_ball.handleMovement();
+    level_Manager.handleMovement();
 }
 
 
@@ -212,11 +213,11 @@ function createWorld() {
     tracks = new Tracks();
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("easy", -200);
+    level_Manager = new LevelManager("easy", -200, 125);
 
-    level_Manager.instantiateRow(); //Delay this function in a loop so it continiously instatiates rows of obstacles
+    level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
-    scene.add(level_Manager.get_row());
+    scene.add(level_Manager.get_allRows());
 
 //Testing adding a single block
 /*

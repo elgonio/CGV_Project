@@ -1,23 +1,77 @@
 var rowGroup = new THREE.Group();
+var clock = new THREE.Clock();
+var time = 0;
+var delta = 0; //For consistent movement across different FPS rates
+var direction = new THREE.Vector3(0, 0, 1);
+var speed = 0; // units a second
 
 class LevelManager{
 
-	constructor(difficulty, zPosSpawn){
+	constructor(difficulty, zPosSpawn, zSpawnDistInterval){
 		this.difficulty = difficulty;
+		this.zSpawnDistInterval = zSpawnDistInterval;
 		this.zPosSpawn = zPosSpawn;
-		this.row = rowGroup;
+		this.rowGroupArray = [];
+		this.allRows = new THREE.Group(); 
 	}
 
-	instantiateRow(){
+	generateSingleRow(){
 		rowGroup = new THREE.Group();
-		scenario3();
-		this.row = rowGroup
-		this.row.position.set(0, 0, this.zPosSpawn);
+		scenario1();
+		rowGroup.position.set(0, 0, this.zPosSpawn);
+		console.log(rowGroup);
+		this.rowGroupArray.push(rowGroup); //For animation purposes
+		this.allRows.add(rowGroup); //For rendering purposes	
 	}
 
-	get_row(){
-		return this.row;
+	handleSingleRowAnim(){
+		delta = clock.getDelta();
+        
+        if(this.difficulty == "easy"){
+        	speed = 50;
+ 			this.rowGroupArray[0].position.addScaledVector(direction, speed*delta);
+ 			if(this.rowGroupArray[0].position.z > 15){
+ 				this.rowGroupArray[0].position.z = this.zPosSpawn - this.zSpawnDistInterval*26 //Loops around again
+ 			}		 
+        }
 	}
+
+	generateRows(){
+
+		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
+			rowGroup = new THREE.Group();
+			scenario1();
+			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
+			this.rowGroupArray.push(rowGroup); //For animation purposes
+			this.allRows.add(rowGroup); //For rendering purposes
+			
+		}
+		console.log(this.allRows);
+	}
+
+	handleMovement(){
+		delta = clock.getDelta();
+        
+        if(this.difficulty == "easy"){
+        	speed = 50;
+        	var arrayLength = this.rowGroupArray.length;
+        	for (var i = 0; i <= arrayLength-1; i++) {
+	 			this.rowGroupArray[i].position.addScaledVector(direction, speed*delta);
+	 			if(this.rowGroupArray[i].position.z > 15){
+	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
+	 			}
+        	} 		 
+        }
+
+	}
+
+	//Render this node object
+	get_allRows(){
+		console.log("rendering row");
+		return this.allRows;
+	}
+
+
 }
 
 //Scenario of 1 of each primary colour and maybe 1 mixed colour

@@ -58,18 +58,8 @@ class BlockObstacle{
     }
 
     handleMovement(){
-        if(this.type == "standard"){
-            //Move down the track
-            if (this.mesh.position.z > 0 )
-            {
-                this.mesh.translateZ(-0.5); // NEED TO CHANGE THIS TO MATCH SPEED WITH AND PLAY TEST THE HELL OUT OF THIS
-            }
-        }
-        else if(this.type == "moving"){
+        if(this.type == "moving"){
             //move in a sin wave from x = -5 and x = 5
-        }
-        else if(this.type == "fast"){
-            //a single block charges straight down the track (overtakes previously instantiated rows)
         }
     }
 
