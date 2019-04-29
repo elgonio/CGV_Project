@@ -126,37 +126,40 @@ function loadModel(modelURL,target,scale_factor) {
 // The commented lines change the color of the balls in addition to changing the emissive colours
 function handleColours()
 {
-    // BACK TO NORMAL
-    red_ball.sphere.material.emissive.setHex(0xdd0000);
-    yellow_ball.sphere.material.emissive.setHex(0xdddd00);
-    blue_ball.sphere.material.emissive.setHex(0x0000dd);
-
     if(red_ball.dest == yellow_ball.dest && red_ball.dest== blue_ball.dest)
     {
         //WHITE
-        red_ball.sphere.material.emissive.setHex(0xcccccc);
-        yellow_ball.sphere.material.emissive.setHex(0xcccccc);
-        blue_ball.sphere.material.emissive.setHex(0xcccccc);
-        
+        blue_ball.set_colour("white");
+        red_ball.set_colour("white");
+        yellow_ball.set_colour('white');
     }
-    else if(red_ball.dest== yellow_ball.dest)
+    else if(red_ball.dest== yellow_ball.dest && red_ball.dest != blue_ball.dest)
     {
         //ORANGE
-        red_ball.sphere.material.emissive.setHex(0xce6800);
-        yellow_ball.sphere.material.emissive.setHex(0xce6800);
+        red_ball.set_colour("orange");
+        yellow_ball.set_colour('orange');
+        blue_ball.set_colour("blue");
     }
-    else if(red_ball.dest == blue_ball.dest)
+    else if(red_ball.dest == blue_ball.dest && red_ball.dest != yellow_ball.dest)
     {
         //PURPLE
-        red_ball.sphere.material.emissive.setHex(0xdd00dd);
-        blue_ball.sphere.material.emissive.setHex(0xdd00dd);
-
+        blue_ball.set_colour("purple");
+        red_ball.set_colour("purple");
+        yellow_ball.set_colour("yellow");
     }
-    else if(blue_ball.dest == yellow_ball.dest)
+    else if(blue_ball.dest == yellow_ball.dest && blue_ball.dest != red_ball.dest)
     {
         //GREEN
-        blue_ball.sphere.material.emissive.setHex(0x00dd00);
-        yellow_ball.sphere.material.emissive.setHex(0x00dd00);
+        blue_ball.set_colour("green");
+        yellow_ball.set_colour('green');
+        red_ball.set_colour("red");
+    }
+    else if(red_ball.dest != yellow_ball.dest && red_ball.dest != blue_ball.dest && yellow_ball != blue_ball){
+        // BACK TO NORMAL
+        blue_ball.set_colour("blue");
+        red_ball.set_colour("red");
+        yellow_ball.set_colour('yellow');
+
     }
 }
 
@@ -238,9 +241,9 @@ function createWorld() {
  *  is incrementd 1 before this function is called.
  */
 function updateForFrame() {
-    
-    handleMovement();
     handleColours();
+    handleMovement();
+
 
     stats.update();
     

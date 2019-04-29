@@ -97,6 +97,37 @@ class PlayerBall {
         //console.log(this.sphere.position.x);
     }
 
+    set_colour(col){
+        this.colour = col;
+
+        switch(col){
+            case "blue":
+                this.sphere.material.emissive.setHex(0x0000dd);
+                break;
+            case "red":
+                this.sphere.material.emissive.setHex(0xdd0000);
+                break;
+            case "yellow":
+                this.sphere.material.emissive.setHex(0xdddd00);
+                break;
+            case "green":
+                this.sphere.material.emissive.setHex(0x00dd00);
+                break;
+            case "orange":
+                this.sphere.material.emissive.setHex(0xce6800);
+                break;
+            case "purple":
+                this.sphere.material.emissive.setHex(0xdd00dd);
+                break;
+            case "white":
+                this.sphere.material.emissive.setHex(0xcccccc);
+                break; 
+        }
+    }
+    get_colour(){
+        return this.colour;
+    }
+
     // a getter for the mesh
     get_mesh()
     {
