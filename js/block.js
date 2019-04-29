@@ -10,8 +10,9 @@ class BlockObstacle{
         // the positions that a block will spawn occupy
         this.destinations = [-10,-5,0,5,10];
         this.dest = position;
+        this.size = 4;
 
-        var geometry = new THREE.BoxGeometry( 4, 3, 3 );
+        var geometry = new THREE.BoxGeometry( this.size, 3, 3 );
         var material = new THREE.MeshLambertMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,

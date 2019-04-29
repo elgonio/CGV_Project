@@ -55,6 +55,50 @@ class LevelManager{
 
 	}
 
+	// checks if a given player collides with any obstacle in this level
+	// returns true if the ball is ok
+	// returns false otherwise
+	// this should probaly be renamed to something more intuitive
+	checkCollisions(player_ball)
+	{
+		var player_pos = new THREE.Vector3( );
+
+		player_ball.sphere.getWorldPosition(player_pos);
+		
+
+		for (var i = 0; i <= this.rowGroupArray.length-1; i++) {
+			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
+				try
+				{
+					var box = this.rowGroupArray[i].children[k];
+					var box_pos = new THREE.Vector3( );
+					box.getWorldPosition(box_pos);
+
+					var size = 4; // size of box there, should be a way to get this dynamically
+					if(box_pos.distanceTo(player_pos) < player_ball.size + size){
+						// COLLIDE
+						
+						// now we check if the colours are matching		
+						if(box.material.color == player_ball.sphere.material.color){
+							// do nothing
+						}
+						else{
+							return false
+						}
+					}
+
+				}
+				catch
+				{
+					console.log(i,k)
+				}
+			}
+			
+	   } 
+
+	   return true;
+	}
+
 	//Render this node object
 	get_allRows(){
 		console.log("rendering row");

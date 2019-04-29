@@ -18,8 +18,9 @@ class PlayerBall {
         // the positions that a block might occupy
         this.destinations = [-10,-5,0,5,10];
         this.dest = position;
+        this.size = 1.5;
 
-        var geometry = new THREE.SphereGeometry( 1.5, 32, 32 );
+        var geometry = new THREE.SphereGeometry( this.size, 32, 32 );
         var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,

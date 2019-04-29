@@ -41,6 +41,8 @@ function debug()
     console.log(red_ball.sphere.position.x);
     console.log(red_ball.isMoving)
 }
+
+
 // here we detect when a key is pressed down or up
 // A full list can be found at: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 function onKeyDown( event ) {
@@ -169,6 +171,24 @@ function handleMovement()
     blue_ball.handleMovement();
     yellow_ball.handleMovement();
     level_Manager.handleMovement();
+    
+}
+
+function handleCollisions()
+{
+    if(level_Manager.checkCollisions(red_ball) && level_Manager.checkCollisions(blue_ball) && level_Manager.checkCollisions(yellow_ball))
+    {
+        // INCREMENT SCORE
+    }
+    else
+    {
+        // LOSE THE GAME
+        console.log("YOU LOST");
+
+        alert("YOU LOST");
+    }
+    
+
 }
 
 
@@ -243,6 +263,7 @@ function createWorld() {
 function updateForFrame() {
     handleColours();
     handleMovement();
+    handleCollisions();
 
 
     stats.update();
