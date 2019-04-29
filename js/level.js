@@ -1,4 +1,5 @@
 var rowGroup = new THREE.Group();
+var movingBlockArray = [];
 var clock = new THREE.Clock();
 var time = 0;
 var delta = 0; //For consistent movement across different FPS rates
@@ -18,7 +19,7 @@ class LevelManager{
 
 		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
-			var scenarioNum = Math.floor((Math.random() * 4)+1);
+			var scenarioNum = Math.floor((Math.random() * 5)+1);
 			switch(scenarioNum){
 				case 1:
 					scenario1();
@@ -31,6 +32,10 @@ class LevelManager{
 					break;
 				case 4:
 					scenario4();
+					break;
+				case 5:
+					scenarioMovingBlock();
+					break;
 			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
 			this.rowGroupArray.push(rowGroup); //For animation purposes
@@ -50,7 +55,11 @@ class LevelManager{
 	 			if(this.rowGroupArray[i].position.z > 15){
 	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
 	 			}
-        	} 		 
+        	} 
+        	arrayLength = movingBlockArray.length;		
+        	for (var i = 0; i <= arrayLength-1; i++) {
+	 			movingBlockArray[i].handleMovement();
+        	} 
         }
 
 	}
@@ -390,4 +399,32 @@ function scenario4(){
 	}	
 }
 
+function scenarioMovingBlock(){
+	var tempBlock;
+
+	var randNum = Math.floor((Math.random() * 6)+1);
+	switch (randNum) {
+	case 1: 
+		tempBlock = new BlockObstacle("blue",2,"moving");
+		break;
+	case 2: 
+		tempBlock = new BlockObstacle("red",2,"moving");
+		break;
+	case 3: 
+		tempBlock = new BlockObstacle("yellow",2,"moving");
+		break;
+	case 4:
+		tempBlock = new BlockObstacle("orange",2,"moving");
+		break;
+	case 5:
+		tempBlock = new BlockObstacle("purple",2,"moving");
+
+		break;
+	case 6:
+		tempBlock = new BlockObstacle("green",2,"moving");
+		break;
+	}
+	movingBlockArray.push(tempBlock);
+	rowGroup.add(tempBlock.get_mesh());
+}
 
