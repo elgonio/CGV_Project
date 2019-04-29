@@ -14,39 +14,29 @@ class LevelManager{
 		this.rowGroupArray = [];
 		this.allRows = new THREE.Group(); 
 	}
-
-	generateSingleRow(){
-		rowGroup = new THREE.Group();
-		scenario1();
-		rowGroup.position.set(0, 0, this.zPosSpawn);
-		console.log(rowGroup);
-		this.rowGroupArray.push(rowGroup); //For animation purposes
-		this.allRows.add(rowGroup); //For rendering purposes	
-	}
-
-	handleSingleRowAnim(){
-		delta = clock.getDelta();
-        
-        if(this.difficulty == "easy"){
-        	speed = 50;
- 			this.rowGroupArray[0].position.addScaledVector(direction, speed*delta);
- 			if(this.rowGroupArray[0].position.z > 15){
- 				this.rowGroupArray[0].position.z = this.zPosSpawn - this.zSpawnDistInterval*26 //Loops around again
- 			}		 
-        }
-	}
-
 	generateRows(){
 
 		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
-			scenario1();
+			var scenarioNum = Math.floor((Math.random() * 4)+1);
+			switch(scenarioNum){
+				case 1:
+					scenario1();
+					break;
+				case 2:
+					scenario2();
+					break;
+				case 3:
+					scenario3();
+					break;
+				case 4:
+					scenario4();
+			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
 			this.rowGroupArray.push(rowGroup); //For animation purposes
 			this.allRows.add(rowGroup); //For rendering purposes
 			
 		}
-		console.log(this.allRows);
 	}
 
 	handleMovement(){
@@ -70,6 +60,29 @@ class LevelManager{
 		console.log("rendering row");
 		return this.allRows;
 	}
+
+	/* Testing Functions
+	generateSingleRow(){
+		rowGroup = new THREE.Group();
+		scenario1();
+		rowGroup.position.set(0, 0, this.zPosSpawn);
+		console.log(rowGroup);
+		this.rowGroupArray.push(rowGroup); //For animation purposes
+		this.allRows.add(rowGroup); //For rendering purposes	
+	}
+
+	handleSingleRowAnim(){
+		delta = clock.getDelta();
+        
+        if(this.difficulty == "easy"){
+        	speed = 50;
+ 			this.rowGroupArray[0].position.addScaledVector(direction, speed*delta);
+ 			if(this.rowGroupArray[0].position.z > 15){
+ 				this.rowGroupArray[0].position.z = this.zPosSpawn - this.zSpawnDistInterval*26 //Loops around again
+ 			}		 
+        }
+	}
+*/
 
 
 }
@@ -163,7 +176,7 @@ function scenario2(){
 
 	for (var loop = 0; loop < 5; loop++) {
 		
-		if(loop == chosenPrimaryColour){
+		if(loop == checkPrimary){
 			switch(chosenPrimaryColour){
 				case 1: //Blue
 					tempBlock = new BlockObstacle("blue",loop,"standard");
@@ -251,6 +264,86 @@ function scenario3(){
 		rowGroup.add(tempBlock.get_mesh());
 	}
 
+}
+
+//2 mixed colours and 1 primary colour
+function scenario4(){
+	var checkMixedColour1 = -1;
+	var checkMixedColour2 = -1;
+	var checkPrimaryColour = -1;
+	var randNum = Math.floor((Math.random() * 5));
+	var chosenPrimarycolour = -1;
+
+	checkPrimaryColour = randNum;
+	while (randNum == checkPrimaryColour) {
+		randNum = Math.floor((Math.random() * 5));
+	}
+	checkMixedColour1 = randNum;
+	while (randNum == checkPrimaryColour || randNum == checkMixedColour1) {
+		randNum = Math.floor((Math.random() * 5));
+	}
+	checkMixedColour2 = randNum;
+
+	chosenPrimarycolour = Math.floor((Math.random() * 3)+1);
+	//1 = Blue
+	//2 = Red
+	//3 = Yellow
+
+	var tempBlock;
+
+	for (var loop = 0; loop < 5; loop++) {
+
+		if (loop == checkPrimaryColour) {
+
+			switch (chosenPrimarycolour) {
+			case 1: 
+				tempBlock = new BlockObstacle("blue",loop,"standard");
+				break;
+			case 2: 
+				tempBlock = new BlockObstacle("red",loop,"standard");
+				break;
+			case 3: 
+				tempBlock = new BlockObstacle("yellow",loop,"standard");
+				break;
+			default:
+				break;
+			}
+		} else if (loop == checkMixedColour1) {
+			switch (chosenPrimarycolour) {
+			case 1: //if blue
+				tempBlock = new BlockObstacle("orange",loop,"standard");
+				break;
+			case 2: //if red
+				tempBlock = new BlockObstacle("green",loop,"standard");
+				break;
+			case 3: //if yellow
+				tempBlock = new BlockObstacle("purple",loop,"standard");
+				break;
+			default:
+				break;
+			}
+
+		} else if (loop == checkMixedColour2) {
+			randNum = Math.floor((Math.random() * 3)+1);
+			switch (randNum) {
+			case 1: 
+				tempBlock = new BlockObstacle("orange",loop,"standard");
+				break;
+			case 2: 
+				tempBlock = new BlockObstacle("green",loop,"standard");
+				break;
+			case 3: 
+				tempBlock = new BlockObstacle("purple",loop,"standard");
+				break;
+			default:
+				tempBlock = new BlockObstacle("purple",loop,"standard");
+				break;
+			}	
+		} else {
+			tempBlock = new BlockObstacle("grey",loop,"standard");
+		}
+		rowGroup.add(tempBlock.get_mesh());
+	}	
 }
 
 
