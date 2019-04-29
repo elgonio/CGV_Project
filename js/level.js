@@ -10,7 +10,7 @@ class LevelManager{
 
 	instantiateRow(){
 		rowGroup = new THREE.Group();
-		scenario2();
+		scenario3();
 		this.row = rowGroup
 		this.row.position.set(0, 0, this.zPosSpawn);
 	}
@@ -146,9 +146,56 @@ function scenario2(){
 	}
 }
 
-//spawn a combination that is guarunteed a white block
+//spawn a combination of colours that is guarunteed a white block
 function scenario3(){
+	var checkWhite = Math.floor((Math.random() * 5));
+	var randNum;
 
+	var tempBlock;
+
+	for (var loop = 0; loop < 5; loop++) {
+		
+		if(loop == checkWhite){
+			tempBlock = new BlockObstacle("white",loop,"standard");
+		}
+		else{
+			randNum = Math.floor((Math.random() * 3));
+			if(randNum == 1){ //1 in 3 chance to spawn a block of random colour else make a grey block
+				randNum = Math.floor((Math.random() * 7)+1);
+
+				switch(randNum){
+					case 1: 
+						tempBlock = new BlockObstacle("blue",loop,"standard");
+						break;
+					case 2: 
+						tempBlock = new BlockObstacle("red",loop,"standard");
+						break;
+					case 3: 
+						tempBlock = new BlockObstacle("yellow",loop,"standard");
+						break;
+					case 4:
+						tempBlock = new BlockObstacle("purple",loop,"standard");
+						break;
+					case 5:
+						tempBlock = new BlockObstacle("green",loop,"standard");
+						break;
+					case 6:
+						tempBlock = new BlockObstacle("orange",loop,"standard");
+						break;
+					case 7:
+						tempBlock = new BlockObstacle("white",loop,"standard");
+						break;
+					default:
+						break;
+				}
+			}
+			else{
+				tempBlock = new BlockObstacle("grey",loop,"standard");
+			}
+			
+		}
+		rowGroup.add(tempBlock.get_mesh());
+	}
 
 }
 
