@@ -79,4 +79,8 @@ class BlockObstacle{
     {
         return this.mesh;
     }
+
+    get_colour(){
+        return this.colour;
+    }
 }

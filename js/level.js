@@ -1,4 +1,5 @@
 var rowGroup = new THREE.Group();
+var rowObjGroup = [];
 var movingBlockArray = [];
 var clock = new THREE.Clock();
 var time = 0;
@@ -13,12 +14,14 @@ class LevelManager{
 		this.zSpawnDistInterval = zSpawnDistInterval;
 		this.zPosSpawn = zPosSpawn;
 		this.rowGroupArray = [];
+		this.rowObjGroupArray = [];
 		this.allRows = new THREE.Group(); 
 	}
 	generateRows(){
 
 		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
+			rowObjGroup = [];
 			var scenarioNum = Math.floor((Math.random() * 5)+1);
 			switch(scenarioNum){
 				case 1:
@@ -38,8 +41,10 @@ class LevelManager{
 					break;
 			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
+			this.rowObjGroupArray.push(rowObjGroup);//For obtaining collision info
 			this.rowGroupArray.push(rowGroup); //For animation purposes
 			this.allRows.add(rowGroup); //For rendering purposes
+			console.log(this.rowObjGroupArray);
 			
 		}
 	}
@@ -77,30 +82,34 @@ class LevelManager{
 
 		for (var i = 0; i <= this.rowGroupArray.length-1; i++) {
 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
-				try
-				{
-					var box = this.rowGroupArray[i].children[k];
-					var box_pos = new THREE.Vector3( );
-					box.getWorldPosition(box_pos);
+				//try
+				//{
+					var block = this.rowObjGroupArray[i].children[k];
+					var block_pos = new THREE.Vector3( );
+					block.getWorldPosition(block_pos);
 
-					var size = 4; // size of box there, should be a way to get this dynamically
-					if(box_pos.distanceTo(player_pos) < player_ball.size + size){
+					var size = 4; // size of block there, should be a way to get this dynamically
+					if(block_pos.distanceTo(player_pos) < player_ball.size + size){
 						// COLLIDE
 						
 						// now we check if the colours are matching		
-						if(box.material.color == player_ball.sphere.material.color){
+						if(block.get_colour() == player_ball.get_colour()){
 							// do nothing
+							console.log("Block Colour: "+block.get_colour());
+							console.log("Player Colour: "+player_ball.get_colour());
 						}
 						else{
+							console.log("Block Colour: "+block.get_colour());
+							console.log("Player Colour: "+player_ball.get_colour());
 							return false
 						}
 					}
 
-				}
-				catch
-				{
-					console.log(i,k)
-				}
+				//}
+				//catch
+				//{
+				//	console.log(i,k)
+				//}
 			}
 			
 	   } 
@@ -202,6 +211,7 @@ function scenario1(){
 			tempBlock = new BlockObstacle("grey",loop,"standard");
 		}
 		rowGroup.add(tempBlock.get_mesh());
+		rowObjGroup.push(tempBlock);
 	}
 	
 }
@@ -263,6 +273,7 @@ function scenario2(){
 			tempBlock = new BlockObstacle("grey",loop,"standard");
 		}
 		rowGroup.add(tempBlock.get_mesh());
+		rowObjGroup.push(tempBlock);
 	}
 }
 
@@ -315,6 +326,7 @@ function scenario3(){
 			
 		}
 		rowGroup.add(tempBlock.get_mesh());
+		rowObjGroup.push(tempBlock);
 	}
 
 }
@@ -396,6 +408,7 @@ function scenario4(){
 			tempBlock = new BlockObstacle("grey",loop,"standard");
 		}
 		rowGroup.add(tempBlock.get_mesh());
+		rowObjGroup.push(tempBlock);
 	}	
 }
 
@@ -426,5 +439,6 @@ function scenarioMovingBlock(){
 	}
 	movingBlockArray.push(tempBlock);
 	rowGroup.add(tempBlock.get_mesh());
+	rowObjGroup.push(tempBlock);
 }
 
