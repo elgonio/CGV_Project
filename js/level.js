@@ -19,19 +19,23 @@ class LevelManager{
 
 		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
-			var scenarioNum = Math.floor((Math.random() * 4)+1);
+			var scenarioNum = Math.floor((Math.random() * 5)+1);
 			switch(scenarioNum){
 				case 1:
-					scenarioMovingBlock();
+					scenario1();
 					break;
 				case 2:
-					scenarioMovingBlock();
+					scenario2();
 					break;
 				case 3:
-					scenarioMovingBlock();
+					scenario3();
 					break;
 				case 4:
+					scenario4();
+					break;
+				case 5:
 					scenarioMovingBlock();
+					break;
 			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
 			this.rowGroupArray.push(rowGroup); //For animation purposes
