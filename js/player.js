@@ -18,9 +18,8 @@ class PlayerBall {
         // the positions that a block might occupy
         this.destinations = [-10,-5,0,5,10];
         this.dest = position;
-        this.size = 1.5;
 
-        var geometry = new THREE.SphereGeometry( this.size, 32, 32 );
+        var geometry = new THREE.SphereGeometry( 1.5, 32, 32 );
         var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
@@ -71,11 +70,11 @@ class PlayerBall {
         // we don't want to just jump to the next position so we move there over time 
         if (this.sphere.position.x > this.destinations[this.dest] )
         {
-            this.sphere.translateX(-0.5);
+            this.sphere.translateX(-0.25);
         }
         else if (this.sphere.position.x < this.destinations[this.dest])
         {
-            this.sphere.translateX(+0.5);
+            this.sphere.translateX(+0.25);
         }
 
         // THIS SOLVES A BUG. PLZ DONT REMOVE
