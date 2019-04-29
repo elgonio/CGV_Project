@@ -44,7 +44,7 @@ class LevelManager{
 			this.rowObjGroupArray.push(rowObjGroup);//For obtaining collision info
 			this.rowGroupArray.push(rowGroup); //For animation purposes
 			this.allRows.add(rowGroup); //For rendering purposes
-			console.log(this.rowObjGroupArray);
+			//console.log(this.rowObjGroupArray);
 			
 		}
 	}
@@ -88,14 +88,12 @@ class LevelManager{
 					var block_pos = new THREE.Vector3( );
 					block.get_mesh().getWorldPosition(block_pos);
 
-					var size = 4; // size of block there, should be a way to get this dynamically
+					var size = block.size/2; // radius of block there
 					if(block_pos.distanceTo(player_pos) < player_ball.size + size){
 						// COLLIDE
 						// now we check if the colours are matching		
 						if(block.get_colour() == player_ball.get_colour()){
 							// do nothing
-							console.log("Block Colour: "+block.get_colour());
-							console.log("Player Colour: "+player_ball.get_colour());
 						}
 						else{
 							console.log("Block Colour: "+block.get_colour());
