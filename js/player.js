@@ -20,13 +20,18 @@ class PlayerBall {
         this.dest = position;
 
         var geometry = new THREE.SphereGeometry( 1.5, 32, 32 );
-        var material = new THREE.MeshLambertMaterial( { color: 0xaaaaaa, 
+        var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
                                                         } );
         this.sphere = new THREE.Mesh( geometry, material );
 
+        // player shadow settings
+        this.sphere.castShadow = true;
+        this.sphere.receiveShadow = false; // receive shadow for player false for prominent player
+
+        
         this.sphere.position.set(this.destinations[this.dest],0,0);
 
         if(colour == "red")
