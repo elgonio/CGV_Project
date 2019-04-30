@@ -32,7 +32,7 @@ class HomeBall {
     }
 
     objectClickHandler() {
-        var geometry = new THREE.BoxGeometry(4, 3, 3);
+        var geometry = new THREE.BoxGeometry(100, 100, 100);
         var material = new THREE.MeshLambertMaterial({
             color: 0x444444,
             emissive: 0xffffff,
