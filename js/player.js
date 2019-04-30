@@ -18,9 +18,11 @@ class PlayerBall {
         // the positions that a block might occupy
         this.destinations = [-10,-5,0,5,10];
         this.dest = position;
+        this.default_dest = this.dest;
+        
         this.size = 1.5;
 
-        var geometry = new THREE.SphereGeometry( this.size, 32, 32 );
+        var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
         var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
@@ -138,5 +140,11 @@ class PlayerBall {
     get_mesh()
     {
         return this.sphere;
+    }
+
+    reset_position()
+    {
+        this.sphere.position.x = this.destinations[this.default_dest]
+        this.dest = this.default_dest;
     }
 }

@@ -186,13 +186,26 @@ function handleCollisions()
         // LOSE THE GAME
         console.log("YOU LOST");
         alert("YOU LOST");
-        animating=false;
+        //animating=false;
+        reloadGame();
     }
     
 
 }
 
 
+function reloadGame()
+{
+    init();
+    /*
+    red_ball.reset_position();
+    blue_ball.reset_position();
+    yellow_ball.reset_position();
+
+    //  this is incredibly hacky
+    level_Manager.handleMovement();
+    */
+}
 /**
  *  The render function draws the scene.
  */
@@ -253,7 +266,8 @@ function createWorld() {
 
     scene.add(level_Manager.get_allRows());
 
-    initializeSkybox();
+    updateSkybox();
+    scene.add(cube);
 
 //Testing adding a single block
 /*

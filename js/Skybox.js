@@ -25,6 +25,8 @@
 var textureOffsetS; // Horizontal texture offset, for the texture animation.
 var textureOffsetT; // Vertical texture offset, for the texture animation.
 var material;
+
+var cube;
 //renderer.setSize(window.innerWidth, window.innerHeight);
 //document.body.appendChild(renderer.domElement);
 
@@ -72,7 +74,7 @@ function initializeSkybox()
     ];
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
-    var cube = new THREE.Mesh(geometry, cubeMaterial);
+    cube = new THREE.Mesh(geometry, cubeMaterial);
     scene.add(cube);
     console.log("added skybox");
 }
@@ -90,6 +92,10 @@ function initializeSkybox()
 
 //game logic
 function updateSkybox() {
+    if(cube == null) 
+    {
+        initializeSkybox();
+    }
     textureOffsetS += 0.00137;
     textureOffsetT -= 0.00137;
     movingtextures[0].offset.set(textureOffsetS, 0);
