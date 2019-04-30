@@ -38,7 +38,7 @@ var level_Manager ;
 function debug()
 {
     console.log(red_ball.colour);
-    console.log(red_ball.dest);
+    console.log(red_ball.get_destVector());
     console.log(red_ball.sphere.position.x);
     console.log(red_ball.isMoving)
 }
@@ -129,35 +129,36 @@ function loadModel(modelURL,target,scale_factor) {
 // The commented lines change the color of the balls in addition to changing the emissive colours
 function handleColours()
 {
-    if(red_ball.dest == yellow_ball.dest && red_ball.dest== blue_ball.dest)
+    if(red_ball.get_destVector().equals(yellow_ball.get_destVector()) && red_ball.get_destVector().equals(blue_ball.get_destVector()))
     {
         //WHITE
         blue_ball.set_colour("white");
         red_ball.set_colour("white");
         yellow_ball.set_colour('white');
     }
-    else if(red_ball.dest== yellow_ball.dest && red_ball.dest != blue_ball.dest)
+    else if(red_ball.get_destVector().equals(yellow_ball.get_destVector()) && (red_ball.get_destVector().equals(blue_ball.get_destVector()) == false))
     {
         //ORANGE
         red_ball.set_colour("orange");
         yellow_ball.set_colour('orange');
         blue_ball.set_colour("blue");
     }
-    else if(red_ball.dest == blue_ball.dest && red_ball.dest != yellow_ball.dest)
+    else if(red_ball.get_destVector().equals(blue_ball.get_destVector()) && (red_ball.get_destVector().equals(yellow_ball.get_destVector()) == false))
     {
         //PURPLE
         blue_ball.set_colour("purple");
         red_ball.set_colour("purple");
         yellow_ball.set_colour("yellow");
     }
-    else if(blue_ball.dest == yellow_ball.dest && blue_ball.dest != red_ball.dest)
+    else if(blue_ball.get_destVector().equals(yellow_ball.get_destVector()) && (red_ball.get_destVector().equals(blue_ball.get_destVector()) == false))
     {
         //GREEN
         blue_ball.set_colour("green");
         yellow_ball.set_colour('green');
         red_ball.set_colour("red");
     }
-    else if(red_ball.dest != yellow_ball.dest && red_ball.dest != blue_ball.dest && yellow_ball != blue_ball){
+    else if((red_ball.get_destVector().equals(yellow_ball.get_destVector()) == false) && (red_ball.get_destVector().equals(blue_ball.get_destVector()) == false))
+    {
         // BACK TO NORMAL
         blue_ball.set_colour("blue");
         red_ball.set_colour("red");
@@ -326,7 +327,7 @@ function updateForFrame() {
     handleMovement();
     updateSkybox();
 
-    console.log("handling collisions");
+    //console.log("handling collisions");
     handleCollisions();
     stats.update();
     
