@@ -82,31 +82,23 @@ class LevelManager{
 
 		for (var i = 0; i <= this.rowGroupArray.length-1; i++) {
 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
-				//try
-				//{
-					var block = this.rowObjGroupArray[i][k];
-					var block_pos = new THREE.Vector3( );
-					block.get_mesh().getWorldPosition(block_pos);
+				var block = this.rowObjGroupArray[i][k];
+				var block_pos = new THREE.Vector3( );
+				block.get_mesh().getWorldPosition(block_pos);
 
-					var size = block.size/2; // radius of block there
-					if(block_pos.distanceTo(player_pos) < player_ball.size + size){
-						// COLLIDE
-						// now we check if the colours are matching		
-						if(block.get_colour() == player_ball.get_colour()){
-							// do nothing
-						}
-						else{
-							console.log("Block Colour: "+block.get_colour());
-							console.log("Player Colour: "+player_ball.get_colour());
-							return false
-						}
+				var size = block.size/2; // radius of block there
+				if(block_pos.distanceTo(player_pos) < player_ball.size + size){
+					// COLLIDE
+					// now we check if the colours are matching		
+					if(block.get_colour() == player_ball.get_colour()){
+						// do nothing
 					}
-
-				//}
-				//catch
-				//{
-				//	console.log(i,k)
-				//}
+					else{
+						console.log("Block Colour: "+block.get_colour());
+						console.log("Player Colour: "+player_ball.get_colour());
+						return false
+					}
+				}
 			}
 			
 	   } 

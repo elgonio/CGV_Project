@@ -10,6 +10,7 @@
 <script src="js/tracklines.js"></script>
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
+<script src="js/Skybox.js"></script>
 <script>
 
 "use strict";
@@ -211,6 +212,8 @@ function createWorld() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     scene = new THREE.Scene();
+
+    
     
     // ------------------- Make a camera with viewpoint light ----------------------
     
@@ -249,6 +252,8 @@ function createWorld() {
     level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
     scene.add(level_Manager.get_allRows());
+
+    initializeSkybox();
 
 //Testing adding a single block
 /*
@@ -304,9 +309,10 @@ function addLight() {
 function updateForFrame() {
     handleColours();
     handleMovement();
+    updateSkybox();
+
+    console.log("handling collisions");
     handleCollisions();
-
-
     stats.update();
     
 }
@@ -409,6 +415,7 @@ function init() {
                 e + "</b>";
         return;
     }
+
     createWorld();
     // we don't actually need to change the camera view
     //installOrbitControls();

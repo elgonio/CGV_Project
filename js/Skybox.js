@@ -1,4 +1,6 @@
 // FPS
+/*
+
 (function() {
     var script = document.createElement('script');
     script.onload = function() {
@@ -12,19 +14,22 @@
     script.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
     document.head.appendChild(script);
 })();
+*/
 
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-var renderer = new THREE.WebGLRenderer();
+//var scene = new THREE.Scene();
+//var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+//var renderer = new THREE.WebGLRenderer();
 // The currently used texture.
 var textureOffsetS; // Horizontal texture offset, for the texture animation.
 var textureOffsetT; // Vertical texture offset, for the texture animation.
 var material;
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+//renderer.setSize(window.innerWidth, window.innerHeight);
+//document.body.appendChild(renderer.domElement);
 
 // update viewport on resize
+/*
 window.addEventListener('resize', function() {
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -32,52 +37,59 @@ window.addEventListener('resize', function() {
     camera.aspect = width / height; //aspect ratio
     camera.updateProjectionMatrix();
 });
+*/
 
 // controls
-controls = new THREE.OrbitControls(camera, renderer.domElement);
+//controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 material = new THREE.MeshPhongMaterial({
     color: "white",
     specular: 0x080808,
     side: THREE.DoubleSide // so it will  work with open tube and plane
 });
-// creates the shape
-var geometry = new THREE.CubeGeometry(500, 500, 500);
-var movingtextures = [];
-var left = installTexture("img/cropped.jpg");
-var right = installTexture("img/rotated.jpg");
-var up = installTexture("img/rotated.jpg");
-var down = installTexture("img/cropped.jpg");
-movingtextures.push(right);
-movingtextures.push(left);
-movingtextures.push(up);
-movingtextures.push(down);
-var cubeMaterials = [
-    new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //front side
-    new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //back side
-    new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
-    new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
-    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
-    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("img/pureblack.jpg"), side: THREE.DoubleSide }) //left side
-];
 
-var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
-var cube = new THREE.Mesh(geometry, cubeMaterial);
-scene.add(cube);
+var movingtextures = [];
+function initializeSkybox()
+{
+    // creates the shape
+    var geometry = new THREE.CubeGeometry(50, 50, 500);
+    
+    var left = installTexture("img/cropped.jpg");
+    var right = installTexture("img/rotated.jpg");
+    var up = installTexture("img/rotated.jpg");
+    var down = installTexture("img/cropped.jpg");
+    movingtextures.push(right);
+    movingtextures.push(left);
+    movingtextures.push(up);
+    movingtextures.push(down);
+    var cubeMaterials = [
+        new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //front side
+        new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //back side
+        new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
+        new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("img/pureblack.jpg"), side: THREE.DoubleSide }) //left side
+    ];
+
+    var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
+    var cube = new THREE.Mesh(geometry, cubeMaterial);
+    scene.add(cube);
+    console.log("added skybox");
+}
+
 
 
 // Camera Position
-camera.position.z = 3;
+//camera.position.z = 3;
 
 // lighting
-var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);
-scene.add(ambientLight);
+//var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);
+//scene.add(ambientLight);
 
 
 
 //game logic
-var update = function() {
-
+function updateSkybox() {
     textureOffsetS += 0.00137;
     textureOffsetT -= 0.00137;
     movingtextures[0].offset.set(textureOffsetS, 0);
@@ -88,7 +100,6 @@ var update = function() {
     movingtextures[2].needsUpdate;
     movingtextures[3].offset.set(0, textureOffsetT);
     movingtextures[3].needsUpdate;
-
 }
 
 
@@ -130,4 +141,4 @@ var GameLoop = function() {
     render();
 };
 
-GameLoop();
+//GameLoop();
