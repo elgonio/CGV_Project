@@ -221,8 +221,8 @@ function createWorld() {
     
     renderer.setClearColor("black"); // Background color for scene.
     // renderer shadow settings
-    renderer.shadowMapEnabled = true;
-    renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     scene = new THREE.Scene();
 
@@ -291,9 +291,10 @@ function addLight() {
         var pointLight = new THREE.PointLight( "rgb(240, 240, 240)", 1, 100 );
             pointLight.position.set ( 0, 5, 5 ); // x y z, threejs coordinate system, player is centered 0 on x, y is "up"
         // point light shadow properties
+            pointLight.castShadow = true;
             pointLight.shadow.mapSize.width = 512;
             pointLight.shadow.mapSize.height = 512;
-            pointLight.shadow.camera.near = 0.5;
+            pointLight.shadow.camera.near = 0.1;
             pointLight.shadow.camera.far = 500;
         scene.add( pointLight );
 
@@ -308,7 +309,7 @@ function addLight() {
             spotLight.castShadow = true;
             spotLight.shadow.mapSize.width = 1024;
             spotLight.shadow.mapSize.height = 1024;
-            spotLight.shadow.camera.near = 10;
+            spotLight.shadow.camera.near = 0.1;
             spotLight.shadow.camera.far = 200;
         scene.add( spotLight );
 }
