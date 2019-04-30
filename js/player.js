@@ -16,9 +16,12 @@ class PlayerBall {
         };
     
         // the positions that a block might occupy
-        this.destinations = [-10,-5,0,5,10];
-        this.dest = position;
-        this.default_dest = this.dest;
+        this.xDestinations = [-10,-5,0,5,10];
+        this.zDestinations = [0, -7.5];
+        this.xDest = position;
+        this.zDest = 0; //Either 0 or 1
+        this.destVector = new THREE.Vector3(this.xDestinations[position],0,this.zDestinations[0]);
+        this.default_dest = this.xDest;
         
         this.size = 1.5;
 
@@ -35,7 +38,7 @@ class PlayerBall {
         this.sphere.receiveShadow = false; // receive shadow for player false for prominent player
 
         
-        this.sphere.position.set(this.destinations[this.dest],0,0);
+        this.sphere.position.set(this.destVector.getComponent(0),0,0);
 
         if(colour == "red")
         {
@@ -59,34 +62,59 @@ class PlayerBall {
             if (this.controls.moveLeft == true)
             {
                 // we only want to move if the player isnt in the leftmost lane
-                if(this.dest > 0)
+                if(this.xDest > 0)
                 {
-                    this.dest = this.dest - 1;
+                    this.xDest = this.xDest - 1;
+                    this.destVector.setComponent(0, this.xDestinations[this.xDest]); //Update Destination vector
                 }
             }
             else if (this.controls.moveRight == true)
             {
                 // same idea as bove but for the rightmost lane
-                if(this.dest < 4)
+                if(this.xDest < 4)
                 {
-                    this.dest = this.dest + 1;
+                    this.xDest = this.xDest + 1;
+                    this.destVector.setComponent(0, this.xDestinations[this.xDest]); //Update Destination vector
+                }
+            }
+            if(this.controls.moveForward == true){
+                // we only want to move if player is in the bottom lane
+                if(this.zDest == 0){
+                    console.log("moving forward");
+                    this.zDest = 1;
+                    this.destVector.setComponent(2, this.zDestinations[1]); //Update Destination vector
+                }
+            }
+            else if(this.controls.moveBackward == true){
+                // we only want to move if player is in the top lane
+                if(this.zDest == 1){
+                    console.log("moving backward");
+                    this.zDest = 0;
+                    this.destVector.setComponent(2, this.zDestinations[0]); //Update Destination vector
                 }
             }
         }
         
         
         // we don't want to just jump to the next position so we move there over time 
-        if (this.sphere.position.x > this.destinations[this.dest] )
+        if (this.sphere.position.x > this.destVector.getComponent(0) )
         {
             this.sphere.translateX(-0.25);
         }
-        else if (this.sphere.position.x < this.destinations[this.dest])
+        else if (this.sphere.position.x < this.destVector.getComponent(0))
         {
             this.sphere.translateX(+0.25);
         }
 
+        if(this.sphere.position.z > this.destVector.getComponent(2)){
+            this.sphere.translateZ(-0.25);
+        }
+        else if(this.sphere.position.z < this.destVector.getComponent(2)){
+            this.sphere.translateZ(+0.25);
+        }
+
         // THIS SOLVES A BUG. PLZ DONT REMOVE
-        var close_enough = Math.abs(this.sphere.position.x - this.destinations[this.dest]) < 0.1;
+        var close_enough = Math.abs(this.sphere.position.x - this.destVector.getComponent(0)) < 0.1  && Math.abs(this.sphere.position.z - this.destVector.getComponent(2)) < 0.1;
 
         // check if we've reached our destination
         if(close_enough)
@@ -101,7 +129,7 @@ class PlayerBall {
         }
 
         //console.log(this.colour);
-        //console.log(this.dest);
+        //console.log(this.xDest);
         //console.log(this.sphere.position.x);
     }
 
@@ -142,9 +170,14 @@ class PlayerBall {
         return this.sphere;
     }
 
+    get_destVector(){
+        return this.destVector;
+    }
+
     reset_position()
     {
-        this.sphere.position.x = this.destinations[this.default_dest]
-        this.dest = this.default_dest;
+        this.sphere.position.x = this.xDestinations[this.default_dest]
+        this.sphere.position.z = 0;
+        this.xDest = this.default_dest;
     }
 }

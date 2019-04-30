@@ -14,18 +14,12 @@ class BlockObstacle{
         this.size = 4;
 
         var geometry = new THREE.BoxGeometry( this.size, 3, 3 );
-        var material = new THREE.MeshPhongMaterial( { color: 0x444444, 
+        var material = new THREE.MeshLambertMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
                                                         } );
         this.mesh = new THREE.Mesh( geometry, material );
-
-        // shadow settings for the blocks
-        this.castShadow = true;
-        this.receiveShadow = true;
-
-
         if(this.type == "moving"){
             this.mesh.position.set(0,0,0);
             this.direction =  Math.floor(Math.random()*2) == 1 ? 1 : -1; //Randomise swinging left or right
@@ -88,5 +82,9 @@ class BlockObstacle{
 
     get_colour(){
         return this.colour;
+    }
+
+    get_size(){
+        return this.size;
     }
 }

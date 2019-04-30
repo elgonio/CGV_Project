@@ -51,10 +51,10 @@ class LevelManager{
 
 	handleMovement(){
 		delta = clock.getDelta();
-		console.log(delta);
+		//console.log(delta);
         
         if(this.difficulty == "easy"){
-        	speed = 50;
+        	speed = 40;
         	var arrayLength = this.rowGroupArray.length;
         	for (var i = 0; i <= arrayLength-1; i++) {
 	 			this.rowGroupArray[i].position.addScaledVector(direction, speed*delta);
