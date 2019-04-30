@@ -289,7 +289,7 @@ function addLight() {
         scene.add( ambientLight );
 
         // point light example setup
-        var pointLight = new THREE.PointLight( "rgb(240, 240, 240)", 1, 100 );
+        var pointLight = new THREE.PointLight( "rgb(240, 240, 240)", 0.5, 100 );
             pointLight.position.set ( 0, 5, 5 ); // x y z, threejs coordinate system, player is centered 0 on x, y is "up"
         // point light shadow properties
             pointLight.castShadow = true;
@@ -300,7 +300,7 @@ function addLight() {
         scene.add( pointLight );
 
         // spot light example setup
-        var spotLight = new THREE.SpotLight( "rgb(240, 240, 240)", 1 );
+        var spotLight = new THREE.SpotLight( "rgb(240, 240, 240)", 0.5 );
             spotLight.position.set( 0, 40, 35 );
             spotLight.angle = ( Math.PI/4 );
             spotLight.penumbra = 0.05;
