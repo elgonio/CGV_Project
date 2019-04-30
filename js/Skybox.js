@@ -49,7 +49,7 @@ material = new THREE.MeshPhongMaterial({
 });
 
 var movingtextures = [];
-
+var cube;
 function initializeSkybox(x, y, z) {
     // creates the shape
     var geometry = new THREE.CubeGeometry(x, y, z);
@@ -72,7 +72,7 @@ function initializeSkybox(x, y, z) {
     ];
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
-    var cube = new THREE.Mesh(geometry, cubeMaterial);
+    cube = new THREE.Mesh(geometry, cubeMaterial);
     scene.add(cube);
     console.log("added skybox", cube.position);
 }
@@ -90,6 +90,10 @@ function initializeSkybox(x, y, z) {
 
 //game logic
 function updateSkybox() {
+    if (cube == null)
+    {
+        initializeSkybox(75,75,500);
+    }
     textureOffsetS += 0.00137;
     textureOffsetT -= 0.00137;
     movingtextures[0].offset.set(textureOffsetS, 0);
