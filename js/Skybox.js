@@ -25,8 +25,6 @@
 var textureOffsetS; // Horizontal texture offset, for the texture animation.
 var textureOffsetT; // Vertical texture offset, for the texture animation.
 var material;
-
-var cube;
 //renderer.setSize(window.innerWidth, window.innerHeight);
 //document.body.appendChild(renderer.domElement);
 
@@ -51,11 +49,11 @@ material = new THREE.MeshPhongMaterial({
 });
 
 var movingtextures = [];
-function initializeSkybox()
-{
+
+function initializeSkybox(x, y, z) {
     // creates the shape
-    var geometry = new THREE.CubeGeometry(50, 50, 500);
-    
+    var geometry = new THREE.CubeGeometry(x, y, z);
+
     var left = installTexture("img/cropped.jpg");
     var right = installTexture("img/rotated.jpg");
     var up = installTexture("img/rotated.jpg");
@@ -74,9 +72,9 @@ function initializeSkybox()
     ];
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
-    cube = new THREE.Mesh(geometry, cubeMaterial);
+    var cube = new THREE.Mesh(geometry, cubeMaterial);
     scene.add(cube);
-    console.log("added skybox");
+    console.log("added skybox", cube.position);
 }
 
 
@@ -92,10 +90,6 @@ function initializeSkybox()
 
 //game logic
 function updateSkybox() {
-    if(cube == null) 
-    {
-        initializeSkybox();
-    }
     textureOffsetS += 0.00137;
     textureOffsetT -= 0.00137;
     movingtextures[0].offset.set(textureOffsetS, 0);

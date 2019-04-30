@@ -14,6 +14,7 @@
     <script src="plugins/utils/GeometryUtils.js"></script>
     <script src="js/StartMenu.js"></script>
     <script src="plugins/WebGL.js"></script>
+    <script src="js/Skybox.js"></script>
 
     <script>
         if (WEBGL.isWebGLAvailable() === false) {
@@ -54,13 +55,17 @@
 
             // CAMERA
             camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1500);
+            // camera = new THREE.PerspectiveCamera(30, canvas.width / canvas.height, 0.1, 500);
+            // camera.position.z = 25;
+            // camera.position.y = 9;
+            // cameraTarget = new THREE.Vector3(0, -10, -60);
             camera.position.set(0, 400, 700);
             cameraTarget = new THREE.Vector3(0, 150, 0);
             // SCENE
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x000000);
 
-            scene.fog = new THREE.Fog(0x000000, 250, 1400);
+            // scene.fog = new THREE.Fog(0x000000, 250, 1400);
             // LIGHTS
             var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
             dirLight.position.set(0, 0, 1).normalize();
@@ -115,54 +120,12 @@
             p3 = new HomeBall("red", 200);
             scene.add(p3.get_mesh());
             Players = [p1, p2, p3];
+            initializeSkybox(50000, 5000, 5000);
+            console.log("MADE THE SKYBOX");
 
         }
         var raycaster = new THREE.Raycaster();
         var mouse = new THREE.Vector2();
-
-        function onDocumentMouseDown(event) {
-            event.preventDefault();
-
-            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            //meshObjects = [mesh, mesh2, mesh3]; // three.js objects with click handlers we are interested in
-
-            var intersects = raycaster.intersectObjects(Players);
-
-            if (intersects.length & amp; amp; gt; 0) {
-                intersects[0].object.objectClickHandler();
-            }
-
-        }
-        // Using the same logic as above, determine if we are currently mousing over a three.js object,
-        // and adjust the animation to provide visual feedback accordingly
-        function onDocumentMouseMove(event) {
-            event.preventDefault();
-
-            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            var intersects = raycaster.intersectObjects([mesh, mesh2, mesh3]);
-            var canvas = document.body.getElementsByTagName('canvas')[0];
-
-            if (intersects.length & amp; amp; gt; 0) {
-                intersects[0].object.rotation.x += .005;
-                canvas.style.cursor = "pointer";
-            } else {
-                canvas.style.cursor = "default";
-            }
-
-        }
-
-
-
-        document.addEventListener('mousedown', onDocumentMouseDown, false);
-        document.addEventListener('mousemove', onDocumentMouseMove, false);
 
         function onKeyDown(event) {
             event.stopPropagation();
@@ -170,17 +133,30 @@
                 case 87:
                     /*W*/
                     p1.isReady = true;
+                    scene.remove(p1.get_mesh());
+                    p1.objectClickHandler();
+                    scene.add(p1.get_mesh());
                     checkReady();
                     break;
                 case 73:
                     /*I*/
                     p2.isReady = true;
+                    scene.remove(p2.get_mesh());
+                    p2.objectClickHandler();
+                    scene.add(p2.get_mesh());
                     checkReady();
                     break;
                 case 38:
                     /*up*/
                     p3.isReady = true;
+                    scene.remove(p3.get_mesh());
+                    p3.objectClickHandler();
+                    scene.add(p3.get_mesh());
                     checkReady();
+                    break;
+                case 32:
+                    /*SPACEBAR*/
+                    PlayGame();
                     break;
             }
         }
@@ -205,6 +181,10 @@
                 window.open('game.html', '_top');
                 //load game
             }
+        }
+
+        function PlayGame() {
+            window.open('game.html', '_top', replace = true);
         }
 
 
@@ -238,13 +218,23 @@
             textMesh1.rotation.y = Math.PI * 2;
             group.add(textMesh1);
             //creates mirror effect
+
+            textGeo = new THREE.TextGeometry("Press spacebar to start", {
+                font: font,
+                size: size / 2,
+                height: height,
+                curveSegments: curveSegments,
+                bevelThickness: bevelThickness,
+                bevelSize: bevelSize,
+                bevelEnabled: bevelEnabled
+            });
             textMesh2 = new THREE.Mesh(textGeo, materials);
             textMesh2.position.x = centerOffset;
-            textMesh2.position.y = -hover;
+            textMesh2.position.y = hover - 30;
             textMesh2.position.z = height;
-            textMesh2.rotation.x = Math.PI;
+            //textMesh2.rotation.x = Math.PI;
             textMesh2.rotation.y = Math.PI * 2;
-            // group.add(textMesh2);
+            group.add(textMesh2);
         }
 
         function refreshText() {
@@ -256,7 +246,9 @@
         function animate() {
             requestAnimationFrame(animate);
             render();
+            updateSkybox();
             stats.update();
+
         }
 
         function render() {
