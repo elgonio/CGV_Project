@@ -51,6 +51,7 @@ class LevelManager{
 
 	handleMovement(){
 		delta = clock.getDelta();
+		console.log(delta);
         
         if(this.difficulty == "easy"){
         	speed = 50;

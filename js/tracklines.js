@@ -10,9 +10,9 @@ class Tracks{
 		this.playerTrackMeshArray = [];
 
 		var trackGeometry = new THREE.BoxGeometry( 0.2, 0.2, 500);
-		var trackMaterial = new THREE.MeshLambertMaterial( { color: 0x444444, 
+		var trackMaterial = new THREE.MeshPhongMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
-                                                        emissiveIntensity: 1,
+                                                        emissiveIntensity: 0.55,
                                                         side: THREE.DoubleSide
                                                         } );
 		
@@ -27,6 +27,10 @@ class Tracks{
 
 		//Change from vertical to horizontal track geometry
 		trackGeometry = new THREE.BoxGeometry( 25, 0.2, 0.2);
+
+		// shadow properties of the tracklines
+		this.trackObjects.castShadow = false; // there is nothing beneath the track lines
+		this.trackObjects.receiveShadow = true;
 
 		//Create track lines indicate the paths of that the player can move on horizontally
 		var zPos = -7.5;
