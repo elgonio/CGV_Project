@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>three.js webgl - geometry - text</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <script src="plugins/threejs/three.js"></script>
+    <script src="plugins/threejs/OrbitControls.js"></script>
+    <script src="plugins/threejs/stats.min.js"></script>
+    <script src="plugins/utils/GeometryUtils.js"></script>
+    <script src="js/StartMenu.js"></script>
+    <script src="plugins/WebGL.js"></script>
+
+    <script>
+        if (WEBGL.isWebGLAvailable() === false) {
+            document.body.appendChild(WEBGL.getWebGLErrorMessage());
+        }
+        document.addEventListener('keydown', onKeyDown, false);
+        THREE.Cache.enabled = true;
+        var p1, p2, p3;
+        var container, stats;
+        var camera, cameraTarget, scene, renderer;
+        var group, textMesh1, textMesh2, textGeo, materials;
+        var text = "Colour Mix",
+            height = 15,
+            size = 50,
+            hover = 10,
+            curveSegments = 4,
+            bevelThickness = 2,
+            bevelSize = 1.5,
+            bevelEnabled = true,
+            font = undefined,
+            fontName = "optimer",
+            fontWeight = "bold";
+        var windowHalfX = window.innerWidth / 2;
+        var Players;
+
+        init();
+        animate();
+
+        function decimalToHex(d) {
+            var hex = Number(d).toString(16);
+            hex = "000000".substr(0, 6 - hex.length) + hex;
+            return hex.toUpperCase();
+        }
+
+        function init() {
+            container = document.createElement('div');
+            document.body.appendChild(container);
+
+            // CAMERA
+            camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1500);
+            camera.position.set(0, 400, 700);
+            cameraTarget = new THREE.Vector3(0, 150, 0);
+            // SCENE
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+
+            scene.fog = new THREE.Fog(0x000000, 250, 1400);
+            // LIGHTS
+            var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
+            dirLight.position.set(0, 0, 1).normalize();
+            scene.add(dirLight);
+            var pointLight = new THREE.PointLight(0xffffff, 1.5);
+            pointLight.position.set(0, 100, 90);
+            scene.add(pointLight);
+
+            pointLight.color.setHSL(Math.random(), 1, 0.5);
+            hex = decimalToHex(pointLight.color.getHex());
+
+            materials = [
+                new THREE.MeshPhongMaterial({
+                    color: 0xffffff,
+                    flatShading: true
+                }), // front
+                new THREE.MeshPhongMaterial({
+                    color: 0xffffff
+                }) // side
+            ];
+            group = new THREE.Group();
+            group.position.y = 250;
+            scene.add(group);
+            loadFont();
+            var plane = new THREE.Mesh(
+                new THREE.PlaneBufferGeometry(5, 20, 22, 22),
+                new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    opacity: 0.5,
+                    transparent: true
+                })
+            );
+            plane.position.y = 250;
+            plane.position.z = 200;
+            plane.rotation.x = -Math.PI / 2;
+            // scene.add(plane);
+            // RENDERER
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            // STATS
+            stats = new Stats();
+
+            window.addEventListener('resize', onWindowResize, false);
+            p1 = new HomeBall("blue", -200);
+            scene.add(p1.get_mesh());
+            p2 = new HomeBall("yellow", 0);
+            scene.add(p2.get_mesh());
+            p3 = new HomeBall("red", 200);
+            scene.add(p3.get_mesh());
+            Players = [p1, p2, p3];
+
+        }
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        function onDocumentMouseDown(event) {
+            event.preventDefault();
+
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            //meshObjects = [mesh, mesh2, mesh3]; // three.js objects with click handlers we are interested in
+
+            var intersects = raycaster.intersectObjects(Players);
+
+            if (intersects.length & amp; amp; gt; 0) {
+                intersects[0].object.objectClickHandler();
+            }
+
+        }
+        // Using the same logic as above, determine if we are currently mousing over a three.js object,
+        // and adjust the animation to provide visual feedback accordingly
+        function onDocumentMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObjects([mesh, mesh2, mesh3]);
+            var canvas = document.body.getElementsByTagName('canvas')[0];
+
+            if (intersects.length & amp; amp; gt; 0) {
+                intersects[0].object.rotation.x += .005;
+                canvas.style.cursor = "pointer";
+            } else {
+                canvas.style.cursor = "default";
+            }
+
+        }
+
+
+
+        document.addEventListener('mousedown', onDocumentMouseDown, false);
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+        function onKeyDown(event) {
+            event.stopPropagation();
+            switch (event.keyCode) {
+                case 87:
+                    /*W*/
+                    p1.isReady = true;
+                    checkReady();
+                    break;
+                case 73:
+                    /*I*/
+                    p2.isReady = true;
+                    checkReady();
+                    break;
+                case 38:
+                    /*up*/
+                    p3.isReady = true;
+                    checkReady();
+                    break;
+            }
+        }
+
+        function onWindowResize() {
+            windowHalfX = window.innerWidth / 2;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function checkReady() {
+            var tmp = true;
+            Players.forEach(element => {
+                if (element.isReady == false) {
+                    tmp = false;
+                    //  break;
+                }
+            });
+            if (tmp) {
+                console.log("hello!!!!!!!!");
+                window.open('game.html', '_top');
+                //load game
+            }
+        }
+
+
+        function loadFont() {
+            var loader = new THREE.FontLoader();
+            loader.load('fonts/' + fontName + '_' + fontWeight + '.typeface.json', function(response) {
+                font = response;
+                refreshText();
+            });
+        }
+
+        function createText() {
+            textGeo = new THREE.TextGeometry(text, {
+                font: font,
+                size: size,
+                height: height,
+                curveSegments: curveSegments,
+                bevelThickness: bevelThickness,
+                bevelSize: bevelSize,
+                bevelEnabled: bevelEnabled
+            });
+            textGeo.computeBoundingBox();
+            textGeo.computeVertexNormals();
+            var centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+            textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
+            textMesh1 = new THREE.Mesh(textGeo, materials);
+            textMesh1.position.x = centerOffset;
+            textMesh1.position.y = hover;
+            textMesh1.position.z = 0;
+            textMesh1.rotation.x = 0;
+            textMesh1.rotation.y = Math.PI * 2;
+            group.add(textMesh1);
+            //creates mirror effect
+            textMesh2 = new THREE.Mesh(textGeo, materials);
+            textMesh2.position.x = centerOffset;
+            textMesh2.position.y = -hover;
+            textMesh2.position.z = height;
+            textMesh2.rotation.x = Math.PI;
+            textMesh2.rotation.y = Math.PI * 2;
+            // group.add(textMesh2);
+        }
+
+        function refreshText() {
+            group.remove(textMesh1);
+            group.remove(textMesh2);
+            createText();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+            stats.update();
+        }
+
+        function render() {
+            camera.lookAt(cameraTarget);
+            renderer.clear();
+            renderer.render(scene, camera);
+        }
+    </script>
+
+</body>
+
+</html>
