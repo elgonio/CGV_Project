@@ -50,7 +50,7 @@ class LevelManager{
 	}
 
 	handleMovement(){
-		delta = clock.getDelta();
+		delta = globalDelta;
 		//console.log(delta);
         
         if(this.difficulty == "easy"){

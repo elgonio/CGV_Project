@@ -24,8 +24,15 @@ class PlayerBall {
         this.zDest = 0; //Either 0 or 1
         this.destVector = new THREE.Vector3(this.xDestinations[position],0,this.zDestinations[0]);
         this.default_dest = this.xDest;
+
+        this.group = new THREE.Group();
         
         this.size = 1.5;
+        this.electron_scale = this.size/8;
+        this.orbit_radius = this.size + this.electron_scale*2;
+        this.electron_speed = 2*Math.PI*this.orbit_radius/7;
+        this.electrons = new THREE.Group();
+        this.group.add(this.electrons);
 
         var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
         var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
@@ -35,12 +42,16 @@ class PlayerBall {
                                                         } );
         this.sphere = new THREE.Mesh( geometry, material );
 
+        this.group.add(this.sphere);
+        this.make_electron();
+
+
         // player shadow settings
         this.sphere.castShadow = true;
         this.sphere.receiveShadow = false; // receive shadow for player false for prominent player
 
         
-        this.sphere.position.set(this.destVector.getComponent(0),0,0);
+        this.group.position.set(this.destVector.getComponent(0),0,0);
 
         if(colour == "red")
         {
@@ -98,24 +109,24 @@ class PlayerBall {
         }
         
         // we don't want to just move to the next position so we move there over time 
-        if (this.sphere.position.x > this.destVector.getComponent(0) )
+        if (this.group.x > this.destVector.getComponent(0) )
         {
-            this.sphere.translateX(-0.25);
+            this.group.translateX(-0.25);
         }
-        else if (this.sphere.position.x < this.destVector.getComponent(0))
+        else if (this.group.position.x < this.destVector.getComponent(0))
         {
-            this.sphere.translateX(+0.25);
+            this.group.translateX(+0.25);
         }
 
-        if(this.sphere.position.z > this.destVector.getComponent(2)){
-            this.sphere.translateZ(-0.25);
+        if(this.group.position.z > this.destVector.getComponent(2)){
+            this.group.translateZ(-0.25);
         }
-        else if(this.sphere.position.z < this.destVector.getComponent(2)){
-            this.sphere.translateZ(+0.25);
+        else if(this.group.position.z < this.destVector.getComponent(2)){
+            this.group.translateZ(+0.25);
         }
 
         // THIS SOLVES A BUG. PLZ DONT REMOVE
-        var close_enough = Math.abs(this.sphere.position.x - this.destVector.getComponent(0)) < 0.1  && Math.abs(this.sphere.position.z - this.destVector.getComponent(2)) < 0.1;
+        var close_enough = Math.abs(this.group.position.x - this.destVector.getComponent(0)) < 0.1  && Math.abs(this.group.position.z - this.destVector.getComponent(2)) < 0.1;
 
         // check if we've reached our destination
         if(close_enough)
@@ -131,10 +142,10 @@ class PlayerBall {
 
         if(this.isJumping == true){
             if(this.isFalling == false){ //Ball is in upward motion of jump
-                if(this.sphere.position.y < 8){
-                    this.sphere.translateY(+0.15);
+                if(this.group.position.y < 8){
+                    this.group.translateY(+0.15);
 
-                    close_enough = (Math.abs(this.sphere.position.y - 8) < 0.1);
+                    close_enough = (Math.abs(this.group.position.y - 8) < 0.1);
                     if(close_enough == true){
                         this.isFalling = true;
                     }
@@ -142,10 +153,10 @@ class PlayerBall {
                 }
             }
             else if(this.isFalling == true){ //Ball is in downward motion of jump
-                if(this.sphere.position.y > 0){
-                    this.sphere.translateY(-0.15);
+                if(this.group.position.y > 0){
+                    this.group.translateY(-0.15);
 
-                    close_enough = (Math.abs(this.sphere.position.y) < 0.1);
+                    close_enough = (Math.abs(this.group.position.y) < 0.1);
                     if(close_enough == true){
                         this.isFalling = false;
                         this.isJumping = false;
@@ -156,6 +167,7 @@ class PlayerBall {
 
         }
 
+        this.handleAnimation();
         //console.log(this.colour);
         //console.log(this.xDest);
         //console.log(this.sphere.position.x);
@@ -204,15 +216,52 @@ class PlayerBall {
 
     reset_position()
     {
-        this.sphere.position.x = this.xDestinations[this.default_dest]
-        this.sphere.position.y = 0;
-        this.sphere.position.z = 0;
+        this.group.position.x = this.xDestinations[this.default_dest]
+        this.group.position.y = 0;
+        this.group.position.z = 0;
         this.xDest = this.default_dest;
     }
 
     initiateJump(){
         if(this.isJumping == false){
             this.isJumping = true;
+        }
+    }
+
+    make_electron()
+    {
+        var smol_geometry = new THREE.SphereGeometry( this.size/8, 16, 16 );
+        var smol_material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
+            emissive: 0xffffff,
+            emissiveIntensity: 1,
+            side: THREE.DoubleSide
+            } );
+
+        var electron = new THREE.Mesh( smol_geometry, smol_material );
+
+        var theta = Math.random()*Math.PI*2;
+        var phi = Math.random()*Math.PI*2;
+
+        electron.position.x = this.orbit_radius*Math.cos(theta) * Math.sin(phi);
+        electron.position.y = this.orbit_radius*Math.sin(theta) * Math.sin(phi);
+        electron.position.z = this.orbit_radius*Math.cos(phi) ;
+
+        this.electrons.add(electron);
+    }
+
+    handleAnimation()
+    {
+        var speed = this.electron_speed + Math.random();
+        for (var i = 0; i < this.electrons.children.length; i++) 
+        {
+            var curr_electron = this.electrons.children[i];
+            var theta = frameNumber/120;
+            var phi = frameNumber/12;
+            //var theta = frameNumber*globalDelta*32;
+            //var phi = frameNumber*globalDelta*16;
+            curr_electron.position.x = this.orbit_radius*Math.cos(theta) * Math.sin(phi);
+            curr_electron.position.y = this.orbit_radius*Math.sin(theta) * Math.sin(phi);
+            curr_electron.position.z = this.orbit_radius*Math.cos(phi) ;
         }
     }
 
