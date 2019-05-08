@@ -15,7 +15,7 @@
 
 "use strict";
 var stats;
-var canvas, renderer, scene, camera; // Standard three.js requirements.
+var canvas, renderer, scene, camera, mapCamera; // Standard three.js requirements.
 
 var controls;  // An OrbitControls object that is used to implement
                // rotation of the scene using the mouse.  (It actually rotates
@@ -213,6 +213,12 @@ function reloadGame()
  */
 function render() {
     renderer.render(scene, camera);
+
+    //Minimap - overhead orthogonal camera
+    //renderer.setViewport( 10, 10, 10, 10 );
+    //renderer.render( scene, mapCamera );
+
+    // Link to minimap camera example: http://stemkoski.github.io/Three.js/Viewports-Minimap.html
 }
 
 
@@ -236,6 +242,12 @@ function createWorld() {
     camera.position.z = 25;
     camera.position.y = 9;
     camera.lookAt(new THREE.Vector3(0,-10,-60));
+
+    mapCamera = new THREE.OrthographicCamera( canvas.width / - 2, canvas.width / 2, canvas.height / 2, canvas.height / - 2, 1, 1000 );
+    mapCamera.up = new THREE.Vector3(0,0,-1);
+    mapCamera.lookAt( new THREE.Vector3(0,-1,0) );
+    mapCamera.position.set(0, 100, 60);
+    scene.add(mapCamera);
 
     
     /*var light;  // A light shining from the direction of the camera; moves with the camera.
@@ -269,7 +281,6 @@ function createWorld() {
     scene.add(level_Manager.get_allRows());
 
     updateSkybox();
-    scene.add(cube);
 
 //Testing adding a single block
 /*
