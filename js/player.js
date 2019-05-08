@@ -6,6 +6,8 @@ class PlayerBall {
         this.colour = colour;
         this.position = position;
         this.isMoving = false;
+        this.isJumping = false;
+        this.isFalling = false;
 
         // what direction is the player moving
         this.controls = {
@@ -95,8 +97,7 @@ class PlayerBall {
             }
         }
         
-        
-        // we don't want to just jump to the next position so we move there over time 
+        // we don't want to just move to the next position so we move there over time 
         if (this.sphere.position.x > this.destVector.getComponent(0) )
         {
             this.sphere.translateX(-0.25);
@@ -126,6 +127,33 @@ class PlayerBall {
         {
             this.isMoving = true;
             //console.log("in motion");
+        }
+
+        if(this.isJumping == true){
+            if(this.isFalling == false){ //Ball is in upward motion of jump
+                if(this.sphere.position.y < 8){
+                    this.sphere.translateY(+0.15);
+
+                    close_enough = (Math.abs(this.sphere.position.y - 8) < 0.1);
+                    if(close_enough == true){
+                        this.isFalling = true;
+                    }
+
+                }
+            }
+            else if(this.isFalling == true){ //Ball is in downward motion of jump
+                if(this.sphere.position.y > 0){
+                    this.sphere.translateY(-0.15);
+
+                    close_enough = (Math.abs(this.sphere.position.y) < 0.1);
+                    if(close_enough == true){
+                        this.isFalling = false;
+                        this.isJumping = false;
+                    }
+
+                }
+            }
+
         }
 
         //console.log(this.colour);
@@ -177,7 +205,16 @@ class PlayerBall {
     reset_position()
     {
         this.sphere.position.x = this.xDestinations[this.default_dest]
+        this.sphere.position.y = 0;
         this.sphere.position.z = 0;
         this.xDest = this.default_dest;
     }
+
+    initiateJump(){
+        if(this.isJumping == false){
+            this.isJumping = true;
+        }
+    }
+
+
 }

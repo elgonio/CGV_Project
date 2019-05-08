@@ -67,7 +67,7 @@ function onKeyDown( event ) {
         case 37: /*left*/yellow_ball.controls.moveLeft = true; event.preventDefault();break;
         case 39: /*right*/yellow_ball.controls.moveRight = true; event.preventDefault();break;
 
-        case 32: /*SPACEBAR*/ debug();break;
+        case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); break;
     }
     
 }
