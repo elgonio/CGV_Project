@@ -62,6 +62,11 @@ class SceneInit {
     }
 
     addWater() {
+        // check if webgl is there
+        if (WEBGL.IsWebGLAvailable() === false) {
+            this.document.appendChild ( WEBGL.getWebGLErrorMessage() );
+        }
+
         let waterGeo = new THREE.PlaneBufferGeometry( 20, 20 );
 		let water = new THREE.Water( waterGeometry, {
 			color: params.color,
