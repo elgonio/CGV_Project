@@ -54,10 +54,10 @@ function initializeSkybox(x, y, z) {
     // creates the shape
     var geometry = new THREE.CubeGeometry(x, y, z);
 
-    var left = installTexture("../assets/img/cropped.jpg");
-    var right = installTexture("../assets/img/rotated.jpg");
-    var up = installTexture("../assets/img/rotated.jpg");
-    var down = installTexture("../assets/img/cropped.jpg");
+    var left = installTexture("assets/img/cropped.jpg");
+    var right = installTexture("assets/img/rotated.jpg");
+    var up = installTexture("assets/img/rotated.jpg");
+    var down = installTexture("assets/img/cropped.jpg");
     movingtextures.push(right);
     movingtextures.push(left);
     movingtextures.push(up);
@@ -67,8 +67,8 @@ function initializeSkybox(x, y, z) {
         new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //back side
         new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
         new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
-        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("../assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
-        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("../assetsimg/pureblack.jpg"), side: THREE.DoubleSide }) //left side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assetsimg/pureblack.jpg"), side: THREE.DoubleSide }) //left side
     ];
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
