@@ -109,7 +109,7 @@ class PlayerBall {
         }
         
         // we don't want to just move to the next position so we move there over time 
-        if (this.group.x > this.destVector.getComponent(0) )
+        if (this.group.position.x > this.destVector.getComponent(0) )
         {
             this.group.translateX(-0.25);
         }
