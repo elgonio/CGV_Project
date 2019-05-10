@@ -2,10 +2,17 @@ class HomeBall {
 
     // colour is of the form "blue","red" or "yellow"
     // position is the position in the detination array
-    constructor(colour, position) {
+    /*
+    state 0- is the initail start menu
+    state 1- play has been clicked
+    state 2- how to play has been clicked
+    state 3- settings has been clicked
+    */
+    constructor(colour, position, state) {
         this.colour = colour;
         this.position = position;
         this.isReady = false;
+        this.state = state;
 
 
         this.controls = {
@@ -89,5 +96,11 @@ class HomeBall {
     // a getter for the mesh
     get_mesh() {
         return this.sphere;
+    }
+    get_State() {
+        return this.state;
+    }
+    update_state(newState) {
+        this.state = newState;
     }
 }
