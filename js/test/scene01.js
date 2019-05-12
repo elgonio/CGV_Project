@@ -85,6 +85,38 @@ class SceneInit {
     }
 
 
+    // particle system demo
+    /* addParticles() {
+        var tick = 0;
+
+        let particleSystem = new THREE.GPUParticleSystem( {
+            maxParticles: 125000
+        } );
+
+        this.scene.add( particleSystem );
+
+        options = {
+            position: new THREE.Vector3(),
+            positionRandomness: 0.0,
+            velocity: new THREE.Vector3(),
+            velocityRandomness: 0.25,
+            color: '#ffffff',
+            colorRandomness: 0.2,
+            turbulence: 0.6,
+            lifetime: 1.2,
+            size: 10,
+            sizeRandomness: 1
+        };
+
+        spawnerOptions = {
+            spawnRate: 15000,
+            horizontalSpeed: 0.0,
+            verticalSpeed: 0.0,
+            timeScale: 1
+        };
+    } */
+
+
     addLight() {
         // ambient light example setup
         let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
@@ -138,4 +170,5 @@ test01.addCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
+//test01.addParticles();
 test01.animate();
