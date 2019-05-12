@@ -70,7 +70,7 @@ class SceneInit {
 			flowY: 1
         };
         
-        let waterGeo = new THREE.PlaneBufferGeometry( 20, 20 );
+        let waterGeo = new THREE.PlaneBufferGeometry( 200, 200 );
 		let water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
@@ -79,7 +79,7 @@ class SceneInit {
 			textureHeight: 1024
         } );
             
-		water.position.y = ( 0 );
+		water.position.y = ( -1 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
 		this.scene.add( water );
     }
