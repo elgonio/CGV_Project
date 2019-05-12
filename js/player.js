@@ -2,7 +2,12 @@ class PlayerBall {
     
     // colour is of the form "blue","red" or "yellow"
     // position is the position in the detination array
-    constructor(colour,position) {
+    constructor(colour,position, type) {
+        if (type === undefined)
+        {
+            type = 0;
+        } 
+        this.type = type;
         this.colour = colour;
         this.position = position;
         this.isMoving = false;
@@ -26,57 +31,76 @@ class PlayerBall {
         this.default_dest = this.xDest;
 
         this.group = new THREE.Group();
+        this.size = 1.5;
+
+
         
-        this.size = 1.5/2;
-        this.electron_scale = this.size/8;
-        this.orbit_radius = this.size*1.5 + this.electron_scale*2;
-        this.electron_speed = 2*Math.PI*this.orbit_radius/7;
-        this.electrons = new THREE.Group();
-        this.v_electrons = new THREE.Group();
-        this.h_electrons = new THREE.Group();
-        this.d1_electrons = new THREE.Group();
-        this.d2_electrons = new THREE.Group();
-        this.electrons.add(this.h_electrons);
-        this.electrons.add(this.v_electrons);
-        this.electrons.add(this.d1_electrons);
-        this.electrons.add(this.d2_electrons);
-        this.group.add(this.electrons);
-
-        this.v_electrons.rotateZ(2*Math.PI/4);
-        this.d1_electrons.rotateZ(Math.PI/4);
-        this.d2_electrons.rotateZ(-Math.PI/4);
 
 
-        var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
-        var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
-                                                        emissive: 0xffffff,
-                                                        emissiveIntensity: 1,
-                                                        side: THREE.DoubleSide
-                                                        } );
-        this.sphere = new THREE.Mesh( geometry, material );
-
-        this.group.add(this.sphere);
-
-        for (var k = 0; k < 4; k++) {
-            var electron = this.make_electron();
-            switch (k%4) {
-                case 0:
-                    this.h_electrons.add(electron)
-                    break;
-                case 1:
-                    this.v_electrons.add(electron)
-                    break;
-                case 2:
-                    this.d1_electrons.add(electron)
-                    break;
-                case 3:
-                    this.d2_electrons.add(electron)
-                    break;
-            
-                default:
-            } 
-            
+        if (this.type == 0) 
+        {
+            var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
+            var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
+                                                            emissive: 0xffffff,
+                                                            emissiveIntensity: 1,
+                                                            side: THREE.DoubleSide
+                                                            } );
+            this.sphere = new THREE.Mesh( geometry, material );
+    
+            this.group.add(this.sphere); 
         }
+        else if (this.type == 1) 
+        {
+            this.size = 1.5/2;
+            var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
+            var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
+                                                            emissive: 0xffffff,
+                                                            emissiveIntensity: 1,
+                                                            side: THREE.DoubleSide
+                                                            } );
+            this.sphere = new THREE.Mesh( geometry, material );
+    
+            this.group.add(this.sphere); 
+            this.electron_scale = this.size/8;
+            this.orbit_radius = this.size*1.5 + this.electron_scale*2;
+            this.electron_speed = 2*Math.PI*this.orbit_radius/7;
+            this.electrons = new THREE.Group();
+            this.v_electrons = new THREE.Group();
+            this.h_electrons = new THREE.Group();
+            this.d1_electrons = new THREE.Group();
+            this.d2_electrons = new THREE.Group();
+            this.electrons.add(this.h_electrons);
+            this.electrons.add(this.v_electrons);
+            this.electrons.add(this.d1_electrons);
+            this.electrons.add(this.d2_electrons);
+            this.group.add(this.electrons);
+
+            this.v_electrons.rotateZ(2*Math.PI/4);
+            this.d1_electrons.rotateZ(Math.PI/4);
+            this.d2_electrons.rotateZ(-Math.PI/4);
+            for (var k = 0; k < 4; k++) {
+                var electron = this.make_electron();
+                switch (k%4) {
+                    case 0:
+                        this.h_electrons.add(electron)
+                        break;
+                    case 1:
+                        this.v_electrons.add(electron)
+                        break;
+                    case 2:
+                        this.d1_electrons.add(electron)
+                        break;
+                    case 3:
+                        this.d2_electrons.add(electron)
+                        break;
+                
+                    default:
+                } 
+                
+            }
+        }
+
+        
         
 
 
@@ -212,63 +236,41 @@ class PlayerBall {
 
         switch(col){
             case "blue":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0x0000dd);
-                }
+
                 this.sphere.material.emissive.setHex(0x0000dd);
                 break;
             case "red":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0xdd0000);
-                }
                 this.sphere.material.emissive.setHex(0xdd0000);
                 break;
             case "yellow":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0xdddd00);
-                }
                 this.sphere.material.emissive.setHex(0xdddd00);
                 break;
             case "green":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0x00dd00);
-                }
                 this.sphere.material.emissive.setHex(0x00dd00);
                 break;
             case "orange":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0xce6800);
-                }
                 this.sphere.material.emissive.setHex(0xce6800);
                 break;
             case "purple":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0xdd00dd);
-                }
                 this.sphere.material.emissive.setHex(0xdd00dd);
                 break;
             case "white":
-                for (var i = 0; i < this.electrons.children.length; i++) 
-                {
-                    //this.electrons.children[i].material.emissive.setHex(0xcccccc);
-                }
+
                 this.sphere.material.emissive.setHex(0xcccccc);
                 break; 
         }
 
-        for (var i = 0; i < this.electrons.children.length; i++) 
+        if (this.type == 1)
         {
-            for (var k = 0; k < this.electrons.children[i].length; k++) 
+            for (var i = 0; i < this.electrons.children.length; i++) 
             {
-                this.electrons.children[i].children[k].material.emissive.copy(this.sphere.meterial.emissive);
+                for (var k = 0; k < this.electrons.children[i].length; k++) 
+                {
+                    this.electrons.children[i].children[k].material.emissive.copy(this.sphere.meterial.emissive);
+                }
             }
         }
+
     }
     get_colour(){
         return this.colour;
@@ -327,27 +329,31 @@ class PlayerBall {
 
     handleAnimation()
     {
-        var num_electrons = this.electrons.children.length;
-        for (var i = 0; i < num_electrons; i++) 
+        if (this.type == 1)
         {
-            var curr_orbital = this.electrons.children[i];
-            for (var k = 0; k < curr_orbital.children.length; k++) {
-                var curr_electron = curr_orbital.children[k];
-                var phi = frameNumber/10 + (k/num_electrons)*2*Math.PI;
-                var theta = (k/num_electrons)*2*Math.PI;
-                if (i%2 == 0) 
-                {
-                    phi = phi + i;
-                }
-                else{
-                    phi = phi + i;
-                }
-                curr_electron.position.x = this.orbit_radius*Math.cos(theta) * Math.sin(phi);
-                curr_electron.position.y = this.orbit_radius*Math.sin(theta) * Math.sin(phi);
-                curr_electron.position.z = this.orbit_radius*Math.cos(phi) ;
-                    
-            }           
+            var num_electrons = this.electrons.children.length;
+            for (var i = 0; i < num_electrons; i++) 
+            {
+                var curr_orbital = this.electrons.children[i];
+                for (var k = 0; k < curr_orbital.children.length; k++) {
+                    var curr_electron = curr_orbital.children[k];
+                    var phi = frameNumber/10 + (k/num_electrons)*2*Math.PI;
+                    var theta = (k/num_electrons)*2*Math.PI;
+                    if (i%2 == 0) 
+                    {
+                        phi = phi + i;
+                    }
+                    else{
+                        phi = phi + i;
+                    }
+                    curr_electron.position.x = this.orbit_radius*Math.cos(theta) * Math.sin(phi);
+                    curr_electron.position.y = this.orbit_radius*Math.sin(theta) * Math.sin(phi);
+                    curr_electron.position.z = this.orbit_radius*Math.cos(phi) ;
+                        
+                }           
+            }
         }
+        
     }
 
 
