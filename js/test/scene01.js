@@ -61,9 +61,17 @@ class SceneInit {
         this.scene.add( floor );
     }
 
+    
     addWater() {
+        var params = {
+			color: '#ffffff',
+			scale: 4,
+			flowX: 1,
+			flowY: 1
+        };
+        
         let waterGeo = new THREE.PlaneBufferGeometry( 20, 20 );
-		let water = new THREE.Water( waterGeometry, {
+		let water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
 			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
@@ -71,7 +79,7 @@ class SceneInit {
 			textureHeight: 1024
         } );
             
-		water.position.y = ( -0.5 );
+		water.position.y = ( 0 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
 		this.scene.add( water );
     }
@@ -129,4 +137,5 @@ test01.initScene();
 test01.addCube();
 test01.addFloor();
 test01.addLight();
+test01.addWater();
 test01.animate();
