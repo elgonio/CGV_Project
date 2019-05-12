@@ -39,8 +39,8 @@ window.addEventListener('resize', function() {
 });
 */
 
-// controls
-//controls = new THREE.OrbitControls(camera, renderer.domElement);
+//controls
+//var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 material = new THREE.MeshPhongMaterial({
     color: "white",
@@ -50,29 +50,45 @@ material = new THREE.MeshPhongMaterial({
 
 var movingtextures = [];
 var cube;
+
 function initializeSkybox(x, y, z) {
     // creates the shape
     var geometry = new THREE.CubeGeometry(x, y, z);
-
+    var txt = "assets/img/nightsky_bk.png";
     var left = installTexture("assets/img/cropped.jpg");
     var right = installTexture("assets/img/rotated.jpg");
     var up = installTexture("assets/img/rotated.jpg");
     var down = installTexture("assets/img/cropped.jpg");
+    var front = installTexture("assets/img/cropped.jpg");
+
+    // var left = installTexture(txt);
+    // var right = installTexture(txt);
+    // var up = installTexture(txt);
+    // var down = installTexture(txt);
+    // var front = installTexture(txt);
+
+
     movingtextures.push(right);
     movingtextures.push(left);
     movingtextures.push(up);
     movingtextures.push(down);
+    movingtextures.push(front);
     var cubeMaterials = [
         new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //front side
         new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //back side
         new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
         new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
+        // new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("../assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
+        // new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("../assetsimg/pureblack.jpg"), side: THREE.DoubleSide }) //left side
         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //right side
-        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assetsimg/pureblack.jpg"), side: THREE.DoubleSide }) //left side
+        new THREE.MeshBasicMaterial({ map: front, overdraw: true, side: THREE.DoubleSide }) //left side
     ];
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
     cube = new THREE.Mesh(geometry, cubeMaterial);
+    cube.position.x = 0;
+    cube.position.y = 200;
+    cube.position.z = 450;
     scene.add(cube);
     console.log("added skybox", cube.position);
 }
@@ -83,16 +99,14 @@ function initializeSkybox(x, y, z) {
 //camera.position.z = 3;
 
 // lighting
-//var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);
-//scene.add(ambientLight);
+
 
 
 
 //game logic
 function updateSkybox() {
-    if (cube == null)
-    {
-        initializeSkybox(75,75,500);
+    if (cube == null) {
+        initializeSkybox(600, 600, 2000);
     }
     textureOffsetS += 0.00137;
     textureOffsetT -= 0.00137;
@@ -104,6 +118,8 @@ function updateSkybox() {
     movingtextures[2].needsUpdate;
     movingtextures[3].offset.set(0, textureOffsetT);
     movingtextures[3].needsUpdate;
+    movingtextures[4].offset.set(0, textureOffsetT * -1);
+    movingtextures[4].needsUpdate;
 }
 
 

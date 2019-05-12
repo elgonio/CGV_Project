@@ -61,6 +61,26 @@ class SceneInit {
         this.scene.add( floor );
     }
 
+    addWater() {
+        // check if webgl is there
+        if (WEBGL.IsWebGLAvailable() === false) {
+            this.document.appendChild ( WEBGL.getWebGLErrorMessage() );
+        }
+
+        let waterGeo = new THREE.PlaneBufferGeometry( 20, 20 );
+		let water = new THREE.Water( waterGeometry, {
+			color: params.color,
+			scale: params.scale,
+			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
+			textureWidth: 1024,
+			textureHeight: 1024
+        } );
+            
+		water.position.y = ( -0.5 );
+		water.rotation.x = ( Math.PI * (- 0.5) );
+		this.scene.add( water );
+    }
+
 
     addLight() {
         // ambient light example setup
