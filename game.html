@@ -232,9 +232,10 @@ function handleCollisions()
         //Do nothing - not colliding
     }
     else{
+        //Collide with power up object
         var powerUpType = level_Manager.get_currentPowerUpType();
         switch(powerUpType){
-            case "Jump":
+            case "Jump": //Let players jump for 10 seconds
                 PowerUpText.innerHTML = "Jump Enabled! <p> Press SPACEBAR </p>";
                 red_ball.enableJump();
                 blue_ball.enableJump();
@@ -247,12 +248,20 @@ function handleCollisions()
                     yellow_ball.disableJump();
                 }, 10000);
                 break;
-            case "Screenshake":
-                camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
+            case "Screenshake": //Screen shakes for 10 seconds
+                camera_shake_controller.shakeScreen(10); 
                 PowerUpText.innerHTML = "SCREENSHAKE!";
                 break;
-            case "Invert":
+            case "Invert": //Invert the camera (controls are swapped)
+                PowerUpText.innerHTML = "Inverted View!";
 
+                camera.projectionMatrix.scale(new THREE.Vector3(-1, 1, 1));
+                camera.updateProjectionMatrix();
+                setTimeout(function(){
+                    PowerUpText.innerHTML = "";
+                    camera.projectionMatrix.scale(new THREE.Vector3(1, 1, 1));
+                    camera.updateProjectionMatrix();
+                }, 10000);
                 break;
         }
     }
