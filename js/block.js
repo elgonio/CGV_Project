@@ -1,3 +1,4 @@
+global_box_geometry = new THREE.BoxGeometry( 4, 3, 3 );
 class BlockObstacle{
 
     // colour is of the form "blue","red","yellow","purple","orange","green","white" and "grey"
@@ -13,13 +14,13 @@ class BlockObstacle{
         this.dest = position;
         this.size = 4;
 
-        var geometry = new THREE.BoxGeometry( this.size, 3, 3 );
+        //var geometry = new THREE.BoxGeometry( this.size, 3, 3 );
         var material = new THREE.MeshPhongMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
                                                         } );
-        this.mesh = new THREE.Mesh( geometry, material );
+        this.mesh = new THREE.Mesh( global_box_geometry, material );
         if(this.type == "moving"){
             this.mesh.position.set(0,0,0);
             this.direction =  Math.floor(Math.random()*2) == 1 ? 1 : -1; //Randomise swinging left or right

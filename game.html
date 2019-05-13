@@ -413,8 +413,8 @@ function addLight() {
             spotLight01.distance = 200;
         // spot light shadow properties
             spotLight01.castShadow = true;
-            spotLight01.shadow.mapSize.width = 1024;
-            spotLight01.shadow.mapSize.height = 1024;
+            spotLight01.shadow.mapSize.width = 512;
+            spotLight01.shadow.mapSize.height = 412;
             spotLight01.shadow.camera.near = 2;
             spotLight01.shadow.camera.far = 200;
         scene.add( spotLight01 );
@@ -430,13 +430,13 @@ function addWater() {
 			flowY: 1
         };
         
-        var waterGeo = new THREE.PlaneBufferGeometry( 1000, 1000 );
+        var waterGeo = new THREE.PlaneBufferGeometry( 500, 1000 );
 		var water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
 			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
-			textureWidth: 1024,
-			textureHeight: 1024
+			textureWidth: 512,
+			textureHeight: 512
         } );
             
 		water.position.y = ( -2 );
