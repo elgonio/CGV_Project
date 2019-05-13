@@ -352,7 +352,7 @@ function addWater() {
 			flowY: 1
         };
         
-        var waterGeo = new THREE.PlaneBufferGeometry( 200, 200 );
+        var waterGeo = new THREE.PlaneBufferGeometry( 1000, 1000 );
 		var water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
@@ -361,7 +361,7 @@ function addWater() {
 			textureHeight: 1024
         } );
             
-		water.position.y = ( -1 );
+		water.position.y = ( -2 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
     scene.add( water );
 }
