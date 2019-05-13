@@ -298,7 +298,7 @@ function createWorld() {
 
     level_Manager = new LevelManager("easy", -200, 130); // create a controller which handles level generation and score
 
-    camera_shake_controller = new CameraShake(camera, 0.5, 1) // create a controller which handles camera shake
+    camera_shake_controller = new CameraShake(camera, 0.5, 0.6) // create a controller which handles camera shake
 
     level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
