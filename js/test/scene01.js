@@ -29,11 +29,20 @@ class SceneInit {
         // timer and clock enabling
         this.clock = new THREE.Clock();
 
+        // ktx formats support
+        let formats = {
+            astc: renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
+			etc1: renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
+			s3tc: renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
+			pvrtc: renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
+        };
+
         // append renderer as dominant element
         document.body.appendChild( this.renderer.domElement );
     }
 
 
+    // add demo cube function
     addCube() {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
         let material = new THREE.MeshPhongMaterial( { color: "rgb(20, 130, 200)", dithering: true } );
@@ -52,6 +61,7 @@ class SceneInit {
     }
     
 
+    // floor demo function
     addFloor() {
         let material = new THREE.MeshPhongMaterial( { color: "rgb(220, 220, 220)", dithering: true } );
         let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
@@ -66,6 +76,7 @@ class SceneInit {
     }
 
     
+    // water function
     addWater() {
         var params = {
 			color: '#ffffff',
@@ -123,6 +134,7 @@ class SceneInit {
     }
 
 
+    // lights demo function
     addLight() {
         // ambient light example setup
         let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
@@ -156,7 +168,7 @@ class SceneInit {
     }
 
 
-    // trying out a fog effect
+    // fog effect function 
     addFog() {
         //var fog;
         let fogColour = "#ffffff";
@@ -166,6 +178,7 @@ class SceneInit {
     }
 
 
+    // animate scene
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
@@ -192,6 +205,7 @@ class SceneInit {
     }
 
 
+    // render function
     render() {
         this.renderer.render( this.scene, this.camera );
     }
