@@ -86,10 +86,11 @@ class SceneInit {
 
 
     // particle system demo
-    /* addParticles() {
-        var tick = 0;
+    addParticles() {
+        let clock = new THREE.Clock();
+        let options, spawnerOptions, particleSystem;
 
-        let particleSystem = new THREE.GPUParticleSystem( {
+        particleSystem = new THREE.GPUParticleSystem( {
             maxParticles: 125000
         } );
 
@@ -114,7 +115,7 @@ class SceneInit {
             verticalSpeed: 0.0,
             timeScale: 1
         };
-    } */
+    }
 
 
     addLight() {
@@ -170,5 +171,5 @@ test01.addCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
-//test01.addParticles();
+test01.addParticles();
 test01.animate();
