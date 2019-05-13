@@ -281,7 +281,11 @@ function createWorld() {
 
     scene.add(level_Manager.get_allRows());
 
-    updateSkybox();
+    updateSkybox(75,75,500);
+    if (scene.getObjectByName('object_name') == null)
+    {
+        addSkybox();
+    }
 
 //Testing adding a single block
 /*
