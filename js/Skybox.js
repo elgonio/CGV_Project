@@ -51,6 +51,7 @@ material = new THREE.MeshPhongMaterial({
 var movingtextures = [];
 var cube;
 function initializeSkybox(x, y, z) {
+    cube = null;
     // creates the shape
     var geometry = new THREE.CubeGeometry(x, y, z);
 
@@ -73,9 +74,16 @@ function initializeSkybox(x, y, z) {
 
     var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
     cube = new THREE.Mesh(geometry, cubeMaterial);
+    cube.name="skybox";
     scene.add(cube);
     console.log("added skybox", cube.position);
 }
+
+function addSkybox(x, y, z) {
+    scene.add(cube);
+    console.log("added skybox", cube.position);
+}
+
 
 
 

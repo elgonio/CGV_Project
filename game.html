@@ -23,6 +23,7 @@ var controls;  // An OrbitControls object that is used to implement
 
 var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
+var globalDelta = clock.getDelta();
 
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
@@ -262,14 +263,14 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
 
-    blue_ball = new PlayerBall("blue",0); //Start on far left
-    scene.add(blue_ball.get_mesh());
+    blue_ball = new PlayerBall("blue",0,1); //Start on far left
+    scene.add(blue_ball.group);
 
-    red_ball = new PlayerBall("red",2); //Start in the middle
-    scene.add(red_ball.get_mesh());
+    red_ball = new PlayerBall("red",2,1); //Start in the middle
+    scene.add(red_ball.group);
 
-    yellow_ball = new PlayerBall("yellow",4); //Start on far right
-    scene.add(yellow_ball.get_mesh());
+    yellow_ball = new PlayerBall("yellow",4,1); //Start on far right
+    scene.add(yellow_ball.group);
 
     tracks = new Tracks();
     scene.add(tracks.get_TrackMeshes());
@@ -280,7 +281,11 @@ function createWorld() {
 
     scene.add(level_Manager.get_allRows());
 
-    updateSkybox();
+    updateSkybox(75,75,500);
+    if (scene.getObjectByName('object_name') == null)
+    {
+        addSkybox();
+    }
 
 //Testing adding a single block
 /*
@@ -335,6 +340,7 @@ function addLight() {
  *  is incrementd 1 before this function is called.
  */
 function updateForFrame() {
+    globalDelta = clock.getDelta();
     handleColours();
     handleMovement();
     updateSkybox();
@@ -398,6 +404,7 @@ function doAnimateCheckbox() {
 /*  Drives the animation, called by system through requestAnimationFrame() */
 function doFrame() {
     if (animating) {
+        
         frameNumber++;
         updateForFrame();
         render();
