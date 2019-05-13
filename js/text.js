@@ -50,7 +50,7 @@ function NewText(txt, pos, Ts) {
                     transparent: true
                 })
             );
-            returnToMainB.position.y = 5;
+            returnToMainB.position.y = -10;
             returnToMainB.position.z = -5;
             //plane.rotation.x = -Math.PI / 2;
             returnToMain = Tmesh;
