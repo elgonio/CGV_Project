@@ -67,7 +67,7 @@ class SceneInit {
         let geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
         let loader = new THREE.KTXLoader();
         var material;
-        var meshes = [];
+        var mesh;
 
         // check if s3tc
         if ( formats.s3tc ) {
@@ -77,7 +77,7 @@ class SceneInit {
 				transparent: true,
 				side: THREE.DoubleSide
 			} );
-		    meshes.push( new THREE.Mesh( geometry, material ) );
+		    mesh = new THREE.Mesh( geometry, material );
         }
         
         // etc1 
@@ -85,7 +85,7 @@ class SceneInit {
 			material = new THREE.MeshBasicMaterial( {
 				map: loader.load( 'assets/textures/compressed/disturb_ETC1.ktx' )
 			} );
-			meshes.push( new THREE.Mesh( geometry, material ) );
+			mesh = new THREE.Mesh( geometry, material );
         }
         
         // astc
@@ -96,7 +96,7 @@ class SceneInit {
 				transparent: true,
 				side: THREE.DoubleSide
 			} );
-			meshes.push( new THREE.Mesh( geometry, material ) );
+			mesh = new THREE.Mesh( geometry, material );
         }
         
         // check if pvrtc
@@ -107,10 +107,10 @@ class SceneInit {
                 transparent: true,
                 side: THREE.DoubleSide
             } );
-            meshes.push( new THREE.Mesh( geometry, material ) );
+            mesh = new THREE.Mesh( geometry, material );
         }
         
-        this.scene.add( meshes[0] );
+        this.scene.add( mesh );
         
     }
     
