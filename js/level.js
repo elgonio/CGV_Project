@@ -132,7 +132,6 @@ class LevelManager{
  			}
     	} 
 	}
-
 	// checks if a given player collides with any obstacle in this level
 	// returns true if the ball is ok
 	// returns false otherwise

@@ -1,5 +1,6 @@
 var moveDirection = new THREE.Vector3();
 var delta = 0;
+var canJump = false; //Global jump boolean controlled by power up
 
 class PlayerBall {
     
