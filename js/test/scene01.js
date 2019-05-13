@@ -169,7 +169,7 @@ class SceneInit {
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
-        /*
+        // particle animation
         var delta = this.clock.getDelta() * this.spawnerOptions.timeScale;
         tick += delta;
 
@@ -185,7 +185,7 @@ class SceneInit {
             }
         }
 
-        this.particleSystem.update( tick ); */
+        this.particleSystem.update( tick );
 
         this.render();
         //this.controls.update();
