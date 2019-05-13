@@ -17,3 +17,14 @@ canvas {
 	font-size: 50px;
 	color: white;
 }
+
+#PowerUpText{
+	position: absolute;
+	top: 30%;
+	width: 40%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	font-size: 50px;
+	color: red;
+}

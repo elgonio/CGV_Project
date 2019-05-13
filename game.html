@@ -201,6 +201,7 @@ function handleMovement()
 
 function handleCollisions()
 {
+    
     if(level_Manager.checkBlockCollisions(red_ball) && level_Manager.checkBlockCollisions(blue_ball) && level_Manager.checkBlockCollisions(yellow_ball))
     {
         //Do nothing - not colliding
@@ -213,13 +214,13 @@ function handleCollisions()
         var ScoreText = document.getElementById("ScoreText");
         camera_shake_controller.shakeScreen();
         handleCameraMovement();
-        ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+        ScoreText.innerHTML = "Score: "+level_Manager.get_score()+"<p> YOU LOSE </p> </p> Press R to Restart";
         
         setTimeout(function(){
             animating = false
             camera_shake_controller.shakeScreen();
             handleCameraMovement();
-            ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+            ScoreText.innerHTML = "Score: "+level_Manager.get_score()+"<p> YOU LOSE </p> </p> Press R to Restart";
             camera_shake_controller.stopShake();
             }, 700);
         //reloadGame();
@@ -238,7 +239,7 @@ function handleCollisions()
                 break;
             case "Screenshake":
                 camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
-                console.log("Shaking Screen");
+                PowerUpText.innerHTML = "SCREENSHAKE!";
                 break;
             case "Invert":
 
@@ -576,6 +577,8 @@ function init() {
 
     createWorld();
     var ScoreText = document.getElementById("ScoreText");
+    var PowerUpText = document.getElementById("PowerUpText");
+    PowerUpText.innerHTML = "";
     ScoreText.innerHTML = "Score: 0";
     // we don't actually need to change the camera view
     //installOrbitControls();
@@ -591,7 +594,7 @@ function init() {
 
 <div id="ScoreText">0</div>
 
-<div if="PowerUpText"></div>
+<div id="PowerUpText"></div>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>

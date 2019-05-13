@@ -66,14 +66,34 @@ class LevelManager{
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
 
 			//Chance to spawn a power up
-			//var randNum = Math.floor(Math.random()*5 + 1);
-			//if(randNum == 1){ //1 in 5 chance to spawn a power up
-			var powerUp = new PowerUp();
-			powerUp.get_mesh().position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval - 50);
-			this.powerUpArray.push(powerUp.get_mesh());
-			this.powerUpObjArray.push(powerUp);
-			this.allRows.add(powerUp.get_mesh());
-			//}
+			var randNum = Math.floor(Math.random()*4 + 1);
+			if(randNum == 1){ //1 in 4 chance to spawn a power up
+				var powerUp = new PowerUp();
+
+				randNum = Math.floor(Math.random()*5 + 1); //Randomise x position
+				var xPos = 0;
+				switch(randNum){
+					case 1:
+						xPos = -10;
+						break;
+					case 2:
+						xPos = -5;
+						break;
+					case 3:
+						xPos = 0;
+						break;
+					case 4:
+						xPos = 5;
+						break;
+					case 5:
+						xPos = 10;
+						break;
+				}
+				powerUp.get_mesh().position.set(xPos, 0, this.zPosSpawn - i*this.zSpawnDistInterval - 50);
+				this.powerUpArray.push(powerUp.get_mesh());
+				this.powerUpObjArray.push(powerUp);
+				this.allRows.add(powerUp.get_mesh());
+			}
 
 
 			this.rowObjGroupArray.push(rowObjGroup);//For obtaining collision info
@@ -120,7 +140,7 @@ class LevelManager{
 	handleScoring(){
 		var arrayLength = this.rowGroupArray.length;
     	for (var i = 0; i <= arrayLength-1; i++) {
- 			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && this.gameOver == false){
+ 			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && lost == false){
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
 				 console.log("Score: "+this.score);
@@ -199,6 +219,10 @@ class LevelManager{
 
 	get_currentPowerUpType(){
 		return this.currentPowerUpType;
+	}
+
+	get_score(){
+		return this.score;
 	}
 
 
