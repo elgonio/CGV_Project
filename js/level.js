@@ -10,7 +10,7 @@ var direction = new THREE.Vector3(0, 0, 1);
 class LevelManager{
 
 	constructor(difficulty, zPosSpawn, zSpawnDistInterval){
-		this.difficulty = difficulty;
+		this.difficulty = difficulty; //Easy or Avg or Hard
 		this.zSpawnDistInterval = zSpawnDistInterval;
 		this.zPosSpawn = zPosSpawn;
 		this.rowGroupArray = [];
@@ -22,6 +22,22 @@ class LevelManager{
 		this.scoreEnabled = true; 
 		this.gameOver = false
 		this.speed = 40;
+
+		switch(this.difficulty){
+
+			case "Easy":
+				this.speed = 35;
+				this.zSpawnDistInterval = 150;
+				break;
+			case "Avg":
+				this.speed = 40;
+				this.zSpawnDistInterval = 135;
+				break;
+			case "Hard":
+				this.speed = 45;
+				this.zSpawnDistInterval = 120;
+				break;
+		}
 	}
 	generateRows(){
 
@@ -147,8 +163,6 @@ class LevelManager{
 						return false;
 					}
 				}
-
-				//Handle scoring
 			}
 			
 	   } 
