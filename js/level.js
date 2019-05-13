@@ -66,6 +66,11 @@ class LevelManager{
 	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
 	 				this.scoreEnabled = true; //To allow scoring again since the row has moved to the back of the line of incoing rows again
 	 			}
+
+	 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
+	 				var block = this.rowObjGroupArray[i][k];
+	 				block.handleMovement();
+	 			}
         	} 
         	arrayLength = movingBlockArray.length;		
         	for (var i = 0; i <= arrayLength-1; i++) {
