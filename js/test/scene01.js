@@ -29,14 +29,6 @@ class SceneInit {
         // timer and clock enabling
         this.clock = new THREE.Clock();
 
-        // ktx formats support
-        let formats = {
-            astc: this.renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
-			etc1: this.renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
-			s3tc: this.renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
-			pvrtc: this.renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
-        };
-
         // append renderer as dominant element
         document.body.appendChild( this.renderer.domElement );
     }
@@ -58,6 +50,73 @@ class SceneInit {
         cube.rotation.y = 45;
     
         this.scene.add( cube );
+    }
+
+
+    // ktx cube demo function
+    addKTXCube() {
+        // ktx formats support
+        let formats = {
+            astc: this.renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
+            etc1: this.renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
+            s3tc: this.renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
+            pvrtc: this.renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
+        };
+
+        let geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+        let loader = new THREE.KTXLoader();
+        var material;
+        var meshes = [];
+
+        // check if s3tc
+        if ( formats.s3tc ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'textures/compressed/lensflare_BC3.ktx' ),
+				depthTest: false,
+				transparent: true,
+				side: THREE.DoubleSide
+			} );
+		    meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // etc1 
+		if ( formats.etc1 ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'textures/compressed/disturb_ETC1.ktx' )
+			} );
+			meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // astc
+		if ( formats.astc ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'textures/compressed/lensflare_ASTC8x8.ktx' ),
+				depthTest: false,
+				transparent: true,
+				side: THREE.DoubleSide
+			} );
+			meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // check if pvrtc
+        if ( formats.pvrtc ) {
+            material = new THREE.MeshBasicMaterial( {
+                map: loader.load( 'assets/textures/compressed/lensflare_PVR4bpp.ktx' ),
+                depthTest: false,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+            meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+		var x = - meshes.length / 2 * 150;
+		for ( var i = 0; i < meshes.length; ++ i, x += 300 ) {
+			var mesh = meshes[ i ];
+			mesh.position.x = x;
+			mesh.position.y = 0;
+			this.scene.add( mesh );
+		}
+        
     }
     
 
@@ -218,6 +277,7 @@ class SceneInit {
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
+test01.addKTXCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
