@@ -92,20 +92,9 @@ class PowerUp{
 		return this.mesh;
 	}
 
-	applyPowerUp(){
-		switch(this.type){
-			case "Jump":
-
-				break;
-			case "Screenshake":
-				camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
-				break;
-			case "Invert":
-
-				break;
-		}
+	get_type(){
+		return this.type;
 	}
-
 
 }
 

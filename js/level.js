@@ -22,6 +22,7 @@ class LevelManager{
 		this.scoreEnabled = true; 
 		this.gameOver = false
 		this.speed = 40;
+		this.currentPowerUpType = "";
 
 		switch(this.difficulty){
 
@@ -132,11 +133,33 @@ class LevelManager{
  			}
     	} 
 	}
+	checkPowerUpCollisions(player_ball)
+	{
+		var player_pos = new THREE.Vector3( );
+
+		player_ball.sphere.getWorldPosition(player_pos);
+
+		for (var i = 0; i <= this.powerUpObjArray.length-1; i++) {
+			var powerUp = this.powerUpObjArray[i];
+			var powerUp_pos = new THREE.Vector3();
+			powerUp.get_mesh().getWorldPosition(powerUp_pos);
+			var size = 1.5; //Radius of collider around power up
+			if(powerUp_pos.distanceTo(player_pos) < player_ball.size + size){
+				//Collide
+				this.currentPowerUpType = powerUp.get_type();
+				return false;
+
+			}
+		}
+		return true;
+
+	}
+
 	// checks if a given player collides with any obstacle in this level
 	// returns true if the ball is ok
 	// returns false otherwise
 	// this should probaly be renamed to something more intuitive
-	checkCollisions(player_ball)
+	checkBlockCollisions(player_ball)
 	{
 		var player_pos = new THREE.Vector3( );
 
@@ -148,7 +171,6 @@ class LevelManager{
 				var block = this.rowObjGroupArray[i][k];
 				var block_pos = new THREE.Vector3( );
 				block.get_mesh().getWorldPosition(block_pos);
-
 				var size = block.size/2; // radius of block there
 				if(block_pos.distanceTo(player_pos) < player_ball.size + size){
 					// COLLIDE
@@ -173,6 +195,10 @@ class LevelManager{
 	get_allRows(){
 		//console.log("rendering row");
 		return this.allRows;
+	}
+
+	get_currentPowerUpType(){
+		return this.currentPowerUpType;
 	}
 
 
