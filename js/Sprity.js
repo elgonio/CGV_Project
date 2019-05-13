@@ -1,4 +1,5 @@
 var material;
+var video, videoImage, videoImageContext, videoTexture;
 
 function makeTextSprite(message1, message2, parameters) {
     if (parameters === undefined) parameters = {};
@@ -278,7 +279,7 @@ function HelpInst() {
     colours.position.set(3, 125, 100);
     colours.scale.set(0.75, 0.75, 0.75);
     HelpRules.add(colours);
-
+    HelpRules.add(createhelpvide());
     // HelpRules.scale.set(1, 1, 1);
 }
 
@@ -384,4 +385,56 @@ function installTexture(texfile) {
     textureOffsetS = 0; // we start the texture with no texture offset
     textureOffsetT = 0;
     return texture;
+}
+
+function createhelpvide() {
+
+
+    // create the video element
+    video = document.createElement('video');
+    // video.id = 'video';
+    // video.type = ' video/ogg; codecs="theora, vorbis" ';
+    video.src = "assets/img/DemoSmall_Small.mp4";
+    video.load(); // must call after setting/changing source
+    video.play();
+    videoImage = document.createElement('canvas');
+    videoImage.width = 480;
+    videoImage.height = 204;
+    videoImageContext = videoImage.getContext('2d');
+    // background color if no video present
+    videoImageContext.fillStyle = '#000000';
+    videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
+    videoTexture = new THREE.Texture(videoImage);
+    videoTexture.minFilter = THREE.LinearFilter;
+    videoTexture.magFilter = THREE.LinearFilter;
+
+    var movieMaterial = new THREE.MeshBasicMaterial({ map: videoTexture, overdraw: true, side: THREE.DoubleSide });
+    // the geometry on which the movie will be displayed;
+    // 		movie image will be scaled to fit these dimensions.
+    var movieGeometry = new THREE.PlaneGeometry(240, 100, 4, 4);
+    var movieScreen = new THREE.Mesh(movieGeometry, movieMaterial);
+    movieScreen.position.set(190, 70, 0);
+    return (movieScreen);
+}
+
+function updateHelpvid() {
+    video.play();
+}
+
+function restartvid() {
+    video.currentTime = 0;
+    //video.play();
+
+}
+
+function renderHelpvid() {
+    if (state == 2) {
+
+
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            videoImageContext.drawImage(video, 0, 0);
+            if (videoTexture)
+                videoTexture.needsUpdate = true;
+        }
+    }
 }
