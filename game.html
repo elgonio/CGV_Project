@@ -41,6 +41,7 @@ var blue_ball ;
 var tracks ;
 var level_Manager ;
 
+
 function debug()
 {
     console.log(red_ball.colour);
@@ -269,6 +270,8 @@ function createWorld() {
     addLight();
     // function adds water
     addWater();
+    // fog
+    addFog();
 
     
     //------------------- Create the scene's visible objects ----------------------
@@ -364,6 +367,15 @@ function addWater() {
 		water.position.y = ( -2 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
     scene.add( water );
+}
+
+
+// fog
+function addFog() {
+    var fogColour = "#101010";
+    var fogNear = 10;
+    var fogFar = 250;
+    scene.fog = new THREE.Fog( fogColour, fogNear, fogFar );
 }
 
 
@@ -487,6 +499,8 @@ function init() {
     }
 
     createWorld();
+    var ScoreText = document.getElementById("ScoreText");
+    ScoreText.innerHTML = "0";
     // we don't actually need to change the camera view
     //installOrbitControls();
     render();
@@ -499,6 +513,7 @@ function init() {
 
 <body onload="init()">
 
+<div id="ScoreText">0</div>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>

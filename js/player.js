@@ -1,3 +1,6 @@
+var moveDirection = new THREE.Vector3();
+var delta = 0;
+
 class PlayerBall {
     
     // colour is of the form "blue","red" or "yellow"
@@ -32,7 +35,7 @@ class PlayerBall {
 
         this.group = new THREE.Group();
         this.size = 1.5;
-
+        this.moveSpeed = 25;
 
         
 
@@ -166,21 +169,26 @@ class PlayerBall {
             }
         }
         
+        delta = globalDelta;
         // we don't want to just move to the next position so we move there over time 
         if (this.group.position.x > this.destVector.getComponent(0) )
         {
-            this.group.translateX(-0.25);
+            moveDirection.set(-1,0,0);
+            this.group.position.addScaledVector(moveDirection, this.moveSpeed*delta);
         }
         else if (this.group.position.x < this.destVector.getComponent(0))
         {
-            this.group.translateX(+0.25);
+            moveDirection.set(1,0,0);
+            this.group.position.addScaledVector(moveDirection, this.moveSpeed*delta);
         }
 
         if(this.group.position.z > this.destVector.getComponent(2)){
-            this.group.translateZ(-0.25);
+            moveDirection.set(0,0,-1);
+            this.group.position.addScaledVector(moveDirection, this.moveSpeed*delta);
         }
         else if(this.group.position.z < this.destVector.getComponent(2)){
-            this.group.translateZ(+0.25);
+            moveDirection.set(0,0,1);
+            this.group.position.addScaledVector(moveDirection, this.moveSpeed*delta);
         }
 
         // THIS SOLVES A BUG. PLZ DONT REMOVE
@@ -190,6 +198,7 @@ class PlayerBall {
         if(close_enough)
         {
             this.isMoving = false;
+            this.group.position.set(this.destVector.getComponent(0),this.group.position.getComponent(1),this.destVector.getComponent(2));
             //console.log("stopped");
         }
         else
@@ -199,11 +208,13 @@ class PlayerBall {
         }
 
         if(this.isJumping == true){
+            var jumpSpeed = 15;
             if(this.isFalling == false){ //Ball is in upward motion of jump
                 if(this.group.position.y < 8){
-                    this.group.translateY(+0.15);
+                moveDirection.set(0,1,0);
+                this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
 
-                    close_enough = (Math.abs(this.group.position.y - 8) < 0.1);
+                    close_enough = (Math.abs(this.group.position.y - 8) < 0.2);
                     if(close_enough == true){
                         this.isFalling = true;
                     }
@@ -212,9 +223,9 @@ class PlayerBall {
             }
             else if(this.isFalling == true){ //Ball is in downward motion of jump
                 if(this.group.position.y > 0){
-                    this.group.translateY(-0.15);
-
-                    close_enough = (Math.abs(this.group.position.y) < 0.1);
+                    moveDirection.set(0,-1,0);
+                    this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
+                    close_enough = (Math.abs(this.group.position.y) < 0.2);
                     if(close_enough == true){
                         this.isFalling = false;
                         this.isJumping = false;

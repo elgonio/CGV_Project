@@ -156,6 +156,16 @@ class SceneInit {
     }
 
 
+    // trying out a fog effect
+    addFog() {
+        //var fog;
+        let fogColour = "#ffffff";
+        let fogNear = 1;
+        let fogFar = 7;
+        this.scene.fog = new THREE.Fog( fogColour, fogNear, fogFar );
+    }
+
+
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
@@ -195,5 +205,6 @@ test01.addCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
+test01.addFog();
 test01.addParticles();
 test01.animate();
