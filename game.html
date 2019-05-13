@@ -11,6 +11,7 @@
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
 <script src="js/CameraShake.js"></script>
+<script src="js/PowerUp.js"></script>
 <script src="js/Skybox.js"></script>
 <script src="js/objects/Reflector.js"></script>
 <script src="js/objects/Refractor.js"></script>
@@ -78,7 +79,7 @@ function onKeyDown( event ) {
 
         case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); break;
 
-        case 80: /*P*/ camera_shake_controller.shakeScreen(); //For testing purposes
+        case 80: /*P*/ camera_shake_controller.shakeScreen(0.6); //For testing purposes
     }
     
 }
@@ -298,7 +299,7 @@ function createWorld() {
 
     level_Manager = new LevelManager("easy", -200, 130); // create a controller which handles level generation and score
 
-    camera_shake_controller = new CameraShake(camera, 0.5, 0.6) // create a controller which handles camera shake
+    camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
     level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
