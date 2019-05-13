@@ -3,6 +3,7 @@ var delta = 0;
 var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
 var global_atom_geometry = new THREE.SphereGeometry( 1.5/16, 12, 12 );
 var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
+var canJump = false; //Global jump boolean controlled by power up
 
 class PlayerBall {
     

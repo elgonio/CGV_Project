@@ -4,7 +4,8 @@ class PowerUp{
 
 	constructor(){
 
-		var randNum = Math.floor(Math.random()*4 + 1) //Randomise number between 1 and 3
+
+		var randNum = 2 //Math.floor(Math.random()*4 + 1) //Randomise number between 1 and 3
 		switch(randNum){
 			case 1: //Jump ability
 				this.type = "Jump";
@@ -91,6 +92,20 @@ class PowerUp{
 
 	get_mesh(){
 		return this.mesh;
+	}
+
+	applyPowerUp(){
+		switch(this.type){
+			case "Jump":
+
+				break;
+			case "Screenshake":
+				camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
+				break;
+			case "Invert":
+
+				break;
+		}
 	}
 
 
