@@ -336,16 +336,33 @@ function addLight() {
             ambientLight.castShadow = false;
         scene.add( ambientLight );
 
-        // point light example setup
-        var pointLight = new THREE.PointLight( "rgb(240, 240, 240)", 0.8, 100 );
-            pointLight.position.set ( 0, 5, 5 ); // x y z, threejs coordinate system, player is centered 0 on x, y is "up"
+        // point light 1, blue
+        var pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
+            pointLight01.position.set ( -5, 5, 2 ); // x y z, - y is up down
         // point light shadow properties
-            pointLight.castShadow = true;
-            pointLight.shadow.mapSize.width = 512;
-            pointLight.shadow.mapSize.height = 512;
-            pointLight.shadow.camera.near = 0.1;
-            pointLight.shadow.camera.far = 500;
-        scene.add( pointLight );
+            pointLight01.shadow.mapSize.width = 512;
+            pointLight01.shadow.mapSize.height = 512;
+            pointLight01.shadow.camera.near = 0.5;
+            pointLight01.shadow.camera.far = 500;
+        scene.add( pointLight01 );
+
+        // point light 2, red
+        var pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
+            pointLight02.position.set ( 0, 5, 2 );
+            pointLight02.shadow.mapSize.width = 512;
+            pointLight02.shadow.mapSize.height = 512;
+            pointLight02.shadow.camera.near = 0.5;
+            pointLight02.shadow.camera.far = 500;
+        scene.add( pointLight02 );
+
+        // point light 3, yellow
+        var pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
+            pointLight03.position.set ( 5, 5, 2 );
+            pointLight03.shadow.mapSize.width = 512;
+            pointLight03.shadow.mapSize.height = 512;
+            pointLight03.shadow.camera.near = 0.5;
+            pointLight03.shadow.camera.far = 500;
+        scene.add( pointLight03 );
 
         // spot light example setup
         var spotLight = new THREE.SpotLight( "rgb(240, 240, 240)", 0.8 );
