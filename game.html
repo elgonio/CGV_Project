@@ -38,6 +38,8 @@ var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
 var globalDelta = clock.getDelta();
 
+var lost = false;
+
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
 
@@ -85,7 +87,9 @@ function onKeyDown( event ) {
 
         case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); break;
 
-        case 80: /*P*/ camera_shake_controller.shakeScreen(); //For testing purposes
+        case 82: /*R*/ reloadGame();break;
+
+        case 80: /*P*/ camera_shake_controller.shakeScreen(); break;//For testing purposes
     }
     
 }
@@ -204,9 +208,20 @@ function handleCollisions()
     {
         // LOSE THE GAME
         console.log("YOU LOST");
-        alert("YOU LOST");
-        //animating=false;
-        reloadGame();
+        lost = true;
+        var ScoreText = document.getElementById("ScoreText");
+        camera_shake_controller.shakeScreen();
+        handleCameraMovement();
+        ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+        
+        setTimeout(function(){
+            animating = false
+            camera_shake_controller.shakeScreen();
+            handleCameraMovement();
+            ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+            camera_shake_controller.stopShake();
+            }, camera_shake_controller.shakeDuration*1200);
+        //reloadGame();
        // window.open('StartMenu.html', '_top');
     }
 }
@@ -507,7 +522,7 @@ function doFrame() {
  *  initial view of the scene.  If an error occurs, it is reported.
  */
 function init() {
-
+    lost = false;
     stats = new Stats();
     document.body.appendChild( stats.domElement );  
 
@@ -539,7 +554,7 @@ function init() {
 
     createWorld();
     var ScoreText = document.getElementById("ScoreText");
-    ScoreText.innerHTML = "0";
+    ScoreText.innerHTML = "Score: 0";
     // we don't actually need to change the camera view
     //installOrbitControls();
     render();

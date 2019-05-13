@@ -42,4 +42,10 @@ class CameraShake{
 		this.shaking = true;
 	}
 
+	stopShake(){
+		this.camera.position.copy(this.originalCamPos); //Reset camera back to initial position before it started shaking
+
+		this.shaking = false; //Stop shaking
+	}
+
 }
