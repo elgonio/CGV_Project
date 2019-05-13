@@ -61,14 +61,17 @@ class SceneInit {
         this.scene.add( floor );
     }
 
+    
     addWater() {
-        // check if webgl is there
-        if (WEBGL.IsWebGLAvailable() === false) {
-            this.document.appendChild ( WEBGL.getWebGLErrorMessage() );
-        }
-
-        let waterGeo = new THREE.PlaneBufferGeometry( 20, 20 );
-		let water = new THREE.Water( waterGeometry, {
+        var params = {
+			color: '#ffffff',
+			scale: 4,
+			flowX: 1,
+			flowY: 1
+        };
+        
+        let waterGeo = new THREE.PlaneBufferGeometry( 200, 200 );
+		let water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
 			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
@@ -76,10 +79,42 @@ class SceneInit {
 			textureHeight: 1024
         } );
             
-		water.position.y = ( -0.5 );
+		water.position.y = ( -1 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
 		this.scene.add( water );
     }
+
+
+    // particle system demo
+    /* addParticles() {
+        var tick = 0;
+
+        let particleSystem = new THREE.GPUParticleSystem( {
+            maxParticles: 125000
+        } );
+
+        this.scene.add( particleSystem );
+
+        options = {
+            position: new THREE.Vector3(),
+            positionRandomness: 0.0,
+            velocity: new THREE.Vector3(),
+            velocityRandomness: 0.25,
+            color: '#ffffff',
+            colorRandomness: 0.2,
+            turbulence: 0.6,
+            lifetime: 1.2,
+            size: 10,
+            sizeRandomness: 1
+        };
+
+        spawnerOptions = {
+            spawnRate: 15000,
+            horizontalSpeed: 0.0,
+            verticalSpeed: 0.0,
+            timeScale: 1
+        };
+    } */
 
 
     addLight() {
@@ -134,4 +169,6 @@ test01.initScene();
 test01.addCube();
 test01.addFloor();
 test01.addLight();
+test01.addWater();
+//test01.addParticles();
 test01.animate();
