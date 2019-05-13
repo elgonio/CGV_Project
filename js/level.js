@@ -5,7 +5,6 @@ var clock = new THREE.Clock();
 var time = 0;
 var delta = 0; //For consistent movement across different FPS rates
 var direction = new THREE.Vector3(0, 0, 1);
-var speed = 0; // units a second
 
 
 class LevelManager{
@@ -16,10 +15,12 @@ class LevelManager{
 		this.zPosSpawn = zPosSpawn;
 		this.rowGroupArray = [];
 		this.rowObjGroupArray = [];
+		this.powerUpObjArray = [];
 		this.allRows = new THREE.Group(); 
 		this.score = 0;
 		this.scoreEnabled = true; 
 		this.gameOver = false
+		this.speed = 40;
 	}
 	generateRows(){
 
@@ -45,6 +46,16 @@ class LevelManager{
 					break;
 			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
+
+			//Chance to spawn a power up
+			//var randNum = Math.floor(Math.random()*5 + 1);
+			//if(randNum == 1){ //1 in 5 chance to spawn a power up
+			var powerUp = new PowerUp(this.speed);
+			powerUp.get_mesh().position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval-50);
+			this.powerUpObjArray.push(powerUp);
+			//}
+
+
 			this.rowObjGroupArray.push(rowObjGroup);//For obtaining collision info
 			this.rowGroupArray.push(rowGroup); //For animation purposes
 			this.allRows.add(rowGroup); //For rendering purposes
@@ -58,10 +69,10 @@ class LevelManager{
 		//console.log(delta);
         
         if(this.difficulty == "easy"){
-        	speed = 40;
+        	this.speed = 40;
         	var arrayLength = this.rowGroupArray.length;
         	for (var i = 0; i <= arrayLength-1; i++) {
-	 			this.rowGroupArray[i].position.addScaledVector(direction, speed*delta);
+	 			this.rowGroupArray[i].position.addScaledVector(direction, this.speed*delta);
 	 			if(this.rowGroupArray[i].position.z > 15){
 	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
 	 				this.scoreEnabled = true; //To allow scoring again since the row has moved to the back of the line of incoing rows again
@@ -76,6 +87,11 @@ class LevelManager{
         	for (var i = 0; i <= arrayLength-1; i++) {
 	 			movingBlockArray[i].handleMovement();
         	} 
+
+        	arrayLength = this.powerUpObjArray.length;
+        	for (var i = 0; i <= arrayLength-1; i++){
+        		this.powerUpObjArray[i].handleMovement();
+        	}
         }
 
 	}
@@ -86,7 +102,7 @@ class LevelManager{
  			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && this.gameOver == false){
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
- 				console.log("Score: "+this.score)
+ 				//console.log("Score: "+this.score)
  				var ScoreText = document.getElementById("ScoreText");
  				ScoreText.innerHTML = "Score: "+this.score;
  			}
@@ -120,7 +136,7 @@ class LevelManager{
 					else{
 						console.log("Block Colour: "+block.get_colour());
 						console.log("Player Colour: "+player_ball.get_colour());
-						return false
+						return false;
 					}
 				}
 
