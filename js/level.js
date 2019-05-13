@@ -7,6 +7,7 @@ var delta = 0; //For consistent movement across different FPS rates
 var direction = new THREE.Vector3(0, 0, 1);
 var speed = 0; // units a second
 
+
 class LevelManager{
 
 	constructor(difficulty, zPosSpawn, zSpawnDistInterval){
@@ -81,6 +82,8 @@ class LevelManager{
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
  				console.log("Score: "+this.score)
+ 				var ScoreText = document.getElementById("ScoreText");
+ 				ScoreText.innerHTML = ""+this.score;
  			}
     	} 
 	}
