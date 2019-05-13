@@ -270,6 +270,8 @@ function createWorld() {
     addLight();
     // function adds water
     addWater();
+    // fog
+    addFog();
 
     
     //------------------- Create the scene's visible objects ----------------------
@@ -365,6 +367,15 @@ function addWater() {
 		water.position.y = ( -2 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
     scene.add( water );
+}
+
+
+// fog
+function addFog() {
+    var fogColour = "#101010";
+    var fogNear = 10;
+    var fogFar = 250;
+    scene.fog = new THREE.Fog( fogColour, fogNear, fogFar );
 }
 
 
