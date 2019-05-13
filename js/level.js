@@ -87,11 +87,12 @@ class LevelManager{
         	for (var i = 0; i <= arrayLength-1; i++) {
 	 			movingBlockArray[i].handleMovement();
         	} 
-
+/*
         	arrayLength = this.powerUpObjArray.length;
         	for (var i = 0; i <= arrayLength-1; i++){
         		this.powerUpObjArray[i].handleMovement();
-        	}
+				//this.powerUpObjArray[i].get_mesh().addScaledVector(new THREE.Vector3(0,0,1), this.speed*delta); //make power up move down the track when it spawns
+        	}*/
         }
 
 	}
