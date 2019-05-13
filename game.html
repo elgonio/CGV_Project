@@ -11,6 +11,11 @@
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
 <script src="js/Skybox.js"></script>
+<script src="js/objects/Reflector.js"></script>
+<script src="js/objects/Refractor.js"></script>
+<script src="js/objects/Water2.js"></script>
+<script src="js/GPUParticleSystem.js"></script>
+
 <script>
 
 "use strict";
@@ -192,8 +197,11 @@ function handleCollisions()
         reloadGame();
        // window.open('StartMenu.html', '_top');
     }
-    
+}
 
+function handleScoring()
+{
+    level_Manager.handleScoring();
 }
 
 
@@ -259,6 +267,8 @@ function createWorld() {
     
     // function that adds the lights, attached to the viewer
     addLight();
+    // function adds water
+    addWater();
 
     
     //------------------- Create the scene's visible objects ----------------------
@@ -333,6 +343,30 @@ function addLight() {
 }
 
 
+// function that adds water
+function addWater() {
+    var params = {
+			color: '#ffffff',
+			scale: 4,
+			flowX: 1,
+			flowY: 1
+        };
+        
+        var waterGeo = new THREE.PlaneBufferGeometry( 1000, 1000 );
+		var water = new THREE.Water( waterGeo, {
+			color: params.color,
+			scale: params.scale,
+			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
+			textureWidth: 1024,
+			textureHeight: 1024
+        } );
+            
+		water.position.y = ( -2 );
+		water.rotation.x = ( Math.PI * (- 0.5) );
+    scene.add( water );
+}
+
+
 /**
  *  This function is called once for each frame of the animation, before
  *  the render() function is called for that frame.  It updates any
@@ -343,6 +377,7 @@ function updateForFrame() {
     globalDelta = clock.getDelta();
     handleColours();
     handleMovement();
+    handleScoring()
     updateSkybox();
 
     //console.log("handling collisions");

@@ -16,6 +16,9 @@ class LevelManager{
 		this.rowGroupArray = [];
 		this.rowObjGroupArray = [];
 		this.allRows = new THREE.Group(); 
+		this.score = 0;
+		this.scoreEnabled = true; 
+		this.gameOver = false
 	}
 	generateRows(){
 
@@ -60,6 +63,7 @@ class LevelManager{
 	 			this.rowGroupArray[i].position.addScaledVector(direction, speed*delta);
 	 			if(this.rowGroupArray[i].position.z > 15){
 	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
+	 				this.scoreEnabled = true; //To allow scoring again since the row has moved to the back of the line of incoing rows again
 	 			}
         	} 
         	arrayLength = movingBlockArray.length;		
@@ -68,6 +72,17 @@ class LevelManager{
         	} 
         }
 
+	}
+
+	handleScoring(){
+		var arrayLength = this.rowGroupArray.length;
+    	for (var i = 0; i <= arrayLength-1; i++) {
+ 			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && this.gameOver == false){
+ 				this.score += 1;
+ 				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
+ 				console.log("Score: "+this.score)
+ 			}
+    	} 
 	}
 
 	// checks if a given player collides with any obstacle in this level
@@ -100,6 +115,8 @@ class LevelManager{
 						return false
 					}
 				}
+
+				//Handle scoring
 			}
 			
 	   } 
