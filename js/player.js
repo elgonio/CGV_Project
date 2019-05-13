@@ -105,6 +105,7 @@ class PlayerBall {
         }
         else if(this.type == 2)
         {
+            this.size = 1.5/2;
             var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
             var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
             var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
@@ -114,6 +115,47 @@ class PlayerBall {
                                                             } );
             material.map = texture;
             this.sphere = new THREE.Mesh( geometry, material );
+
+            
+    
+            this.group.add(this.sphere); 
+            this.electron_scale = this.size/8;
+            this.orbit_radius = this.size*1.5 + this.electron_scale*2;
+            this.electron_speed = 2*Math.PI*this.orbit_radius/7;
+            this.electrons = new THREE.Group();
+            this.v_electrons = new THREE.Group();
+            this.h_electrons = new THREE.Group();
+            this.d1_electrons = new THREE.Group();
+            this.d2_electrons = new THREE.Group();
+            this.electrons.add(this.h_electrons);
+            this.electrons.add(this.v_electrons);
+            this.electrons.add(this.d1_electrons);
+            this.electrons.add(this.d2_electrons);
+            this.group.add(this.electrons);
+
+            this.v_electrons.rotateZ(2*Math.PI/4);
+            this.d1_electrons.rotateZ(Math.PI/4);
+            this.d2_electrons.rotateZ(-Math.PI/4);
+            for (var k = 0; k < 4; k++) {
+                var electron = this.make_electron();
+                switch (k%4) {
+                    case 0:
+                        this.h_electrons.add(electron)
+                        break;
+                    case 1:
+                        this.v_electrons.add(electron)
+                        break;
+                    case 2:
+                        this.d1_electrons.add(electron)
+                        break;
+                    case 3:
+                        this.d2_electrons.add(electron)
+                        break;
+                
+                    default:
+                } 
+                
+            }
     
             this.group.add(this.sphere); 
         }
@@ -286,7 +328,7 @@ class PlayerBall {
                 break; 
         }
 
-        if (this.type == 1)
+        if (this.type == 1 || this.type == 2)
         {
             for (var i = 0; i < this.electrons.children.length; i++) 
             {
@@ -355,7 +397,7 @@ class PlayerBall {
 
     handleAnimation()
     {
-        if (this.type == 1)
+        if (this.type == 1 || this.type == 2)
         {
             var num_electrons = this.electrons.children.length;
             for (var i = 0; i < num_electrons; i++) 
