@@ -89,6 +89,7 @@ function initializeSkybox(x, y, z) {
     cube.position.x = 0;
     cube.position.y = 200;
     cube.position.z = 450;
+    cube.rotation.x = 0.3;
     scene.add(cube);
     console.log("added skybox", cube.position);
 }
