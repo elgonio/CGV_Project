@@ -1,9 +1,9 @@
 class CameraShake{
 
-	constructor(camera, intensity, duration){
+	constructor(camera, intensity){
 		this.camera = camera;
 		this.shakeIntensity = intensity;
-		this.shakeDuration = duration;
+		this.shakeDuration = 1;
 
 		this.shaking = false;
 		this.originalCamPos = new THREE.Vector3();
@@ -37,8 +37,9 @@ class CameraShake{
 		}
 	}
 
-	shakeScreen(){
+	shakeScreen(duration){
 		this.clock.start();
+		this.shakeDuration = duration;
 		this.shaking = true;
 	}
 

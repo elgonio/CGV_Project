@@ -11,6 +11,7 @@
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
 <script src="js/CameraShake.js"></script>
+<script src="js/PowerUp.js"></script>
 <script src="js/Skybox.js"></script>
 
 <!-- links for water -->
@@ -320,7 +321,7 @@ function createWorld() {
 
     level_Manager = new LevelManager("easy", -200, 130); // create a controller which handles level generation and score
 
-    camera_shake_controller = new CameraShake(camera, 0.5, 0.6) // create a controller which handles camera shake
+    camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
     level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
@@ -346,14 +347,14 @@ function createWorld() {
 
 // function that instantiates all lights in the scene
 function addLight() {
-        // ambient light example setup
-        var ambientLight = new THREE.AmbientLight( "rgb(240, 240, 240)", 0.25 );
+        // ambient light
+        var ambientLight = new THREE.AmbientLight( "rgb(240, 240, 240)", 0.50);
             ambientLight.castShadow = false;
         scene.add( ambientLight );
 
         // point light 1, blue
-        var pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
-            pointLight01.position.set ( -10, 10, 2 ); // x y z, - y is up down
+        var pointLight01 = new THREE.PointLight( "rgb(200, 200, 255)", 1, 20 );
+            pointLight01.position.set ( -15, 5, -4 ); // x y z, - y is up down
         // point light shadow properties
             pointLight01.castShadow = true;
             pointLight01.shadow.mapSize.width = 512;
@@ -363,8 +364,8 @@ function addLight() {
         scene.add( pointLight01 );
 
         // point light 2, red
-        var pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
-            pointLight02.position.set ( 0, 10, 2 );
+        var pointLight02 = new THREE.PointLight( "rgb(255, 200, 200)", 1, 20 );
+            pointLight02.position.set ( 0, 5, -4 );
             pointLight02.castShadow = true;
             pointLight02.shadow.mapSize.width = 512;
             pointLight02.shadow.mapSize.height = 512;
@@ -373,8 +374,8 @@ function addLight() {
         scene.add( pointLight02 );
 
         // point light 3, yellow
-        var pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
-            pointLight03.position.set ( 10, 10, 2 );
+        var pointLight03 = new THREE.PointLight( "rgb(255, 255, 100)", 1, 20 );
+            pointLight03.position.set ( 15, 5, -4 );
             pointLight03.castShadow = true;
             pointLight03.shadow.mapSize.width = 512;
             pointLight03.shadow.mapSize.height = 512;
@@ -382,21 +383,21 @@ function addLight() {
             pointLight03.shadow.camera.far = 500;
         scene.add( pointLight03 );
 
-        // spot light example setup
-        var spotLight = new THREE.SpotLight( "rgb(240, 240, 240)", 0.8 );
-            spotLight.position.set( 0, 40, 35 );
-            spotLight.angle = ( Math.PI/4 );
-            spotLight.penumbra = 0.05;
-            spotLight.decay = 2;
-            spotLight.distance = 200;
+        // spot light 1
+        var spotLight01 = new THREE.SpotLight( "rgb(100, 100, 100)", 0.5 );
+            spotLight01.position.set( 0, 10, 0 );
+            spotLight01.angle = ( Math.PI/4 );
+            spotLight01.penumbra = 0.10;
+            spotLight01.decay = 2;
+            spotLight01.distance = 200;
         // spot light shadow properties
-            spotLight.castShadow = true;
-            spotLight.shadow.mapSize.width = 1024;
-            spotLight.shadow.mapSize.height = 1024;
-            spotLight.shadow.camera.near = 0.1;
-            spotLight.shadow.camera.far = 200;
-        scene.add( spotLight );
-}
+            spotLight01.castShadow = true;
+            spotLight01.shadow.mapSize.width = 1024;
+            spotLight01.shadow.mapSize.height = 1024;
+            spotLight01.shadow.camera.near = 2;
+            spotLight01.shadow.camera.far = 200;
+        scene.add( spotLight01 );
+    }
 
 
 // function that adds water

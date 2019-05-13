@@ -117,11 +117,12 @@ class SceneInit {
 
     // floor demo function
     addFloor() {
-        let material = new THREE.MeshPhongMaterial( { color: "rgb(220, 220, 220)", dithering: true } );
+        let material = new THREE.MeshPhongMaterial( { color: "rgb(22, 22, 22)", dithering: true } );
         let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
         let floor = new THREE.Mesh( geometry, material );
 
-        floor.position.set( 0, 0, 0 );
+        floor.position.set( 0, -1, 0 );
+        floor.rotateX( - Math.PI / 2);
         
         // floor shadow properties
             floor.receiveShadow = true;
@@ -139,7 +140,7 @@ class SceneInit {
 			flowY: 1
         };
         
-        let waterGeo = new THREE.PlaneBufferGeometry( 200, 200 );
+        let waterGeo = new THREE.PlaneBufferGeometry( 250, 250 );
 		let water = new THREE.Water( waterGeo, {
 			color: params.color,
 			scale: params.scale,
@@ -148,7 +149,7 @@ class SceneInit {
 			textureHeight: 1024
         } );
             
-		water.position.y = ( -1 );
+		water.position.y = ( 0 );
 		water.rotation.x = ( Math.PI * (- 0.5) );
 		this.scene.add( water );
     }
@@ -192,14 +193,15 @@ class SceneInit {
     // lights demo function
     addLight() {
         // ambient light
-        let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
+        let ambientLight = new THREE.AmbientLight( "rgb(240, 240, 240)", 0.50);
             ambientLight.castShadow = false;
         this.scene.add( ambientLight );
 
         // point light 1, blue
-        let pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
+        let pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 20 );
             pointLight01.position.set ( -5, 5, 2 ); // x y z, - y is up down
         // point light shadow properties
+            pointLight01.castShadow = true;
             pointLight01.shadow.mapSize.width = 512;
             pointLight01.shadow.mapSize.height = 512;
             pointLight01.shadow.camera.near = 0.5;
@@ -207,8 +209,9 @@ class SceneInit {
         this.scene.add( pointLight01 );
 
         // point light 2, red
-        let pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
+        let pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 20 );
             pointLight02.position.set ( 0, 5, 2 );
+            pointLight02.castShadow = true;
             pointLight02.shadow.mapSize.width = 512;
             pointLight02.shadow.mapSize.height = 512;
             pointLight02.shadow.camera.near = 0.5;
@@ -216,28 +219,29 @@ class SceneInit {
         this.scene.add( pointLight02 );
 
         // point light 3, yellow
-        let pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
+        let pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 20 );
             pointLight03.position.set ( 5, 5, 2 );
+            pointLight03.castShadow = true;
             pointLight03.shadow.mapSize.width = 512;
             pointLight03.shadow.mapSize.height = 512;
             pointLight03.shadow.camera.near = 0.5;
             pointLight03.shadow.camera.far = 500;
         this.scene.add( pointLight03 );
 
-        // spot light example setup
-        let spotLight = new THREE.SpotLight( "rgb(255, 0, 0)", 1 );
-            spotLight.position.set( 0, 10, 0 );
-            spotLight.angle = ( Math.PI/4 );
-            spotLight.penumbra = 0.05;
-            spotLight.decay = 2;
-            spotLight.distance = 200;
+        // spot light 1
+        let spotLight01 = new THREE.SpotLight( "rgb(100, 100, 100)", 0.5 );
+            spotLight01.position.set( 0, 10, 0 );
+            spotLight01.angle = ( Math.PI/4 );
+            spotLight01.penumbra = 0.10;
+            spotLight01.decay = 2;
+            spotLight01.distance = 200;
         // spot light shadow properties
-            spotLight.castShadow = true;
-            spotLight.shadow.mapSize.width = 1024;
-            spotLight.shadow.mapSize.height = 1024;
-            spotLight.shadow.camera.near = 10;
-            spotLight.shadow.camera.far = 200;
-        this.scene.add( spotLight );
+            spotLight01.castShadow = true;
+            spotLight01.shadow.mapSize.width = 1024;
+            spotLight01.shadow.mapSize.height = 1024;
+            spotLight01.shadow.camera.near = 2;
+            spotLight01.shadow.camera.far = 200;
+        this.scene.add( spotLight01 );
     }
 
 
@@ -290,10 +294,10 @@ class SceneInit {
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
-//test01.addKTXCube();
+test01.addKTXCube();
 test01.addFloor();
 test01.addLight();
-//test01.addWater();
+test01.addWater();
 test01.addFog();
 //test01.addParticles();
 test01.animate();
