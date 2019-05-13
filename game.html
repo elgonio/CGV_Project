@@ -10,11 +10,19 @@
 <script src="js/tracklines.js"></script>
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
+<script src="js/CameraShake.js"></script>
 <script src="js/Skybox.js"></script>
-<script src="js/objects/Reflector.js"></script>
-<script src="js/objects/Refractor.js"></script>
-<script src="js/objects/Water2.js"></script>
-<script src="js/GPUParticleSystem.js"></script>
+
+<!-- links for water -->
+<script type="text/javascript" src="js/objects/Reflector.js"></script>
+<script type="text/javascript" src="js/objects/Refractor.js"></script>
+<script type="text/javascript" src="js/objects/Water2.js"></script>
+
+<!-- link for compressed texture loader -->
+<script type="text/javascript" src="js/loaders/KTXLoader.js"></script>
+
+<!-- link for particle systems -->
+<script type="text/javascript" src="js/GPUParticleSystem.js"></script>
 
 <script>
 
@@ -40,6 +48,7 @@ var yellow_ball ;
 var blue_ball ;
 var tracks ;
 var level_Manager ;
+var camera_shake_controller ;
 
 
 function debug()
@@ -75,6 +84,8 @@ function onKeyDown( event ) {
         case 39: /*right*/yellow_ball.controls.moveRight = true; event.preventDefault();break;
 
         case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); break;
+
+        case 80: /*P*/ camera_shake_controller.shakeScreen(); //For testing purposes
     }
     
 }
@@ -205,6 +216,10 @@ function handleScoring()
     level_Manager.handleScoring();
 }
 
+function handleCameraMovement(){
+    camera_shake_controller.handleScreenShake();
+}
+
 
 function reloadGame()
 {
@@ -285,14 +300,17 @@ function createWorld() {
     yellow_ball = new PlayerBall("yellow",4,1); //Start on far right
     scene.add(yellow_ball.group);
 
-    tracks = new Tracks();
+    tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("easy", -200, 130);
+    level_Manager = new LevelManager("easy", -200, 130); // create a controller which handles level generation and score
+
+    camera_shake_controller = new CameraShake(camera, 0.5, 0.6) // create a controller which handles camera shake
 
     level_Manager.generateRows(); //Delay this function in a loop so it continiously instatiates rows of obstacles
 
     scene.add(level_Manager.get_allRows());
+
 
     updateSkybox(75,75,500);
     if (scene.getObjectByName('object_name') == null)
@@ -390,6 +408,7 @@ function updateForFrame() {
     handleColours();
     handleMovement();
     handleScoring()
+    handleCameraMovement();
     updateSkybox();
 
     //console.log("handling collisions");

@@ -79,7 +79,7 @@ class HomeBall {
                 this.sphere.material.emissive.setHex(0x00dd00);
                 break;
             case "orange":
-                this.sphere.material.emissive.setHex(0xce6800);
+                this.sphere.material.emissive.setHex(0xFFA500);
                 break;
             case "purple":
                 this.sphere.material.emissive.setHex(0xdd00dd);

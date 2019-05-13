@@ -28,7 +28,7 @@
         var p1, p2, p3;
         var t1, t2, t3;
         var returnToMain, returnToMainB;
-        var textgroup;
+        var textgroup, HelpRules;
         var canvas1, context1, texture1;
 
         var targetList = [];
@@ -137,6 +137,7 @@
 
             updateState();
             AddInstructions();
+            HelpInst();
 
             // scene.add(Newword.get_mesh());
             //  group.add(mesh1);
@@ -197,6 +198,10 @@
                     state = 0;
                     updateState();
                     break;
+                } else if (intersects[i].object == returnToMain) {
+                    state = 0;
+                    updateState();
+                    break;
                 } else if (state > 10) {} else if (intersects[i].object == p3.get_mesh()) {
                     if (state == 1) {
                         state = 13;
@@ -210,7 +215,7 @@
                     updateState();
                     break;
                 } else if (intersects[i].object == p2.get_mesh()) {
-                    if (state == 0) {
+                    if (state == 0) { //pressed help
                         state = 2;
                         console.log("u hit help");
                     } else if (state == 1) {
@@ -252,6 +257,7 @@
                 scene.remove(t3);
                 scene.remove(returnToMain);
                 scene.remove(textgroup);
+                scene.remove(HelpRules);
                 scene.remove(p1.get_mesh());
                 scene.remove(p2.get_mesh());
                 scene.remove(p3.get_mesh());
@@ -274,6 +280,20 @@
                 NewText("Avg", -35, 2);
                 NewText("Hard", 150, 3);
                 NewText("Return To Main Screen", -180, 0);
+            } else if (state == 2) {
+                // loadFont("Colour Mix", "    Select Difficulty");
+                scene.remove(p1.get_mesh());
+                scene.remove(p2.get_mesh());
+                scene.remove(p3.get_mesh());
+                scene.remove(returnToMain);
+                scene.remove(t1);
+                scene.remove(t2);
+                scene.remove(t3);
+                scene.add(HelpRules);
+                NewText("Return To Main Screen", -180, 0);
+            } else if (state == 3) {
+                //window.top.close(); does not work
+                window.open('index.html', '_top', replace = true);
 
             } else if (state > 10) {
                 loadFont("Colour Mix", "            Ready Up");
@@ -321,10 +341,6 @@
                         (NewText("Ready", 170, 3));
                         checkReady();
                         break;
-                    case 32:
-                        /*SPACEBAR*/
-                        PlayGame();
-                        break;
                 }
             }
         }
@@ -359,7 +375,7 @@
             requestAnimationFrame(animate);
             render();
             updateSkybox();
-            stats.update();
+            // stats.update();
         }
 
         function render() {

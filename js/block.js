@@ -14,7 +14,7 @@ class BlockObstacle{
         this.size = 4;
 
         var geometry = new THREE.BoxGeometry( this.size, 3, 3 );
-        var material = new THREE.MeshLambertMaterial( { color: 0x444444, 
+        var material = new THREE.MeshPhongMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
@@ -66,12 +66,16 @@ class BlockObstacle{
     }
 
     handleMovement(){
-        if(this.type == "moving"){
+        if(this.type == "standard"){
+            this.mesh.rotation.x += 0.03;
+        }
+        else if(this.type == "moving"){
             var elapTime = this.clock.getElapsedTime();
             var swingDuration = 3; 
             var t = (elapTime*2*Math.PI)/swingDuration + this.randomOffset;
             this.mesh.position.x = 10*Math.sin(t)*this.direction; 
         }
+
     }
 
     // a getter for the mesh

@@ -34,6 +34,7 @@ class SceneInit {
     }
 
 
+    // add demo cube function
     addCube() {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
         let material = new THREE.MeshPhongMaterial( { color: "rgb(20, 130, 200)", dithering: true } );
@@ -50,8 +51,70 @@ class SceneInit {
     
         this.scene.add( cube );
     }
+
+
+    // ktx cube demo function
+    addKTXCube() {
+        // ktx formats support
+        let formats = {
+            astc: this.renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
+            etc1: this.renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
+            s3tc: this.renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
+            pvrtc: this.renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
+        };
+
+        let geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+        let loader = new THREE.KTXLoader();
+        var material;
+        var meshes = [];
+
+        // check if s3tc
+        if ( formats.s3tc ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'assets/textures/compressed/lensflare_BC3.ktx' ),
+				depthTest: false,
+				transparent: true,
+				side: THREE.DoubleSide
+			} );
+		    meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // etc1 
+		if ( formats.etc1 ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'assets/textures/compressed/disturb_ETC1.ktx' )
+			} );
+			meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // astc
+		if ( formats.astc ) {
+			material = new THREE.MeshBasicMaterial( {
+				map: loader.load( 'assets/textures/compressed/lensflare_ASTC8x8.ktx' ),
+				depthTest: false,
+				transparent: true,
+				side: THREE.DoubleSide
+			} );
+			meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        // check if pvrtc
+        if ( formats.pvrtc ) {
+            material = new THREE.MeshBasicMaterial( {
+                map: loader.load( 'assets/textures/compressed/lensflare_PVR4bpp.ktx' ),
+                depthTest: false,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+            meshes.push( new THREE.Mesh( geometry, material ) );
+        }
+        
+        this.scene.add( meshes[0] );
+        
+    }
     
 
+    // floor demo function
     addFloor() {
         let material = new THREE.MeshPhongMaterial( { color: "rgb(220, 220, 220)", dithering: true } );
         let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
@@ -66,6 +129,7 @@ class SceneInit {
     }
 
     
+    // water function
     addWater() {
         var params = {
 			color: '#ffffff',
@@ -89,7 +153,7 @@ class SceneInit {
     }
 
 
-    // particle system demo
+    /* particle system demo
     addParticles() {
         //let clock = new THREE.Clock();
         let tick = 0.0;
@@ -121,8 +185,10 @@ class SceneInit {
             timeScale: 1
         };
     }
+    */
 
 
+    // lights demo function
     addLight() {
         // ambient light example setup
         let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
@@ -156,7 +222,7 @@ class SceneInit {
     }
 
 
-    // trying out a fog effect
+    // fog effect function 
     addFog() {
         //var fog;
         let fogColour = "#ffffff";
@@ -166,10 +232,11 @@ class SceneInit {
     }
 
 
+    // animate scene
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
-        /*
+        /* particle animation
         var delta = this.clock.getDelta() * this.spawnerOptions.timeScale;
         tick += delta;
 
@@ -185,13 +252,15 @@ class SceneInit {
             }
         }
 
-        this.particleSystem.update( tick ); */
+        this.particleSystem.update( tick );
+        */
 
         this.render();
         //this.controls.update();
     }
 
 
+    // render function
     render() {
         this.renderer.render( this.scene, this.camera );
     }
@@ -202,9 +271,10 @@ class SceneInit {
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
+test01.addKTXCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
 test01.addFog();
-test01.addParticles();
+//test01.addParticles();
 test01.animate();
