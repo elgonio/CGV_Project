@@ -109,13 +109,7 @@ class SceneInit {
             meshes.push( new THREE.Mesh( geometry, material ) );
         }
         
-		var x = - meshes.length / 2 * 150;
-		for ( var i = 0; i < meshes.length; ++ i, x += 300 ) {
-			var mesh = meshes[ i ];
-			mesh.position.x = x;
-			mesh.position.y = 0;
-			this.scene.add( mesh );
-		}
+        this.scene.add( meshes[0] );
         
     }
     
