@@ -16,14 +16,14 @@ class PowerUp{
 				break;
 		}
 
-		var texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
+		//var texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
 		var geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 0.5,
                                                         side: THREE.DoubleSide
 														} );
-		material.map = texture;
+		//material.map = texture;
         this.mesh = new THREE.Mesh( geometry, material );
 /*
 		let formats = {
