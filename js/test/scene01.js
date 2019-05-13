@@ -71,7 +71,7 @@ class SceneInit {
         // check if s3tc
         if ( formats.s3tc ) {
 			material = new THREE.MeshBasicMaterial( {
-				map: loader.load( 'textures/compressed/lensflare_BC3.ktx' ),
+				map: loader.load( 'assets/textures/compressed/lensflare_BC3.ktx' ),
 				depthTest: false,
 				transparent: true,
 				side: THREE.DoubleSide
@@ -82,7 +82,7 @@ class SceneInit {
         // etc1 
 		if ( formats.etc1 ) {
 			material = new THREE.MeshBasicMaterial( {
-				map: loader.load( 'textures/compressed/disturb_ETC1.ktx' )
+				map: loader.load( 'assets/textures/compressed/disturb_ETC1.ktx' )
 			} );
 			meshes.push( new THREE.Mesh( geometry, material ) );
         }
@@ -90,7 +90,7 @@ class SceneInit {
         // astc
 		if ( formats.astc ) {
 			material = new THREE.MeshBasicMaterial( {
-				map: loader.load( 'textures/compressed/lensflare_ASTC8x8.ktx' ),
+				map: loader.load( 'assets/textures/compressed/lensflare_ASTC8x8.ktx' ),
 				depthTest: false,
 				transparent: true,
 				side: THREE.DoubleSide
