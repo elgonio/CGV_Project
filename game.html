@@ -11,6 +11,11 @@
 <script src="js/level.js"></script>
 <script src="js/block.js"></script>
 <script src="js/Skybox.js"></script>
+<script src="js/objects/Reflector.js"></script>
+<script src="js/objects/Refractor.js"></script>
+<script src="js/objects/Water2.js"></script>
+<script src="js/GPUParticleSystem.js"></script>
+
 <script>
 
 "use strict";
@@ -262,6 +267,8 @@ function createWorld() {
     
     // function that adds the lights, attached to the viewer
     addLight();
+    // function adds water
+    addWater();
 
     
     //------------------- Create the scene's visible objects ----------------------
@@ -333,6 +340,30 @@ function addLight() {
             spotLight.shadow.camera.near = 0.1;
             spotLight.shadow.camera.far = 200;
         scene.add( spotLight );
+}
+
+
+// function that adds water
+function addWater() {
+    var params = {
+			color: '#ffffff',
+			scale: 4,
+			flowX: 1,
+			flowY: 1
+        };
+        
+        var waterGeo = new THREE.PlaneBufferGeometry( 200, 200 );
+		var water = new THREE.Water( waterGeo, {
+			color: params.color,
+			scale: params.scale,
+			flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
+			textureWidth: 1024,
+			textureHeight: 1024
+        } );
+            
+		water.position.y = ( -1 );
+		water.rotation.x = ( Math.PI * (- 0.5) );
+    scene.add( water );
 }
 
 
