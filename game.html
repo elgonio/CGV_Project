@@ -291,13 +291,13 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
 
-    blue_ball = new PlayerBall("blue",0,1); //Start on far left
+    blue_ball = new PlayerBall("blue",0,2); //Start on far left
     scene.add(blue_ball.group);
 
-    red_ball = new PlayerBall("red",2,1); //Start in the middle
+    red_ball = new PlayerBall("red",2,2); //Start in the middle
     scene.add(red_ball.group);
 
-    yellow_ball = new PlayerBall("yellow",4,1); //Start on far right
+    yellow_ball = new PlayerBall("yellow",4,2); //Start on far right
     scene.add(yellow_ball.group);
 
     tracks = new Tracks(); //Creates tracks lines
