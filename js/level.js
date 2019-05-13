@@ -15,8 +15,9 @@ class LevelManager{
 		this.zPosSpawn = zPosSpawn;
 		this.rowGroupArray = [];
 		this.rowObjGroupArray = [];
-		this.powerUpObjArray = [];
+		this.powerUpArray = [];
 		this.allRows = new THREE.Group(); 
+		this.powerUpObjArray = [];
 		this.score = 0;
 		this.scoreEnabled = true; 
 		this.gameOver = false
@@ -50,9 +51,11 @@ class LevelManager{
 			//Chance to spawn a power up
 			//var randNum = Math.floor(Math.random()*5 + 1);
 			//if(randNum == 1){ //1 in 5 chance to spawn a power up
-			var powerUp = new PowerUp(this.speed);
-			powerUp.get_mesh().position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval-50);
+			var powerUp = new PowerUp();
+			powerUp.get_mesh().position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval - 50);
+			this.powerUpArray.push(powerUp.get_mesh());
 			this.powerUpObjArray.push(powerUp);
+			this.allRows.add(powerUp.get_mesh());
 			//}
 
 
@@ -87,12 +90,12 @@ class LevelManager{
         	for (var i = 0; i <= arrayLength-1; i++) {
 	 			movingBlockArray[i].handleMovement();
         	} 
-/*
-        	arrayLength = this.powerUpObjArray.length;
+
+        	arrayLength = this.powerUpArray.length;
         	for (var i = 0; i <= arrayLength-1; i++){
         		this.powerUpObjArray[i].handleMovement();
-				//this.powerUpObjArray[i].get_mesh().addScaledVector(new THREE.Vector3(0,0,1), this.speed*delta); //make power up move down the track when it spawns
-        	}*/
+				this.powerUpArray[i].position.addScaledVector(new THREE.Vector3(0,0,1), this.speed*delta); //make power up move down the track when it spawns
+        	}
         }
 
 	}
@@ -155,9 +158,11 @@ class LevelManager{
 
 	//Render this node object
 	get_allRows(){
-		console.log("rendering row");
+		//console.log("rendering row");
 		return this.allRows;
 	}
+
+
 
 	/* Testing Functions
 	generateSingleRow(){

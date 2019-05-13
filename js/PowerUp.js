@@ -15,15 +15,13 @@ class PowerUp{
 				break;
 		}
 
-		var geometry = new THREE.BoxGeometry( 3, 3, 3 );
+		var geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         side: THREE.DoubleSide
                                                         } );
         this.mesh = new THREE.Mesh( geometry, material );
-        this.mesh.position.set(0,0,-20);
-        console.log("Power Up Pos: "+this.mesh.position);
 		
 	}
 
@@ -31,8 +29,8 @@ class PowerUp{
 		delta = globalDelta;
 		//Rotate power up
 		this.mesh.rotation.x += 0.03;
-		this.mesh.rotation.y += 0.02;
-		this.mesh.rotation.z += 0.01;
+		this.mesh.rotation.y += 0.03;
+		this.mesh.rotation.z += 0.03;
 	}
 
 	get_mesh(){
