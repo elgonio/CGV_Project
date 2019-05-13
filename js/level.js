@@ -103,9 +103,13 @@ class LevelManager{
  			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && this.gameOver == false){
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
- 				//console.log("Score: "+this.score)
- 				var ScoreText = document.getElementById("ScoreText");
- 				ScoreText.innerHTML = "Score: "+this.score;
+				 console.log("Score: "+this.score);
+				if (!lost) 
+				{
+					var ScoreText = document.getElementById("ScoreText");
+ 					ScoreText.innerHTML = "Score: "+this.score;
+				}
+ 				
  			}
     	} 
 	}
