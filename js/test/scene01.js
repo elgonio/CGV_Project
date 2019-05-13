@@ -31,10 +31,10 @@ class SceneInit {
 
         // ktx formats support
         let formats = {
-            astc: renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
-			etc1: renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
-			s3tc: renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
-			pvrtc: renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
+            astc: this.renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
+			etc1: this.renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
+			s3tc: this.renderer.extensions.get( 'WEBGL_compressed_texture_s3tc' ),
+			pvrtc: this.renderer.extensions.get( 'WEBGL_compressed_texture_pvrtc' )
         };
 
         // append renderer as dominant element
@@ -100,7 +100,7 @@ class SceneInit {
     }
 
 
-    // particle system demo
+    /* particle system demo
     addParticles() {
         //let clock = new THREE.Clock();
         let tick = 0.0;
@@ -132,6 +132,7 @@ class SceneInit {
             timeScale: 1
         };
     }
+    */
 
 
     // lights demo function
@@ -182,7 +183,7 @@ class SceneInit {
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
-        // particle animation
+        /* particle animation
         var delta = this.clock.getDelta() * this.spawnerOptions.timeScale;
         tick += delta;
 
@@ -199,6 +200,7 @@ class SceneInit {
         }
 
         this.particleSystem.update( tick );
+        */
 
         this.render();
         //this.controls.update();
@@ -220,5 +222,5 @@ test01.addFloor();
 test01.addLight();
 test01.addWater();
 test01.addFog();
-test01.addParticles();
+//test01.addParticles();
 test01.animate();
