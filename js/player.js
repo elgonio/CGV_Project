@@ -3,7 +3,7 @@ var delta = 0;
 var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
 var global_atom_geometry = new THREE.SphereGeometry( 1.5/16, 12, 12 );
 var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
-var canJump = false; //Global jump boolean controlled by power up
+
 
 class PlayerBall {
     
@@ -18,6 +18,7 @@ class PlayerBall {
         this.colour = colour;
         this.position = position;
         this.isMoving = false;
+        this.jumpEnabled = false;
         this.isJumping = false;
         this.isFalling = false;
 
@@ -293,8 +294,9 @@ class PlayerBall {
 
                 }
             }
-
-        }
+      }
+        
+       
 
         this.handleAnimation();
         //console.log(this.colour);
@@ -366,9 +368,17 @@ class PlayerBall {
     }
 
     initiateJump(){
-        if(this.isJumping == false){
+        if(this.isJumping == false && this.jumpEnabled == true){
             this.isJumping = true;
         }
+    }
+
+    enableJump(){
+        this.jumpEnabled = true;
+    }
+
+    disableJump(){
+        this.jumpEnabled = false;
     }
 
     make_electron()

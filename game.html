@@ -39,7 +39,7 @@ var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
 var globalDelta = clock.getDelta();
 
-var lost = false;
+var lost = false; //Game over boolean
 
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
@@ -201,7 +201,7 @@ function handleMovement()
 
 function handleCollisions()
 {
-    
+    /*
     if(level_Manager.checkBlockCollisions(red_ball) && level_Manager.checkBlockCollisions(blue_ball) && level_Manager.checkBlockCollisions(yellow_ball))
     {
         //Do nothing - not colliding
@@ -226,7 +226,7 @@ function handleCollisions()
         //reloadGame();
        // window.open('StartMenu.html', '_top');
     }
-
+*/
     if(level_Manager.checkPowerUpCollisions(red_ball) && level_Manager.checkPowerUpCollisions(blue_ball) && level_Manager.checkPowerUpCollisions(yellow_ball))
     {
         //Do nothing - not colliding
@@ -235,7 +235,17 @@ function handleCollisions()
         var powerUpType = level_Manager.get_currentPowerUpType();
         switch(powerUpType){
             case "Jump":
+                PowerUpText.innerHTML = "Jump Enabled! <p> Press SPACEBAR </p>";
+                red_ball.enableJump();
+                blue_ball.enableJump();
+                yellow_ball.enableJump();
 
+                setTimeout(function(){
+                    PowerUpText.innerHTML = "";
+                    red_ball.disableJump();
+                    blue_ball.disableJump();
+                    yellow_ball.disableJump();
+                }, 10000);
                 break;
             case "Screenshake":
                 camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
