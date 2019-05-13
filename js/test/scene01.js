@@ -16,6 +16,7 @@ class SceneInit {
         // create the camera
         this.camera = new THREE.PerspectiveCamera( 75, (window.innerWidth / window.innerHeight), 0.1, 1000 );
         this.camera.position.z = 5;
+        this.camera.position.y = 1;
 
         // setup the renderer with the html canvas in index
         this.renderer = new THREE.WebGLRenderer(
@@ -45,7 +46,7 @@ class SceneInit {
             cube.receiveShadow = false;
 
         // demo cube positioning
-        cube.position.set( 0, 0, 2 );
+        cube.position.set( 0, 1, 2 );
         cube.rotation.x = 45;
         cube.rotation.y = 45;
     
@@ -120,7 +121,7 @@ class SceneInit {
         let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
         let floor = new THREE.Mesh( geometry, material );
 
-        floor.position.set( 0, -1, 0 );
+        floor.position.set( 0, 0, 0 );
         
         // floor shadow properties
             floor.receiveShadow = true;
@@ -225,7 +226,7 @@ class SceneInit {
 
         // spot light example setup
         let spotLight = new THREE.SpotLight( "rgb(255, 0, 0)", 1 );
-            spotLight.position.set( 15, 40, 35 );
+            spotLight.position.set( 0, 10, 0 );
             spotLight.angle = ( Math.PI/4 );
             spotLight.penumbra = 0.05;
             spotLight.decay = 2;
@@ -289,10 +290,10 @@ class SceneInit {
 let test01 = new SceneInit();
 test01.initScene();
 test01.addCube();
-test01.addKTXCube();
+//test01.addKTXCube();
 test01.addFloor();
 test01.addLight();
-test01.addWater();
+//test01.addWater();
 test01.addFog();
 //test01.addParticles();
 test01.animate();

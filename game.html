@@ -338,8 +338,9 @@ function addLight() {
 
         // point light 1, blue
         var pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
-            pointLight01.position.set ( -5, 5, 2 ); // x y z, - y is up down
+            pointLight01.position.set ( -10, 10, 2 ); // x y z, - y is up down
         // point light shadow properties
+            pointLight01.castShadow = true;
             pointLight01.shadow.mapSize.width = 512;
             pointLight01.shadow.mapSize.height = 512;
             pointLight01.shadow.camera.near = 0.5;
@@ -348,7 +349,8 @@ function addLight() {
 
         // point light 2, red
         var pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
-            pointLight02.position.set ( 0, 5, 2 );
+            pointLight02.position.set ( 0, 10, 2 );
+            pointLight02.castShadow = true;
             pointLight02.shadow.mapSize.width = 512;
             pointLight02.shadow.mapSize.height = 512;
             pointLight02.shadow.camera.near = 0.5;
@@ -357,7 +359,8 @@ function addLight() {
 
         // point light 3, yellow
         var pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
-            pointLight03.position.set ( 5, 5, 2 );
+            pointLight03.position.set ( 10, 10, 2 );
+            pointLight03.castShadow = true;
             pointLight03.shadow.mapSize.width = 512;
             pointLight03.shadow.mapSize.height = 512;
             pointLight03.shadow.camera.near = 0.5;
