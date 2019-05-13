@@ -1,9 +1,10 @@
 // class to initialise the test scene
 class SceneInit {
-    constructor(scene, camera, renderer) {
+    constructor(scene, camera, renderer, clock) {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
+        this.clock = clock;
         //this.controls = controls;
     }
 
@@ -24,6 +25,9 @@ class SceneInit {
         // add support for shadow mapping in renderer
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // timer and clock enabling
+        this.clock = new THREE.Clock();
 
         // append renderer as dominant element
         document.body.appendChild( this.renderer.domElement );
@@ -86,10 +90,12 @@ class SceneInit {
 
 
     // particle system demo
-    /* addParticles() {
-        var tick = 0;
+    addParticles() {
+        //let clock = new THREE.Clock();
+        let tick = 0.0;
+        let options, spawnerOptions, particleSystem;
 
-        let particleSystem = new THREE.GPUParticleSystem( {
+        particleSystem = new THREE.GPUParticleSystem( {
             maxParticles: 125000
         } );
 
@@ -114,7 +120,7 @@ class SceneInit {
             verticalSpeed: 0.0,
             timeScale: 1
         };
-    } */
+    }
 
 
     addLight() {
@@ -152,6 +158,25 @@ class SceneInit {
 
     animate() {
         requestAnimationFrame( this.animate.bind(this) );
+
+        /*
+        var delta = this.clock.getDelta() * this.spawnerOptions.timeScale;
+        tick += delta;
+
+        if ( tick < 0 ) tick = 0;
+
+        if ( delta > 0 ) {
+            this.options.position.x = Math.sin( tick * this.spawnerOptions.horizontalSpeed ) * 10;
+            this.options.position.z = Math.sin( tick * this.spawnerOptions.verticalSpeed ) * 10;
+            this.options.position.y = Math.sin( tick * this.spawnerOptions.horizontalSpeed + this.spawnerOptions.verticalSpeed ) * 5;
+            
+            for ( var x = 0; x < this.spawnerOptions.spawnRate * delta; x++ ) {
+                this.particleSystem.spawnParticle( options );
+            }
+        }
+
+        this.particleSystem.update( tick ); */
+
         this.render();
         //this.controls.update();
     }
@@ -170,5 +195,5 @@ test01.addCube();
 test01.addFloor();
 test01.addLight();
 test01.addWater();
-//test01.addParticles();
+test01.addParticles();
 test01.animate();
