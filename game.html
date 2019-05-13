@@ -319,7 +319,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("easy", -200, 130); // create a controller which handles level generation and score
+    level_Manager = new LevelManager("easy", -300, 130); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
@@ -336,9 +336,9 @@ function createWorld() {
 
 //Testing adding a single block
 /*
-    var block = new BlockObstacle("white", 2, "standard");
-    block.get_mesh().position.z = -200;
-    scene.add(block.get_mesh());
+    var powerUp = new PowerUp();
+    powerUp.get_mesh().position.z = -100;
+    scene.add(powerUp.get_mesh());
 */
 
     render()

@@ -282,6 +282,7 @@
                 NewText("Return To Main Screen", -180, 0);
             } else if (state == 2) {
                 // loadFont("Colour Mix", "    Select Difficulty");
+                restartvid();
                 scene.remove(p1.get_mesh());
                 scene.remove(p2.get_mesh());
                 scene.remove(p3.get_mesh());
@@ -290,6 +291,7 @@
                 scene.remove(t2);
                 scene.remove(t3);
                 scene.add(HelpRules);
+
                 NewText("Return To Main Screen", -180, 0);
             } else if (state == 3) {
                 //window.top.close(); does not work
@@ -375,12 +377,15 @@
             requestAnimationFrame(animate);
             render();
             updateSkybox();
+            updateHelpvid();
+
             // stats.update();
         }
 
         function render() {
             camera.lookAt(cameraTarget);
             renderer.clear();
+            renderHelpvid();
             renderer.render(scene, camera);
         }
 
