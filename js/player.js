@@ -1,5 +1,8 @@
 var moveDirection = new THREE.Vector3();
 var delta = 0;
+var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
+var global_atom_geometry = new THREE.SphereGeometry( 1.5/16, 12, 12 );
+var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
 
 class PlayerBall {
     
@@ -105,15 +108,15 @@ class PlayerBall {
         else if(this.type == 2)
         {
             this.size = 1.5/2;
-            var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
-            var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
+            
+            //var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
             var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
                                                             emissive: 0xffffff,
                                                             emissiveIntensity: 1,
                                                             side: THREE.DoubleSide
                                                             } );
             material.map = texture;
-            this.sphere = new THREE.Mesh( geometry, material );
+            this.sphere = new THREE.Mesh( global_geometry, material );
 
             
     
@@ -369,7 +372,7 @@ class PlayerBall {
 
     make_electron()
     {
-        var smol_geometry = new THREE.SphereGeometry( this.size/8, 16, 16 );
+        //var smol_geometry = new THREE.SphereGeometry( this.size/8, 16, 16 );
         /*
         var smol_material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
             emissive: 0xffffff,
@@ -380,7 +383,7 @@ class PlayerBall {
 
         var smol_material = this.sphere.material;
 
-        var electron = new THREE.Mesh( smol_geometry, smol_material );
+        var electron = new THREE.Mesh( global_atom_geometry, smol_material );
 
         var theta = Math.random()*Math.PI*2;
         var phi = Math.random()*Math.PI*2;
