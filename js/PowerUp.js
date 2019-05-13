@@ -15,6 +15,14 @@ class PowerUp{
 				break;
 		}
 
+		var geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
+        var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
+                                                        emissive: 0xffffff,
+                                                        emissiveIntensity: 1,
+                                                        side: THREE.DoubleSide
+                                                        } );
+        this.mesh = new THREE.Mesh( geometry, material );
+/*
 		let formats = {
             astc: renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
             etc1: renderer.extensions.get( 'WEBGL_compressed_texture_etc1' ),
@@ -65,7 +73,8 @@ class PowerUp{
                 side: THREE.DoubleSide
             } );
             this.mesh = new THREE.Mesh( geometry, material );
-        }
+        } 
+        */
 	}
 
 	handleMovement(){
