@@ -102,6 +102,20 @@ class PlayerBall {
                 
             }
         }
+        else if(this.type == 2)
+        {
+            var texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
+            var geometry = new THREE.SphereGeometry( this.size, 16, 16 );
+            var material = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, 
+                                                            emissive: 0xffffff,
+                                                            emissiveIntensity: 1,
+                                                            side: THREE.DoubleSide
+                                                            } );
+            material.map = texture;
+            this.sphere = new THREE.Mesh( geometry, material );
+    
+            this.group.add(this.sphere); 
+        }
 
         
         

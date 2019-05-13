@@ -13,10 +13,17 @@
 <script src="js/CameraShake.js"></script>
 <script src="js/PowerUp.js"></script>
 <script src="js/Skybox.js"></script>
-<script src="js/objects/Reflector.js"></script>
-<script src="js/objects/Refractor.js"></script>
-<script src="js/objects/Water2.js"></script>
-<script src="js/GPUParticleSystem.js"></script>
+
+<!-- links for water -->
+<script type="text/javascript" src="js/objects/Reflector.js"></script>
+<script type="text/javascript" src="js/objects/Refractor.js"></script>
+<script type="text/javascript" src="js/objects/Water2.js"></script>
+
+<!-- link for compressed texture loader -->
+<script type="text/javascript" src="js/loaders/KTXLoader.js"></script>
+
+<!-- link for particle systems -->
+<script type="text/javascript" src="js/GPUParticleSystem.js"></script>
 
 <script>
 
@@ -285,13 +292,13 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
 
-    blue_ball = new PlayerBall("blue",0,1); //Start on far left
+    blue_ball = new PlayerBall("blue",0,2); //Start on far left
     scene.add(blue_ball.group);
 
-    red_ball = new PlayerBall("red",2,1); //Start in the middle
+    red_ball = new PlayerBall("red",2,2); //Start in the middle
     scene.add(red_ball.group);
 
-    yellow_ball = new PlayerBall("yellow",4,1); //Start on far right
+    yellow_ball = new PlayerBall("yellow",4,2); //Start on far right
     scene.add(yellow_ball.group);
 
     tracks = new Tracks(); //Creates tracks lines
@@ -330,16 +337,36 @@ function addLight() {
             ambientLight.castShadow = false;
         scene.add( ambientLight );
 
-        // point light example setup
-        var pointLight = new THREE.PointLight( "rgb(240, 240, 240)", 0.8, 100 );
-            pointLight.position.set ( 0, 5, 5 ); // x y z, threejs coordinate system, player is centered 0 on x, y is "up"
+        // point light 1, blue
+        var pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
+            pointLight01.position.set ( -10, 10, 2 ); // x y z, - y is up down
         // point light shadow properties
-            pointLight.castShadow = true;
-            pointLight.shadow.mapSize.width = 512;
-            pointLight.shadow.mapSize.height = 512;
-            pointLight.shadow.camera.near = 0.1;
-            pointLight.shadow.camera.far = 500;
-        scene.add( pointLight );
+            pointLight01.castShadow = true;
+            pointLight01.shadow.mapSize.width = 512;
+            pointLight01.shadow.mapSize.height = 512;
+            pointLight01.shadow.camera.near = 0.5;
+            pointLight01.shadow.camera.far = 500;
+        scene.add( pointLight01 );
+
+        // point light 2, red
+        var pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
+            pointLight02.position.set ( 0, 10, 2 );
+            pointLight02.castShadow = true;
+            pointLight02.shadow.mapSize.width = 512;
+            pointLight02.shadow.mapSize.height = 512;
+            pointLight02.shadow.camera.near = 0.5;
+            pointLight02.shadow.camera.far = 500;
+        scene.add( pointLight02 );
+
+        // point light 3, yellow
+        var pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
+            pointLight03.position.set ( 10, 10, 2 );
+            pointLight03.castShadow = true;
+            pointLight03.shadow.mapSize.width = 512;
+            pointLight03.shadow.mapSize.height = 512;
+            pointLight03.shadow.camera.near = 0.5;
+            pointLight03.shadow.camera.far = 500;
+        scene.add( pointLight03 );
 
         // spot light example setup
         var spotLight = new THREE.SpotLight( "rgb(240, 240, 240)", 0.8 );

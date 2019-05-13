@@ -104,7 +104,7 @@ class LevelManager{
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
  				//console.log("Score: "+this.score)
  				var ScoreText = document.getElementById("ScoreText");
- 				ScoreText.innerHTML = ""+this.score;
+ 				ScoreText.innerHTML = "Score: "+this.score;
  			}
     	} 
 	}
