@@ -354,7 +354,7 @@ function addLight() {
 
         // point light 1, blue
         var pointLight01 = new THREE.PointLight( "rgb(200, 200, 255)", 1, 20 );
-            pointLight01.position.set ( -15, 5, -4 ); // x y z, - y is up down
+            pointLight01.position.set ( -10, 5, -4 ); // x y z, - y is up down
         // point light shadow properties
             pointLight01.castShadow = true;
             pointLight01.shadow.mapSize.width = 512;
@@ -375,7 +375,7 @@ function addLight() {
 
         // point light 3, yellow
         var pointLight03 = new THREE.PointLight( "rgb(255, 255, 100)", 1, 20 );
-            pointLight03.position.set ( 15, 5, -4 );
+            pointLight03.position.set ( 10, 5, -4 );
             pointLight03.castShadow = true;
             pointLight03.shadow.mapSize.width = 512;
             pointLight03.shadow.mapSize.height = 512;
