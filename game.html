@@ -192,8 +192,11 @@ function handleCollisions()
         reloadGame();
        // window.open('StartMenu.html', '_top');
     }
-    
+}
 
+function handleScoring()
+{
+    level_Manager.handleScoring();
 }
 
 
@@ -343,6 +346,7 @@ function updateForFrame() {
     globalDelta = clock.getDelta();
     handleColours();
     handleMovement();
+    handleScoring()
     updateSkybox();
 
     //console.log("handling collisions");
