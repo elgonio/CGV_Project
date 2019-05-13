@@ -190,20 +190,38 @@ class SceneInit {
 
     // lights demo function
     addLight() {
-        // ambient light example setup
+        // ambient light
         let ambientLight = new THREE.AmbientLight( "rgb(255, 255, 255)", 0.55);
             ambientLight.castShadow = false;
         this.scene.add( ambientLight );
 
-        // point light example setup
-        let pointLight = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
-            pointLight.position.set ( 5, 5, 5 );
+        // point light 1, blue
+        let pointLight01 = new THREE.PointLight( "rgb(0, 0, 255)", 1, 100 );
+            pointLight01.position.set ( -5, 5, 2 ); // x y z, - y is up down
         // point light shadow properties
-            pointLight.shadow.mapSize.width = 512;
-            pointLight.shadow.mapSize.height = 512;
-            pointLight.shadow.camera.near = 0.5;
-            pointLight.shadow.camera.far = 500;
-        this.scene.add( pointLight );
+            pointLight01.shadow.mapSize.width = 512;
+            pointLight01.shadow.mapSize.height = 512;
+            pointLight01.shadow.camera.near = 0.5;
+            pointLight01.shadow.camera.far = 500;
+        this.scene.add( pointLight01 );
+
+        // point light 2, red
+        let pointLight02 = new THREE.PointLight( "rgb(255, 0, 0)", 1, 100 );
+            pointLight02.position.set ( 0, 5, 2 );
+            pointLight02.shadow.mapSize.width = 512;
+            pointLight02.shadow.mapSize.height = 512;
+            pointLight02.shadow.camera.near = 0.5;
+            pointLight02.shadow.camera.far = 500;
+        this.scene.add( pointLight02 );
+
+        // point light 3, yellow
+        let pointLight03 = new THREE.PointLight( "rgb(255, 255, 0)", 1, 100 );
+            pointLight03.position.set ( 5, 5, 2 );
+            pointLight03.shadow.mapSize.width = 512;
+            pointLight03.shadow.mapSize.height = 512;
+            pointLight03.shadow.camera.near = 0.5;
+            pointLight03.shadow.camera.far = 500;
+        this.scene.add( pointLight03 );
 
         // spot light example setup
         let spotLight = new THREE.SpotLight( "rgb(255, 0, 0)", 1 );
