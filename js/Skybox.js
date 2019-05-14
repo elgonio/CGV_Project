@@ -12,8 +12,8 @@ var movingtextures = [];
 var cube;
 var left = installTexture("assets/img/cropped.jpg");
 var right = installTexture("assets/img/rotated.jpg");
-var up = installTexture("assets/img/rotated.jpg");
-var down = installTexture("assets/img/cropped.jpg");
+var up;// = installTexture("assets/img/rotated.jpg");
+var down;// = installTexture("assets/img/cropped.jpg");
 
 function initializeSkybox(x, y, z) {
     cube = null;
@@ -27,8 +27,8 @@ function initializeSkybox(x, y, z) {
     var cubeMaterials = [
         new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //right side
         new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //left side
-        new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
-        new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
+        new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //up side
+        new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //down side
         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //front side
         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }) //back side
     ];
@@ -56,10 +56,10 @@ function updateSkybox() {
     movingtextures[0].needsUpdate;
     movingtextures[1].offset.set(textureOffsetS * -1, 0);
     movingtextures[1].needsUpdate;
-    movingtextures[2].offset.set(0, textureOffsetT * -1);
-    movingtextures[2].needsUpdate;
-    movingtextures[3].offset.set(0, textureOffsetT);
-    movingtextures[3].needsUpdate;
+    //movingtextures[2].offset.set(0, textureOffsetT * -1);
+    //movingtextures[2].needsUpdate;
+    //movingtextures[3].offset.set(0, textureOffsetT);
+    //movingtextures[3].needsUpdate;
 }
 
 //render logic
@@ -74,8 +74,7 @@ function installTexture(texfile) {
         try {
             render();
         } catch (e) {
-            document.getElementById("headline").innerHTML =
-                "Can't access texture.  Note that some browsers<br>can't use a texture from a local disk.";
+           // document.getElementById("headline").innerHTML = "Can't access texture.  Note that some browsers<br>can't use a texture from a local disk.";
         }
     };
     var loader = new THREE.TextureLoader();

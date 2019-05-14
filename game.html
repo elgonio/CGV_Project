@@ -42,6 +42,22 @@ var cameraInverted = false;
 var canInvert = true;
 var gamePaused = false;
 
+// create an AudioListener and add it to the camera
+var listener = new THREE.AudioListener();
+// load a sound and set it as the Audio object's buffer
+// create a global audio source
+var sound = new THREE.Audio( listener );
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'assets/sounds/Hard Game Music.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.5 );
+        sound.play();
+    });
+
+
+
+
 var lost = false; //Game over boolean
 
 document.addEventListener( 'keydown', onKeyDown, false );
@@ -393,21 +409,11 @@ function createWorld() {
     mapCamera.position.set(0, 100, 60);
     scene.add(mapCamera);
 
-    // create an AudioListener and add it to the camera
-    var listener = new THREE.AudioListener();
-    camera.add( listener );
+        camera.add( listener );
 
-    // create a global audio source
-    var sound = new THREE.Audio( listener );
+    
 
-    // load a sound and set it as the Audio object's buffer
-    var audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'assets/sounds/Hard Game Music.mp3', function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume( 0.5 );
-        sound.play();
-    });
+    
 
     
     /*var light;  // A light shining from the direction of the camera; moves with the camera.
