@@ -93,6 +93,7 @@ function onKeyDown( event ) {
         case 82: /*R*/ reloadGame();break;
 
         case 80: /*P*/ camera_shake_controller.shakeScreen(1); break;//For testing purposes
+        case 13: /*ENTER*/ enable_richard(); break;//For testing purposes
     }
     
 }
@@ -131,6 +132,37 @@ function makeTexture(imageURL, material) {
     return texture;
 }
 
+function enable_richard()
+{
+    texture = new THREE.TextureLoader().load( "assets/textures/richard2_7.png" );
+    texture.offset.x = 0.25
+    red_ball.sphere.material.map = texture;
+    blue_ball.sphere.material.map = texture;
+    yellow_ball.sphere.material.map = texture;
+
+
+    left = installTexture("assets/textures/richard2_7.png");
+    right = installTexture("assets/textures/richard2_7.png");
+    up = installTexture("assets/textures/richard2_7.png");
+    down = installTexture("assets/textures/richard2_7.png");
+
+    var cubeMaterials = [
+        new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //right side
+        new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //left side
+        new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
+        new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //front side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }) //back side
+    ];
+    movingtextures = [];
+    movingtextures.push(right);
+    movingtextures.push(left);
+    movingtextures.push(up);
+    movingtextures.push(down);
+    var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
+
+    cube.material = cubeMaterial;
+}
 function loadModel(modelURL,target,scale_factor) {
     function callback(geometry) {
         // To be executed when the model has fully loaded.  The parameter
