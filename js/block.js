@@ -1,4 +1,5 @@
 global_box_geometry = new THREE.BoxGeometry( 4, 3, 3 );
+var box_texture = new THREE.TextureLoader().load( "assets/textures/fractal.jpg" );
 class BlockObstacle{
 
     // colour is of the form "blue","red","yellow","purple","orange","green","white" and "grey"
@@ -18,8 +19,11 @@ class BlockObstacle{
         var material = new THREE.MeshPhongMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
+                                                        metalness: 0.75,
                                                         side: THREE.DoubleSide
                                                         } );
+
+        material.map = box_texture;
         this.mesh = new THREE.Mesh( global_box_geometry, material );
         if(this.type == "moving"){
             this.mesh.position.set(0,0,0);

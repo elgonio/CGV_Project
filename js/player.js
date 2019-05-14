@@ -3,6 +3,7 @@ var delta = 0;
 var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
 var global_atom_geometry = new THREE.SphereGeometry( 1.5/12, 12, 12 );
 var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
+//texture.offset.x = 0.25;
 
 
 class PlayerBall {
