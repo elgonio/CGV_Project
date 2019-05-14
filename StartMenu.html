@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
     <script src="plugins/threejs/three.js"></script>
     <script src="plugins/threejs/OrbitControls.js"></script>
     <script src="plugins/threejs/stats.min.js"></script>
@@ -20,6 +21,19 @@
     <script src="js/Sprity.js"></script>
 
     <script>
+        /*ADD TO GAME
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search.substr(1).split("&").forEach(function(item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            });
+            return result;
+        }
+        var difficultylevel = findGetParameter("myvar");//it is eaither "Easy" or "Avg" or "Hard"
+        */
+
         if (WEBGL.isWebGLAvailable() === false) {
             document.body.appendChild(WEBGL.getWebGLErrorMessage());
         }
@@ -381,7 +395,15 @@
         }
 
         function PlayGame() {
-            window.open('game.html', '_top', replace = true);
+            var myVariable;
+            if (state == 11) {
+                myVariable = "Easy";
+            } else if (state == 12) {
+                myVariable = "Avg";
+            } else {
+                myVariable = "Hard";
+            }
+            window.open("game.html?myvar=" + myVariable + "&password=1234", '_top', replace = true);
         }
 
         function animate() {
