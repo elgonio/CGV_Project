@@ -1,7 +1,7 @@
 var moveDirection = new THREE.Vector3();
 var delta = 0;
 var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
-var global_atom_geometry = new THREE.SphereGeometry( 1.5/16, 12, 12 );
+var global_atom_geometry = new THREE.SphereGeometry( 1.5/12, 12, 12 );
 var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
 
 
@@ -293,7 +293,7 @@ class PlayerBall {
             if(this.isFalling == false){ //Ball is in upward motion of jump
                 if(this.group.position.y < 8){
                 moveDirection.set(0,1,0);
-                jumpSpeed = 15 - 15/(Math.abs(this.group.position.y - 8)+1);
+                jumpSpeed = 18 - 15/(Math.abs(this.group.position.y - 8)+1);
                 this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
 
                     close_enough = (Math.abs(this.group.position.y - 8) < 0.2);
@@ -307,7 +307,7 @@ class PlayerBall {
                 if(this.group.position.y > 0){
 
                     moveDirection.set(0,-1,0);
-                    jumpSpeed = 15 - 15/(Math.abs(this.group.position.y)+1);
+                    jumpSpeed = 18 - 15/(Math.abs(this.group.position.y)+1);
                     this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
                     close_enough = (Math.abs(this.group.position.y) < 0.2);
                     if(close_enough == true){
