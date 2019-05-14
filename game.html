@@ -90,7 +90,7 @@ function onKeyDown( event ) {
 
         case 82: /*R*/ reloadGame();break;
 
-        case 80: /*P*/ camera_shake_controller.shakeScreen(); break;//For testing purposes
+        case 80: /*P*/ camera_shake_controller.shakeScreen(1); break;//For testing purposes
     }
     
 }
@@ -360,7 +360,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("easy", -300, 130); // create a controller which handles level generation and score
+    level_Manager = new LevelManager("Hard", -300); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
@@ -597,6 +597,8 @@ function init() {
     createWorld();
     var ScoreText = document.getElementById("ScoreText");
     var PowerUpText = document.getElementById("PowerUpText");
+    var JumpsLeftText = document.getElementById("JumpsLeftText");
+    JumpsLeftText.innerHTML = "Jumps Left: 0"
     PowerUpText.innerHTML = "";
     ScoreText.innerHTML = "Score: 0";
     // we don't actually need to change the camera view
@@ -614,6 +616,8 @@ function init() {
 <div id="ScoreText">0</div>
 
 <div id="PowerUpText"></div>
+
+<div id="JumpsLeftText">Jumps Left: 0</div>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>

@@ -5,7 +5,7 @@ class PowerUp{
 	constructor(){
 
 
-		var randNum = 3//Math.floor(Math.random()*3 + 1) //Randomise number between 1 and 3 (for now only jump and screenshake enabled)
+		var randNum = 1//Math.floor(Math.random()*3 + 1) //Randomise number between 1 and 3 (for now only jump and screenshake enabled)
 		switch(randNum){
 			case 1: //Jump ability
 				this.type = "Jump";

@@ -253,7 +253,7 @@ class PlayerBall {
         }
 
         // THIS SOLVES A BUG. PLZ DONT REMOVE
-        var close_enough = Math.abs(this.group.position.x - this.destVector.getComponent(0)) < 0.1  && Math.abs(this.group.position.z - this.destVector.getComponent(2)) < 0.1;
+        var close_enough = Math.abs(this.group.position.x - this.destVector.getComponent(0)) < 0.2  && Math.abs(this.group.position.z - this.destVector.getComponent(2)) < 0.2;
 
         // check if we've reached our destination
         if(close_enough)
@@ -375,6 +375,7 @@ class PlayerBall {
 
     enableJump(){
         this.jumpEnabled = true;
+        this.isJumping = false;
     }
 
     disableJump(){
