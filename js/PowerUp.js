@@ -5,7 +5,7 @@ class PowerUp{
 	constructor(){
 
 
-		var randNum = 2 //Math.floor(Math.random()*4 + 1) //Randomise number between 1 and 3
+		var randNum = 1//Math.floor(Math.random()*3 + 1) //Randomise number between 1 and 3 (for now only jump and screenshake enabled)
 		switch(randNum){
 			case 1: //Jump ability
 				this.type = "Jump";
@@ -94,20 +94,9 @@ class PowerUp{
 		return this.mesh;
 	}
 
-	applyPowerUp(){
-		switch(this.type){
-			case "Jump":
-
-				break;
-			case "Screenshake":
-				camera_shake_controller.shakeScreen(10); //Shake screen for 10 seconds
-				break;
-			case "Invert":
-
-				break;
-		}
+	get_type(){
+		return this.type;
 	}
-
 
 }
 

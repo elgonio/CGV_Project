@@ -9,11 +9,33 @@ canvas {
 
 #ScoreText{
 	position: absolute;
-	top: 5%;
+	top: 7%;
 	width: 101%;
 	text-align: center;
 	z-index: 100;
 	display:block;
 	font-size: 50px;
 	color: white;
+}
+
+#PowerUpText{
+	position: absolute;
+	top: 25%;
+	width: 40%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	font-size: 50px;
+	color: red;
+}
+
+#JumpsLeftText{
+	position: absolute;
+	top: 25%;
+	width: 160%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	font-size: 50px;
+	color: red;
 }

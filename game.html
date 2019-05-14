@@ -39,7 +39,7 @@ var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
 var globalDelta = clock.getDelta();
 
-var lost = false;
+var lost = false; //Game over boolean
 
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
@@ -92,7 +92,7 @@ function onKeyDown( event ) {
 
         case 82: /*R*/ reloadGame();break;
 
-        case 80: /*P*/ camera_shake_controller.shakeScreen(); break;//For testing purposes
+        case 80: /*P*/ camera_shake_controller.shakeScreen(1); break;//For testing purposes
     }
     
 }
@@ -203,9 +203,10 @@ function handleMovement()
 
 function handleCollisions()
 {
-    if(level_Manager.checkCollisions(red_ball) && level_Manager.checkCollisions(blue_ball) && level_Manager.checkCollisions(yellow_ball))
+    /*
+    if(level_Manager.checkBlockCollisions(red_ball) && level_Manager.checkBlockCollisions(blue_ball) && level_Manager.checkBlockCollisions(yellow_ball))
     {
-        
+        //Do nothing - not colliding
     }
     else
     {
@@ -215,18 +216,58 @@ function handleCollisions()
         var ScoreText = document.getElementById("ScoreText");
         camera_shake_controller.shakeScreen();
         handleCameraMovement();
-        ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+        ScoreText.innerHTML = "Score: "+level_Manager.get_score()+"<p> YOU LOSE </p> </p> Press R to Restart";
         
         setTimeout(function(){
             animating = false
             camera_shake_controller.shakeScreen();
             handleCameraMovement();
-            ScoreText.innerHTML = "<p> YOU LOSE </p> </p> press R to restart";
+            ScoreText.innerHTML = "Score: "+level_Manager.get_score()+"<p> YOU LOSE </p> </p> Press R to Restart";
             camera_shake_controller.stopShake();
             }, 700);
         //reloadGame();
        // window.open('StartMenu.html', '_top');
     }
+*/
+    if(level_Manager.checkPowerUpCollisions(red_ball) && level_Manager.checkPowerUpCollisions(blue_ball) && level_Manager.checkPowerUpCollisions(yellow_ball))
+    {
+        //Do nothing - not colliding
+    }
+    else{
+        //Collide with power up object
+        var powerUpType = level_Manager.get_currentPowerUpType();
+        switch(powerUpType){
+            case "Jump": //Let players jump for 10 seconds
+                PowerUpText.innerHTML = "Jump Enabled! <p> Press SPACEBAR </p>";
+                red_ball.enableJump();
+                blue_ball.enableJump();
+                yellow_ball.enableJump();
+
+                setTimeout(function(){
+                    PowerUpText.innerHTML = "";
+                    red_ball.disableJump();
+                    blue_ball.disableJump();
+                    yellow_ball.disableJump();
+                }, 10000);
+                break;
+            case "Screenshake": //Screen shakes for 10 seconds
+                camera_shake_controller.shakeScreen(10); 
+                PowerUpText.innerHTML = "SCREENSHAKE!";
+                break;
+            case "Invert": //Invert the camera (controls are swapped)
+                PowerUpText.innerHTML = "Inverted View!";
+
+                camera.projectionMatrix.scale(new THREE.Vector3(-1, 1, 1));
+                camera.updateProjectionMatrix();
+                setTimeout(function(){
+                    PowerUpText.innerHTML = "";
+                    camera.projectionMatrix.scale(new THREE.Vector3(1, 1, 1));
+                    camera.updateProjectionMatrix();
+                }, 10000);
+                break;
+        }
+    }
+
 }
 
 function handleScoring()
@@ -337,7 +378,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("easy", -300, 130); // create a controller which handles level generation and score
+    level_Manager = new LevelManager("Hard", -300); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
@@ -408,13 +449,43 @@ function addLight() {
             spotLight01.penumbra = 0.10;
             spotLight01.decay = 2;
             spotLight01.distance = 200;
-        // spot light shadow properties
+        // spot light 1 shadow properties
             spotLight01.castShadow = true;
             spotLight01.shadow.mapSize.width = 512;
             spotLight01.shadow.mapSize.height = 412;
             spotLight01.shadow.camera.near = 2;
             spotLight01.shadow.camera.far = 200;
         scene.add( spotLight01 );
+
+        // spot light 2, further down the track
+        var spotLight02 = new THREE.SpotLight( "rgb(255, 255, 255)", 1.0 );
+            spotLight02.position.set( 0, 20, -120 );
+            spotLight02.angle = ( Math.PI/4 );
+            spotLight02.penumbra = 0.30;
+            spotLight02.decay = 1;
+            spotLight02.distance = 200;
+        // spot light 2 shadow properties
+            spotLight02.castShadow = true;
+            spotLight02.shadow.mapSize.width = 512;
+            spotLight02.shadow.mapSize.height = 412;
+            spotLight02.shadow.camera.near = 2;
+            spotLight02.shadow.camera.far = 200;
+        scene.add( spotLight02 );
+
+        // spot light 3, further down the track
+        var spotLight03 = new THREE.SpotLight( "rgb(255, 255, 255)", 0.75 );
+            spotLight03.position.set( 0, 20, -150 );
+            spotLight03.angle = ( Math.PI/4 );
+            spotLight03.penumbra = 0.30;
+            spotLight03.decay = 1;
+            spotLight03.distance = 200;
+        // spot light 3 shadow properties
+            spotLight03.castShadow = true;
+            spotLight03.shadow.mapSize.width = 512;
+            spotLight03.shadow.mapSize.height = 412;
+            spotLight03.shadow.camera.near = 2;
+            spotLight03.shadow.camera.far = 200;
+        scene.add( spotLight03 );
     }
 
 
@@ -573,6 +644,10 @@ function init() {
 
     createWorld();
     var ScoreText = document.getElementById("ScoreText");
+    var PowerUpText = document.getElementById("PowerUpText");
+    var JumpsLeftText = document.getElementById("JumpsLeftText");
+    JumpsLeftText.innerHTML = "Jumps Left: 0"
+    PowerUpText.innerHTML = "";
     ScoreText.innerHTML = "Score: 0";
     // we don't actually need to change the camera view
     //installOrbitControls();
@@ -587,6 +662,10 @@ function init() {
 <body onload="init()">
 
 <div id="ScoreText">0</div>
+
+<div id="PowerUpText"></div>
+
+<div id="JumpsLeftText">Jumps Left: 0</div>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>

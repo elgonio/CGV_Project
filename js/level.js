@@ -9,9 +9,9 @@ var direction = new THREE.Vector3(0, 0, 1);
 
 class LevelManager{
 
-	constructor(difficulty, zPosSpawn, zSpawnDistInterval){
+	constructor(difficulty, zPosSpawn){
 		this.difficulty = difficulty; //Easy or Avg or Hard
-		this.zSpawnDistInterval = zSpawnDistInterval;
+		this.zSpawnDistInterval = 130; //Default
 		this.zPosSpawn = zPosSpawn;
 		this.rowGroupArray = [];
 		this.rowObjGroupArray = [];
@@ -22,57 +22,135 @@ class LevelManager{
 		this.scoreEnabled = true; 
 		this.gameOver = false
 		this.speed = 40;
+		this.currentPowerUpType = "";
 
 		switch(this.difficulty){
 
 			case "Easy":
 				this.speed = 35;
-				this.zSpawnDistInterval = 150;
+				this.zSpawnDistInterval = 130;
 				break;
 			case "Avg":
 				this.speed = 40;
-				this.zSpawnDistInterval = 135;
+				this.zSpawnDistInterval = 130;
 				break;
 			case "Hard":
 				this.speed = 45;
 				this.zSpawnDistInterval = 120;
 				break;
+			case "Test": default:
+				this.speed = 40;
+				this.zSpawnDistInterval = 130;
+				break;
 		}
+		console.log("difficulty set: "+this.difficulty);
 	}
 	generateRows(){
 
 		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
 			rowObjGroup = [];
-			var scenarioNum = Math.floor((Math.random() * 5)+1);
-			switch(scenarioNum){
-				case 1:
-					scenario1();
+			var scenarioNum = 0;;
+			switch(this.difficulty){
+				case "Easy":
+					scenarioNum = Math.floor(Math.random() *100 +1); //Generate number between 1 and 100
+					if (scenarioNum < 50) { //50% chance to generate 
+						scenario1 ();
+					} else if (scenarioNum < 70) { //20% chance to generate 
+						scenario2 ();
+					} else if (scenarioNum < 90) { //20% chance to generate 
+						scenario3 ();
+					} else if (scenarioNum < 100) { //10% chance to generate 
+						scenario4 ();
+					} else {
+						scenario1 ();
+					}
 					break;
-				case 2:
-					scenario2();
+				case "Avg":
+					scenarioNum = Math.floor(Math.random() *100 +1); //Generate number between 1 and 100
+					if (scenarioNum < 25) { //25% chance to generate
+						scenario1 ();
+					} else if (scenarioNum < 50) {//25% chance to generate
+						scenario2 ();
+					} else if (scenarioNum < 70) {//20% chance to generate
+						scenario3 ();
+					} else if (scenarioNum < 85) { //15% chance to generate
+						scenario4 ();
+					} else if (scenarioNum < 100) { //15% chance to generate
+						scenarioMovingBlock();
+					} else {
+						scenario1 ();
+					}
 					break;
-				case 3:
-					scenario3();
+				case "Hard":
+					scenarioNum = Math.floor(Math.random() *100 +1); //Generate number between 1 and 100
+					if (scenarioNum < 20) { //20% chance to generate
+						scenario1 ();
+					} else if (scenarioNum < 45) {//25% chance to generate
+						scenario2 ();
+					} else if (scenarioNum < 55) {//10% chance to generate
+						scenario3 ();
+					} else if (scenarioNum < 80) { //25% chance to generate
+						scenario4 ();
+					} else if (scenarioNum < 100) { //20% chance to generate
+						scenarioMovingBlock();
+					} else {
+						scenario1 ();
+					}
 					break;
-				case 4:
-					scenario4();
-					break;
-				case 5:
-					scenarioMovingBlock();
+
+				case "Test": 
+					scenarioNum = Math.floor((Math.random() * 5)+1);
+					switch(scenarioNum){
+						case 1:
+							scenario1();
+							break;
+						case 2:
+							scenario2();
+							break;
+						case 3:
+							scenario3();
+							break;
+						case 4:
+							scenario4();
+							break;
+						case 5:
+							scenarioMovingBlock();
+							break;
+					}
 					break;
 			}
 			rowGroup.position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval);
 
 			//Chance to spawn a power up
-			//var randNum = Math.floor(Math.random()*5 + 1);
-			//if(randNum == 1){ //1 in 5 chance to spawn a power up
-			var powerUp = new PowerUp();
-			powerUp.get_mesh().position.set(0, 0, this.zPosSpawn - i*this.zSpawnDistInterval - 50);
-			this.powerUpArray.push(powerUp.get_mesh());
-			this.powerUpObjArray.push(powerUp);
-			this.allRows.add(powerUp.get_mesh());
-			//}
+			var randNum = Math.floor(Math.random()*4 + 1);
+			if(randNum == 1){ //1 in 4 chance to spawn a power up
+				var powerUp = new PowerUp();
+
+				randNum = Math.floor(Math.random()*5 + 1); //Randomise x position
+				var xPos = 0;
+				switch(randNum){
+					case 1:
+						xPos = -10;
+						break;
+					case 2:
+						xPos = -5;
+						break;
+					case 3:
+						xPos = 0;
+						break;
+					case 4:
+						xPos = 5;
+						break;
+					case 5:
+						xPos = 10;
+						break;
+				}
+				powerUp.get_mesh().position.set(xPos, 0, this.zPosSpawn - i*this.zSpawnDistInterval - 50);
+				this.powerUpArray.push(powerUp.get_mesh());
+				this.powerUpObjArray.push(powerUp);
+				this.allRows.add(powerUp.get_mesh());
+			}
 
 
 			this.rowObjGroupArray.push(rowObjGroup);//For obtaining collision info
@@ -86,40 +164,38 @@ class LevelManager{
 	handleMovement(){
 		delta = globalDelta;
 		//console.log(delta);
+       
+    	var arrayLength = this.rowGroupArray.length;
+    	for (var i = 0; i <= arrayLength-1; i++) {
+ 			this.rowGroupArray[i].position.addScaledVector(direction, this.speed*delta);
+ 			if(this.rowGroupArray[i].position.z > 15){
+ 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
+ 				this.scoreEnabled = true; //To allow scoring again since the row has moved to the back of the line of incoing rows again
+ 			}
+
+ 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
+ 				var block = this.rowObjGroupArray[i][k];
+ 				block.handleMovement();
+ 			}
+    	} 
+    	arrayLength = movingBlockArray.length;		
+    	for (var i = 0; i <= arrayLength-1; i++) {
+ 			movingBlockArray[i].handleMovement();
+    	} 
+
+    	arrayLength = this.powerUpArray.length;
+    	for (var i = 0; i <= arrayLength-1; i++){
+    		this.powerUpObjArray[i].handleMovement();
+			this.powerUpArray[i].position.addScaledVector(new THREE.Vector3(0,0,1), this.speed*delta); //make power up move down the track when it spawns
+    	}
         
-        if(this.difficulty == "easy"){
-        	this.speed = 40;
-        	var arrayLength = this.rowGroupArray.length;
-        	for (var i = 0; i <= arrayLength-1; i++) {
-	 			this.rowGroupArray[i].position.addScaledVector(direction, this.speed*delta);
-	 			if(this.rowGroupArray[i].position.z > 15){
-	 				this.rowGroupArray[i].position.z = 15 + (-1)*this.zSpawnDistInterval*20 //Loops around again
-	 				this.scoreEnabled = true; //To allow scoring again since the row has moved to the back of the line of incoing rows again
-	 			}
-
-	 			for (var k = 0; k < this.rowGroupArray[i].children.length; k++) {
-	 				var block = this.rowObjGroupArray[i][k];
-	 				block.handleMovement();
-	 			}
-        	} 
-        	arrayLength = movingBlockArray.length;		
-        	for (var i = 0; i <= arrayLength-1; i++) {
-	 			movingBlockArray[i].handleMovement();
-        	} 
-
-        	arrayLength = this.powerUpArray.length;
-        	for (var i = 0; i <= arrayLength-1; i++){
-        		this.powerUpObjArray[i].handleMovement();
-				this.powerUpArray[i].position.addScaledVector(new THREE.Vector3(0,0,1), this.speed*delta); //make power up move down the track when it spawns
-        	}
-        }
 
 	}
 
 	handleScoring(){
 		var arrayLength = this.rowGroupArray.length;
     	for (var i = 0; i <= arrayLength-1; i++) {
- 			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && this.gameOver == false){
+ 			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && lost == false){
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
 				 console.log("Score: "+this.score);
@@ -132,11 +208,33 @@ class LevelManager{
  			}
     	} 
 	}
+	checkPowerUpCollisions(player_ball)
+	{
+		var player_pos = new THREE.Vector3( );
+
+		player_ball.sphere.getWorldPosition(player_pos);
+
+		for (var i = 0; i <= this.powerUpObjArray.length-1; i++) {
+			var powerUp = this.powerUpObjArray[i];
+			var powerUp_pos = new THREE.Vector3();
+			powerUp.get_mesh().getWorldPosition(powerUp_pos);
+			var size = 1.5; //Radius of collider around power up
+			if(powerUp_pos.distanceTo(player_pos) < player_ball.size + size){
+				//Collide
+				this.currentPowerUpType = powerUp.get_type();
+				return false;
+
+			}
+		}
+		return true;
+
+	}
+
 	// checks if a given player collides with any obstacle in this level
 	// returns true if the ball is ok
 	// returns false otherwise
 	// this should probaly be renamed to something more intuitive
-	checkCollisions(player_ball)
+	checkBlockCollisions(player_ball)
 	{
 		var player_pos = new THREE.Vector3( );
 
@@ -148,7 +246,6 @@ class LevelManager{
 				var block = this.rowObjGroupArray[i][k];
 				var block_pos = new THREE.Vector3( );
 				block.get_mesh().getWorldPosition(block_pos);
-
 				var size = block.size/2; // radius of block there
 				if(block_pos.distanceTo(player_pos) < player_ball.size + size){
 					// COLLIDE
@@ -173,6 +270,14 @@ class LevelManager{
 	get_allRows(){
 		//console.log("rendering row");
 		return this.allRows;
+	}
+
+	get_currentPowerUpType(){
+		return this.currentPowerUpType;
+	}
+
+	get_score(){
+		return this.score;
 	}
 
 

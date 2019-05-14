@@ -33,6 +33,8 @@ class CameraShake{
 			if(this.clock.getElapsedTime() >=  this.shakeDuration){ //Shake for duration set
 				this.camera.position.copy(this.originalCamPos); //Reset camera back to initial position before it started shaking
 				this.shaking = false; //Stop shaking
+   				var PowerUpText = document.getElementById("PowerUpText");
+   			 	PowerUpText.innerHTML = "";
 			}
 		}
 	}
