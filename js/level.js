@@ -222,7 +222,7 @@ class LevelManager{
 			if(powerUp_pos.distanceTo(player_pos) < player_ball.size + size){
 				//Collide
 				this.currentPowerUpType = powerUp.get_type();
-				this.powerUpObjArray[i].disposeObject();
+				//this.powerUpObjArray[i].disposeObject();
 				return false;
 
 			}

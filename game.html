@@ -41,6 +41,7 @@ var globalDelta = clock.getDelta();
 var cameraInverted = false;
 var canInvert = true;
 var gamePaused = false;
+var difficultylevel = findGetParameter("myvar");//it is eaither "Easy" or "Avg" or "Hard"
 
 // create an AudioListener and add it to the camera
 var listener = new THREE.AudioListener();
@@ -155,25 +156,25 @@ function makeTexture(imageURL, material) {
 // enable richard function
 function enable_richard()
 {
-    texture = new THREE.TextureLoader().load( "assets/textures/richard2_7.png" );
+    texture = new THREE.TextureLoader().load( "assets/textures/richard resized.png" );
     texture.offset.x = 0.25
     red_ball.sphere.material.map = texture;
     blue_ball.sphere.material.map = texture;
     yellow_ball.sphere.material.map = texture;
 
 
-    left = installTexture("assets/textures/richard2_7.png");
-    right = installTexture("assets/textures/richard2_7.png");
-    up = installTexture("assets/textures/richard2_7.png");
-    down = installTexture("assets/textures/richard2_7.png");
+    left = installTexture("assets/textures/richard resized.png");
+    right = installTexture("assets/textures/richard resized.png");
+    up = installTexture("assets/textures/richard resized.png");
+    down = installTexture("assets/textures/richard resized.png");
 
     var cubeMaterials = [
         new THREE.MeshBasicMaterial({ map: right, overdraw: true, side: THREE.DoubleSide }), //right side
         new THREE.MeshBasicMaterial({ map: left, overdraw: true, side: THREE.DoubleSide }), //left side
         new THREE.MeshBasicMaterial({ map: up, overdraw: true, side: THREE.DoubleSide }), //up side
         new THREE.MeshBasicMaterial({ map: down, overdraw: true, side: THREE.DoubleSide }), //down side
-        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }), //front side
-        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/img/pureblack.jpg"), side: THREE.DoubleSide }) //back side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/textures/richard resized.png"), side: THREE.DoubleSide }), //front side
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("assets/textures/richard resized.png"), side: THREE.DoubleSide }) //back side
     ];
     movingtextures = [];
     movingtextures.push(right);
@@ -446,7 +447,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager(findGetParameter("myvar"), -400); // create a controller which handles level generation and score
+    level_Manager = new LevelManager(difficultylevel, -350); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
@@ -598,7 +599,7 @@ function findGetParameter(parameterName) {
     });
     return result;
 }
-var difficultylevel = findGetParameter("myvar");//it is eaither "Easy" or "Avg" or "Hard"
+
 
 
 
@@ -745,6 +746,8 @@ function init() {
 <div id="ScoreText">0</div>
 
 <div id="PowerUpText"></div>
+
+<div id="EscText">Press ESC to return to Menu</div>
 
 <!--<div id="JumpsLeftText">Jumps Left: 0</div> -->
 

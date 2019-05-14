@@ -9,7 +9,7 @@ canvas {
 
 #ScoreText{
 	position: absolute;
-	top: 7%;
+	top: 8%;
 	width: 101%;
 	text-align: center;
 	z-index: 100;
@@ -37,5 +37,16 @@ canvas {
 	z-index: 100;
 	display:block;
 	font-size: 50px;
+	color: white;
+}
+
+#EscText{
+	position: absolute;
+	top: 5%;
+	width: 175%;
+	text-align: center;
+	z-index: 100;
+	display:block;
+	font-size: 25px;
 	color: white;
 }
