@@ -95,7 +95,7 @@ class LevelManager{
 					} else if (scenarioNum < 100) { //20% chance to generate
 						scenarioMovingBlock();
 					} else {
-						scenario1 ();
+						scenario2 ();
 					}
 					break;
 
