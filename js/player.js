@@ -1,7 +1,7 @@
 var moveDirection = new THREE.Vector3();
 var delta = 0;
 var global_geometry = new THREE.SphereGeometry( 1.5/2, 16, 16 );
-var global_atom_geometry = new THREE.SphereGeometry( 1.5/16, 12, 12 );
+var global_atom_geometry = new THREE.SphereGeometry( 1.5/12, 12, 12 );
 var texture = new THREE.TextureLoader().load( "assets/textures/moonb.jpg" );
 
 
@@ -67,6 +67,16 @@ class PlayerBall {
                                                             side: THREE.DoubleSide
                                                             } );
             this.sphere = new THREE.Mesh( geometry, material );
+
+            // trying to add light to the player objects
+            var light;
+            this.light = new THREE.PointLight( "rgb(255, 0, 0)", 1, 20 );
+            this.light.castShadow = true;
+            this.light.shadow.mapSize.width = 512;
+            this.light.shadow.mapSize.height = 512;
+            this.light.shadow.camera.near = 0.5;
+            this.light.shadow.camera.far = 500;
+            this.sphere.add( this.light );
     
             this.group.add(this.sphere); 
             this.electron_scale = this.size/8;
@@ -119,8 +129,7 @@ class PlayerBall {
                                                             } );
             material.map = texture;
             this.sphere = new THREE.Mesh( global_geometry, material );
-
-            
+                                                            
     
             this.group.add(this.sphere); 
             this.electron_scale = this.size/8;
@@ -160,6 +169,16 @@ class PlayerBall {
                 } 
                 
             }
+
+            // add light to the player objects
+            this.light = new THREE.PointLight( "rgb(255, 0, 0)", 1, 20 );
+            this.light.position.set( 0, 0, 0 );
+            this.light.castShadow = true;
+            this.light.shadow.mapSize.width = 512;
+            this.light.shadow.mapSize.height = 512;
+            this.light.shadow.camera.near = 0.5;
+            this.light.shadow.camera.far = 500;
+            this.sphere.add( this.light );
     
             this.group.add(this.sphere); 
         }
@@ -187,6 +206,7 @@ class PlayerBall {
         {
             this.sphere.material.emissive.setHex(0xdddd00);
         }
+        this.light.color = this.sphere.material.emissive;
     }
 
     handleMovement()
@@ -273,6 +293,7 @@ class PlayerBall {
             if(this.isFalling == false){ //Ball is in upward motion of jump
                 if(this.group.position.y < 8){
                 moveDirection.set(0,1,0);
+                jumpSpeed = 18 - 15/(Math.abs(this.group.position.y - 8)+1);
                 this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
 
                     close_enough = (Math.abs(this.group.position.y - 8) < 0.2);
@@ -284,7 +305,9 @@ class PlayerBall {
             }
             else if(this.isFalling == true){ //Ball is in downward motion of jump
                 if(this.group.position.y > 0){
+
                     moveDirection.set(0,-1,0);
+                    jumpSpeed = 18 - 15/(Math.abs(this.group.position.y)+1);
                     this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
                     close_enough = (Math.abs(this.group.position.y) < 0.2);
                     if(close_enough == true){

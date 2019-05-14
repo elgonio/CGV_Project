@@ -57,6 +57,8 @@ var level_Manager ;
 var camera_shake_controller ;
 
 
+
+
 function debug()
 {
     console.log(red_ball.colour);
@@ -357,6 +359,22 @@ function createWorld() {
     mapCamera.lookAt( new THREE.Vector3(0,-1,0) );
     mapCamera.position.set(0, 100, 60);
     scene.add(mapCamera);
+
+    // create an AudioListener and add it to the camera
+    var listener = new THREE.AudioListener();
+    camera.add( listener );
+
+    // create a global audio source
+    var sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    var audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'assets/sounds/Hard Game Music.mp3', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.5 );
+        sound.play();
+    });
 
     
     /*var light;  // A light shining from the direction of the camera; moves with the camera.
