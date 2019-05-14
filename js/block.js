@@ -19,6 +19,7 @@ class BlockObstacle{
         var material = new THREE.MeshPhongMaterial( { color: 0x444444, 
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
+                                                        metalness: 0.75,
                                                         side: THREE.DoubleSide
                                                         } );
 
