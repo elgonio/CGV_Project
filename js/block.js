@@ -20,7 +20,7 @@ class BlockObstacle{
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 1,
                                                         metalness: 0.6,
-                                                        smoothness: 0.1,
+                                                        shininess: 0.1,
                                                         side: THREE.DoubleSide
                                                         } );
 
