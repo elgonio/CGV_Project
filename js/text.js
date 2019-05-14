@@ -1,3 +1,25 @@
+var text = "Colour Mix",
+    height = 15,
+    size = 50,
+    hover = 10,
+    curveSegments = 4,
+    bevelThickness = 2,
+    bevelSize = 1.5,
+    bevelEnabled = true,
+    font = undefined,
+    fontName = "optimer",
+    fontWeight = "bold";
+materials = [
+    new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        flatShading: true
+    }), // front
+    new THREE.MeshPhongMaterial({
+        color: 0xffffff
+    }) // side
+];
+
+
 function loadFont(txtHead, txtSub) {
     var loader = new THREE.FontLoader();
     loader.load('assets/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function(response) {
@@ -54,6 +76,7 @@ function NewText(txt, pos, Ts) {
             returnToMainB.position.z = -5;
             //plane.rotation.x = -Math.PI / 2;
             returnToMain = Tmesh;
+
             scene.add(returnToMainB);
         } else if (Ts == 1) {
             t1 = Tmesh;

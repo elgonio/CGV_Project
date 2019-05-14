@@ -431,13 +431,43 @@ function addLight() {
             spotLight01.penumbra = 0.10;
             spotLight01.decay = 2;
             spotLight01.distance = 200;
-        // spot light shadow properties
+        // spot light 1 shadow properties
             spotLight01.castShadow = true;
             spotLight01.shadow.mapSize.width = 512;
             spotLight01.shadow.mapSize.height = 412;
             spotLight01.shadow.camera.near = 2;
             spotLight01.shadow.camera.far = 200;
         scene.add( spotLight01 );
+
+        // spot light 2, further down the track
+        var spotLight02 = new THREE.SpotLight( "rgb(255, 255, 255)", 1.0 );
+            spotLight02.position.set( 0, 20, -120 );
+            spotLight02.angle = ( Math.PI/4 );
+            spotLight02.penumbra = 0.30;
+            spotLight02.decay = 1;
+            spotLight02.distance = 200;
+        // spot light 2 shadow properties
+            spotLight02.castShadow = true;
+            spotLight02.shadow.mapSize.width = 512;
+            spotLight02.shadow.mapSize.height = 412;
+            spotLight02.shadow.camera.near = 2;
+            spotLight02.shadow.camera.far = 200;
+        scene.add( spotLight02 );
+
+        // spot light 3, further down the track
+        var spotLight03 = new THREE.SpotLight( "rgb(255, 255, 255)", 0.75 );
+            spotLight03.position.set( 0, 20, -150 );
+            spotLight03.angle = ( Math.PI/4 );
+            spotLight03.penumbra = 0.30;
+            spotLight03.decay = 1;
+            spotLight03.distance = 200;
+        // spot light 3 shadow properties
+            spotLight03.castShadow = true;
+            spotLight03.shadow.mapSize.width = 512;
+            spotLight03.shadow.mapSize.height = 412;
+            spotLight03.shadow.camera.near = 2;
+            spotLight03.shadow.camera.far = 200;
+        scene.add( spotLight03 );
     }
 
 
