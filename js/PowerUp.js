@@ -1,3 +1,5 @@
+var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
+var power_geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
 
 class PowerUp{
 
@@ -18,15 +20,14 @@ class PowerUp{
 		}
 
 		
-		var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
-		this.power_geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
+
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 0.5,
                                                         side: THREE.DoubleSide
 														} );
 		material.map = power_texture;
-        this.mesh = new THREE.Mesh( this.power_geometry, material );
+        this.mesh = new THREE.Mesh( power_geometry, material );
 /*
 		let formats = {
             astc: renderer.extensions.get( 'WEBGL_compressed_texture_astc' ),
@@ -96,10 +97,6 @@ class PowerUp{
 
 	get_type(){
 		return this.type;
-	}
-
-	disposeObject(){
-		//scene.remove(this.mesh);
 	}
 
 }
