@@ -99,7 +99,7 @@ class LevelManager{
 					}
 					break;
 
-				case "Test": 
+				case "Test": case null:
 					scenarioNum = Math.floor((Math.random() * 5)+1);
 					switch(scenarioNum){
 						case 1:

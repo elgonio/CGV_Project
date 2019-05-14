@@ -111,6 +111,8 @@ function onKeyDown( event ) {
 
         case 80: /*P*/ camera_shake_controller.shakeScreen(1); break;//For testing purposes
         case 13: /*ENTER*/ enable_richard(); break;//For testing purposes
+
+        case 27: /*Escape*/ break;
     }
     
 }
@@ -444,7 +446,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("Hard", -400); // create a controller which handles level generation and score
+    level_Manager = new LevelManager(findGetParameter("myvar"), -400); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
@@ -586,6 +588,18 @@ function addFog() {
     var fogFar = 250;
     scene.fog = new THREE.Fog( fogColour, fogNear, fogFar );
 }
+
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    location.search.substr(1).split("&").forEach(function(item) {
+        tmp = item.split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+    return result;
+}
+var difficultylevel = findGetParameter("myvar");//it is eaither "Easy" or "Avg" or "Hard"
+
 
 
 /**
