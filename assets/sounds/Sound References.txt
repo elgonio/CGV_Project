@@ -1,0 +1,37 @@
+##############################################################################################################################
+Music Credits:
+
+Easy/Tutorial Level Music - http://freesound.org/people/joshuaempyre/sounds/251461/ - joshuaempyre - Attribution 3.0
+
+Normal Level Music - https://youtu.be/7uBohM8hlds - Kevin Macleod - Attribution 3.0 License
+
+Hard Level Music - https://youtu.be/P6JlmbhLMSQ - Oscar Owl - Copyright Free
+
+Game Menu Ambience - https://freesound.org/people/PatrickLieberkind/sounds/396024/ - PatrickLieberkind - Attribution 3.0 (Unported)
+
+
+##############################################################################################################################
+
+Sound Effects Credits:
+
+Back Button Click Sound - https://freesound.org/people/cabled_mess/sounds/350862/ - cabled_mess - Creative Commons 0 Licence
+
+Menu Item Click Sound  - https://freesound.org/people/LittleRobotSoundFactory/sounds/270537/ - LittleRobotSoundFactory Attribution 3.0 (Unported)
+
+Score Confirm - https://freesound.org/people/cabled_mess/sounds/350872/ - cabled_mess - Creative Commons 0 Licence
+
+Death Sound- http://freesound.org/people/marcuslee/sounds/42106/ - marcuslee - Sampling Plus 1.0 Licence3.0 Licence
+
+Fast Block Spawn - http://freesound.org/people/Corsica_S/sounds/128587/ - Corsica_S - Attribution 3.0 Licence
+
+Ready up Sound Effect - http://freesound.org/people/marcuslee/sounds/42106/ - marcuslee - Sampling Plus 1.0 Licence
+
+##############################################################################################################################
+
+Text References:
+
+Game title text - http://www.1001fonts.com/bala-cynwyd-nf-font.html - Nick Curtis - Free for personal use
+
+3x5 Fonts - http://www.1001fonts.com/3x5-font.html#license - Free For Personal Use 
+
+Blox BRK Font  - http://www.1001fonts.com/blox-brk-font.html - Free For Commerical Use
