@@ -6,38 +6,38 @@ class HomeBall {
     state 0- is the initail start menu
     state 1- play has been clicked
     state 2- how to play has been clicked
-    state 3- settings has been clicked
+    state 3- exit has been clicked
     */
+
     constructor(colour, position, state) {
-        this.colour = colour;
-        this.position = position;
-        this.isReady = false;
-        this.state = state;
+            this.colour = colour;
+            this.position = position;
+            this.isReady = false;
+            this.state = state;
+            this.controls = {
+                pressReady: false
+            };
+            var geometry = new THREE.SphereGeometry(65, 32, 32);
+            var material = new THREE.MeshLambertMaterial({
+                color: 0xaaaaaa,
+                emissive: 0xffffff,
+                emissiveIntensity: 10,
+                side: THREE.DoubleSide
+            });
+            this.sphere = new THREE.Mesh(geometry, material);
 
+            this.sphere.position.set(position, 100, 10);
 
-        this.controls = {
-            pressReady: false
-        };
-        var geometry = new THREE.SphereGeometry(65, 32, 32);
-        var material = new THREE.MeshLambertMaterial({
-            color: 0xaaaaaa,
-            emissive: 0xffffff,
-            emissiveIntensity: 10,
-            side: THREE.DoubleSide
-        });
-        this.sphere = new THREE.Mesh(geometry, material);
-
-        this.sphere.position.set(position, 100, 10);
-
-        if (colour == "red") {
-            this.sphere.material.emissive.setHex(0xdd0000);
-        } else if (colour == "blue") {
-            this.sphere.material.emissive.setHex(0x0000dd);
-        } else if (colour == "yellow") {
-            this.sphere.material.emissive.setHex(0xdddd00);
+            if (colour == "red") {
+                this.sphere.material.emissive.setHex(0xdd0000);
+            } else if (colour == "blue") {
+                this.sphere.material.emissive.setHex(0x0000dd);
+            } else if (colour == "yellow") {
+                this.sphere.material.emissive.setHex(0xdddd00);
+            }
         }
-    }
-
+        //added feature not used
+        //makes the object click into a box
     objectClickHandler() {
         var geometry = new THREE.BoxGeometry(100, 100, 100);
         var material = new THREE.MeshLambertMaterial({
@@ -54,9 +54,7 @@ class HomeBall {
             if (this.controls.pressReady == true) {
                 //change the object
                 isReady = true;
-
             }
-
         }
     }
     readyState() {

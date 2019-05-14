@@ -1,3 +1,4 @@
+//text variables that are used often
 var text = "Colour Mix",
     height = 15,
     size = 50,
@@ -9,6 +10,8 @@ var text = "Colour Mix",
     font = undefined,
     fontName = "optimer",
     fontWeight = "bold";
+
+//material for the heading text
 materials = [
     new THREE.MeshPhongMaterial({
         color: 0xffffff,
@@ -19,7 +22,7 @@ materials = [
     }) // side
 ];
 
-
+//loads the heading font
 function loadFont(txtHead, txtSub) {
     var loader = new THREE.FontLoader();
     loader.load('assets/fonts/' + fontName + '_' + fontWeight + '.typeface.json', function(response) {
@@ -28,6 +31,9 @@ function loadFont(txtHead, txtSub) {
     });
 }
 
+//the txt is the display words
+//pos is the x posistion
+//ts, is the varible that relates to this object
 function NewText(txt, pos, Ts) {
     var loader = new THREE.FontLoader();
     loader.load('assets/fonts/helvetiker_bold.typeface.json', function(font) {
@@ -51,7 +57,7 @@ function NewText(txt, pos, Ts) {
         ];
         textGeo.computeBoundingBox();
         textGeo.computeVertexNormals();
-        var centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
         textGeo = new THREE.BufferGeometry().fromGeometry(textGeo);
         var Tmesh = new THREE.Mesh(textGeo, material);
         Tmesh.position.x = pos;
@@ -59,9 +65,9 @@ function NewText(txt, pos, Ts) {
         Tmesh.position.z = 89;
         Tmesh.rotation.x = 0;
         Tmesh.rotation.y = Math.PI * 2;
-        // Tmesh.position.set(0, 0, 0);
-        if (Ts == 0) {
 
+        //if the tmesh relates to the main menu
+        if (Ts == 0) {
             Tmesh.position.y = 30;
             //add a box around "go back to main" so more area to click
             returnToMainB = new THREE.Mesh(
@@ -137,6 +143,7 @@ function createText(Heading, subHeading) {
     // group.add(Newword.get_mesh());
 }
 
+//refreshes the headingtext
 function refreshText(txtHead, txtSub) {
     group.remove(textMesh1);
     group.remove(textMesh2);
