@@ -19,7 +19,7 @@ class PowerUp{
 				break;
 		}
 
-		
+
 
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
@@ -50,15 +50,15 @@ class PowerUp{
 			} );
 		    this.mesh = new THREE.Mesh( geometry, material );
         }
-        
-        // etc1 
+
+        // etc1
 		if ( formats.etc1 ) {
 			material = new THREE.MeshBasicMaterial( {
 				map: loader.load( 'assets/textures/compressed/disturb_ETC1.ktx' )
 			} );
 			this.mesh = new THREE.Mesh( geometry, material );
         }
-        
+
         // astc
 		if ( formats.astc ) {
 			material = new THREE.MeshBasicMaterial( {
@@ -69,7 +69,7 @@ class PowerUp{
 			} );
 			this.mesh = new THREE.Mesh( geometry, material );
         }
-        
+
         // check if pvrtc
         if ( formats.pvrtc ) {
             material = new THREE.MeshBasicMaterial( {
@@ -79,7 +79,7 @@ class PowerUp{
                 side: THREE.DoubleSide
             } );
             this.mesh = new THREE.Mesh( geometry, material );
-        } 
+        }
         */
 	}
 
