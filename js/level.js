@@ -47,7 +47,7 @@ class LevelManager{
 	}
 	generateRows(){
 
-		for (var i = 0; i < 20; i++) { //Max 20 generated row combinations that will loop
+		for (var i = 0; i < 15; i++) { //Max 20 generated row combinations that will loop
 			rowGroup = new THREE.Group();
 			rowObjGroup = [];
 			var scenarioNum = 0;;
@@ -198,7 +198,7 @@ class LevelManager{
  			if(this.rowGroupArray[i].position.z > 5 && this.scoreEnabled == true && lost == false){
  				this.score += 1;
  				this.scoreEnabled = false; //To control scoring to only increment by 1 (otherwise the score would increment by 1 for every frame)
-				 console.log("Score: "+this.score);
+				 //console.log("Score: "+this.score);
 				if (!lost) 
 				{
 					var ScoreText = document.getElementById("ScoreText");
@@ -222,6 +222,7 @@ class LevelManager{
 			if(powerUp_pos.distanceTo(player_pos) < player_ball.size + size){
 				//Collide
 				this.currentPowerUpType = powerUp.get_type();
+				this.powerUpObjArray[i].disposeObject();
 				return false;
 
 			}
@@ -254,8 +255,8 @@ class LevelManager{
 						// do nothing
 					}
 					else{
-						console.log("Block Colour: "+block.get_colour());
-						console.log("Player Colour: "+player_ball.get_colour());
+						//console.log("Block Colour: "+block.get_colour());
+						//console.log("Player Colour: "+player_ball.get_colour());
 						return false;
 					}
 				}

@@ -57,8 +57,6 @@ var level_Manager ;
 var camera_shake_controller ;
 
 
-
-
 function debug()
 {
     console.log(red_ball.colour);
@@ -168,6 +166,7 @@ function enable_richard()
 
     cube.material = cubeMaterial;
 }
+
 function loadModel(modelURL,target,scale_factor) {
     function callback(geometry) {
         // To be executed when the model has fully loaded.  The parameter
@@ -244,7 +243,7 @@ function handleMovement()
 
 function handleCollisions()
 {
-    /*
+    
     if(level_Manager.checkBlockCollisions(red_ball) && level_Manager.checkBlockCollisions(blue_ball) && level_Manager.checkBlockCollisions(yellow_ball))
     {
         //Do nothing - not colliding
@@ -269,7 +268,7 @@ function handleCollisions()
         //reloadGame();
        // window.open('StartMenu.html', '_top');
     }
-*/
+
     if(level_Manager.checkPowerUpCollisions(red_ball) && level_Manager.checkPowerUpCollisions(blue_ball) && level_Manager.checkPowerUpCollisions(yellow_ball))
     {
         //Do nothing - not colliding
@@ -439,7 +438,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("Avg", -400); // create a controller which handles level generation and score
+    level_Manager = new LevelManager("Hard", -400); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 
