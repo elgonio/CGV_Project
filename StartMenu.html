@@ -25,46 +25,32 @@
         }
         document.addEventListener('keydown', onKeyDown, false);
         THREE.Cache.enabled = true;
-        var p1, p2, p3;
-        var t1, t2, t3;
-        var returnToMain, returnToMainB;
-        var textgroup, HelpRules;
-        var canvas1, context1, texture1;
 
-        var targetList = [];
+        //declaring global var
+        var p1, p2, p3; //the 3 ball buttons
+        var t1, t2, t3; // the text associated with each ball
+        var returnToMain, returnToMainB; //the main menu button
+        var textgroup, HelpRules; // groups of display items
         var raycaster, mouse = {
             x: 0,
             y: 0
         };
         var container, stats;
         var camera, cameraTarget, scene, renderer;
-        var group, textMesh1, textMesh2, textGeo, materials, Newword;
+        var group, textMesh1, textMesh2, textGeo, materials; //for the text elements
         var state = 0;
-        var text = "Colour Mix",
-            height = 15,
-            size = 50,
-            hover = 10,
-            curveSegments = 4,
-            bevelThickness = 2,
-            bevelSize = 1.5,
-            bevelEnabled = true,
-            font = undefined,
-            fontName = "optimer",
-            fontWeight = "bold";
-        var windowHalfX = window.innerWidth / 2;
+        //state 0= inistial screen
+        //state 1= select difficulty screen
+        //state 2= help screen
+        //state 3= exit
+        //state 11,12,13= easy, med, hard respectivly
         var Players;
-        var objects = [];
-        var plane = new THREE.Plane();
         var raycaster = new THREE.Raycaster();
-        // var mouse = new THREE.Vector2(),
-        //     offset = new THREE.Vector3(),
-        //     intersection = new THREE.Vector3(),
-        //     INTERSECTED, SELECTED;
-
 
         init();
         animate();
 
+        //helper function for colours
         function decimalToHex(d) {
             var hex = Number(d).toString(16);
             hex = "000000".substr(0, 6 - hex.length) + hex;
@@ -77,45 +63,20 @@
 
             // CAMERA
             camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1500);
-            // camera = new THREE.PerspectiveCamera(30, canvas.width / canvas.height, 0.1, 500);
-            // camera.position.z = 25;
-            // camera.position.y = 9;
-            // cameraTarget = new THREE.Vector3(0, -10, -60);
             camera.position.set(0, 400, 700);
             cameraTarget = new THREE.Vector3(0, 150, 0);
             // SCENE
             scene = new THREE.Scene();
-            // scene.background = new THREE.Color(0x000000);
 
-            // scene.fog = new THREE.Fog(0x000000, 250, 1400);
-            // LIGHTS
+            // LIGHTING
             var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
             dirLight.position.set(0, 0, 1).normalize();
             scene.add(dirLight);
             var pointLight = new THREE.PointLight(0xffffff, 1.5);
             pointLight.position.set(0, 100, 150);
-            /////////////////////////////////////////////////////////////////////////// pointLight.position.set(0, 100, 90);
             scene.add(pointLight);
-
             pointLight.color.setHSL(Math.random(), 1, 0.5);
             hex = decimalToHex(pointLight.color.getHex());
-            //sky box says this
-            var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.3);
-            //scene.add(ambientLight);
-
-            materials = [
-                new THREE.MeshPhongMaterial({
-                    color: 0xffffff,
-                    flatShading: true
-                }), // front
-                new THREE.MeshPhongMaterial({
-                    color: 0xffffff
-                }) // side
-            ];
-            group = new THREE.Group();
-            group.position.y = 250;
-            scene.add(group);
-
 
             // RENDERER
             renderer = new THREE.WebGLRenderer({
@@ -124,39 +85,36 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
+
             // STATS
             stats = new Stats();
 
-            window.addEventListener('resize', onWindowResize, false);
-            p1 = new HomeBall("blue", -200);
-            //  scene.add(p1.get_mesh());
-            p2 = new HomeBall("yellow", 0);
-            //  scene.add(p2.get_mesh());
-            p3 = new HomeBall("red", 200);
-            //  scene.add(p3.get_mesh());
+            //for the Page title
+            group = new THREE.Group();
+            group.position.y = 250;
+            scene.add(group);
 
+            //Creates the balls
+            p1 = new HomeBall("blue", -200);
+            p2 = new HomeBall("yellow", 0);
+            p3 = new HomeBall("red", 200);
+            Players = [p1, p2, p3];
+
+            //updates the display based on the state
             updateState();
+            //creates the objects for the ready up part
             AddInstructions();
+            //creates the objects for the help display
             HelpInst();
 
-            // scene.add(Newword.get_mesh());
-            //  group.add(mesh1);
-
-            // projector = new THREE.Projector();
+            window.addEventListener('resize', onWindowResize, false);
             raycaster = new THREE.Raycaster();
             renderer.domElement.addEventListener('click', raycast, false);
-            // when the mouse moves, call the given function
-            // document.addEventListener('mousedown', onDocumentMouseDown, false);
-
-
-            Players = [p1, p2, p3];
-            //  initializeSkybox(50000, 5000, 5000);
-            // console.log("MADE THE SKYBOX");
+            renderer.domElement.addEventListener('mousemove', onMouseMove, false); // when the mouse moves, call the given function
 
         }
 
         function raycast(e) {
-            // Step 1: Detect light helper
             //1. sets the mouse position with a coordinate system where the center
             //   of the screen is the origin
             mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -165,59 +123,32 @@
             //2. set the picking ray from the camera position and mouse coordinates
             raycaster.setFromCamera(mouse, camera);
 
-            //3. compute intersections (note the 2nd parameter)
-            // var intersects = raycaster.intersectObjects(scene.children, true);
-            var intersects = raycaster.intersectObjects(scene.children, true);
-            for (var i = 0; i < intersects.length; i++) {
-                //  console.log(intersects[i]);
-                /*
-                    An intersection has the following properties :
-                        - object : intersected object (THREE.Mesh)
-                        - distance : distance from camera to intersection (number)
-                        - face : intersected face (THREE.Face3)
-                        - faceIndex : intersected face index (number)
-                        - point : intersection point (THREE.Vector3)
-                        - uv : intersection point in the object's UV coordinates (THREE.Vector2)
-                */
-            }
-            // Step 2: Detect normal objects
-            //1. sets the mouse position with a coordinate system where the center
-            //   of the screen is the origin
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-            //2. set the picking ray from the camera position and mouse coordinates
-            raycaster.setFromCamera(mouse, camera);
-
-            //3. compute intersections (no 2nd parameter true anymore)
+            //3. compute intersections 
             var intersects = raycaster.intersectObjects(scene.children);
 
             for (var i = 0; i < intersects.length; i++) {
-
                 if (intersects[i].object == returnToMainB) {
                     state = 0;
+                    refresh();
                     updateState();
+
                     break;
                 } else if (intersects[i].object == returnToMain) {
                     state = 0;
+                    refresh();
                     updateState();
                     break;
                 } else if (state > 10) {} else if (intersects[i].object == p3.get_mesh()) {
                     if (state == 1) {
                         state = 13;
-                        console.log("u hit hard");
-
                     } else if (state == 0) {
                         state = 3;
-                        console.log("u hit exit");
-
                     }
                     updateState();
                     break;
                 } else if (intersects[i].object == p2.get_mesh()) {
                     if (state == 0) { //pressed help
                         state = 2;
-                        console.log("u hit help");
                     } else if (state == 1) {
                         state = 12;
                     }
@@ -226,7 +157,6 @@
                 } else if (intersects[i].object == p1.get_mesh()) {
                     if (state == 0) {
                         state = 1;
-                        console.log("u hit play");
                         updateState();
                         break;
                     } else if (state == 1) {
@@ -235,54 +165,111 @@
                         break;
                     }
                 }
-                // change the color of the closest face.
-                // intersects[0].material.emissive.setHex(0xdd0000);
-                //  scene.remove(intersects[0]);
-                // intersects[0].object.geometry.colorsNeedUpdate = true;
             }
         }
 
-        function toString(v) {
-            return "[ " + v.x + ", " + v.y + ", " + v.z + " ]";
+        function onMouseMove(e) {
+            //1. sets the mouse position with a coordinate system where the center
+            //   of the screen is the origin
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            //2. set the picking ray from the camera position and mouse coordinates
+            raycaster.setFromCamera(mouse, camera);
+
+            //3. compute intersections 
+            var intersects = raycaster.intersectObjects(scene.children);
+            for (var i = 0; i < scene.children.length; i++) {
+                //resets all display elements to origanal size
+                if (scene.children[i] == returnToMain) {
+                    scene.remove(returnToMain);
+                    scene.remove(returnToMainB);
+                    returnToMain.scale.set(1, 1, 1);
+                    returnToMainB.scale.set(1, 1, 1);
+                    scene.add(returnToMain);
+                    scene.add(returnToMainB);
+                }
+                //resets all display elements to origanal size
+                if (scene.children[i] == t1) {
+                    scene.remove(t1);
+                    scene.remove(t2);
+                    scene.remove(t3);
+                    t1.scale.set(1, 1, 1);
+                    t2.scale.set(1, 1, 1);
+                    t3.scale.set(1, 1, 1);
+                    scene.add(t1);
+                    scene.add(t2);
+                    scene.add(t3);
+                }
+            }
+            //loops through to see what was interactided with 
+            for (var i = 0; i < intersects.length; i++) {
+
+                if (intersects[i].object == returnToMainB) { //returnToMainB refers to the panel behind the text that creates a larger click area
+                    //checks to see if the scene does contain the 'return to main' element
+                    for (var i = 0; i < scene.children.length; i++) {
+
+                        if (scene.children[i] == returnToMain) {
+                            scene.remove(returnToMain); //for debugging purpose
+                            scene.remove(returnToMainB); //doesn't impact effect
+                            returnToMainB.scale.set(1.2, 1.2, 1.2);
+                            returnToMain.scale.set(1.2, 1.2, 1.2);
+                            scene.add(returnToMain);
+                            scene.add(returnToMainB);
+                        }
+                    }
+                    break;
+                } else if (intersects[i].object == returnToMain) {
+                    //scales up the hover text
+                    scene.remove(returnToMain);
+                    scene.remove(returnToMainB);
+                    returnToMainB.scale.set(1.2, 1.2, 1.2);
+                    returnToMain.scale.set(1.2, 1.2, 1.2);
+                    scene.add(returnToMain);
+                    scene.add(returnToMainB);
+                    break;
+                } else if (state > 10) {} else if (intersects[i].object == p3.get_mesh()) {
+                    //scales up the hover text
+                    scene.remove(t3);
+                    t3.scale.set(1.2, 1.2, 1.2);
+                    scene.add(t3);
+                    break;
+                } else if (intersects[i].object == p2.get_mesh()) {
+                    //scales up the hover text
+                    scene.remove(t2);
+                    t2.scale.set(1.2, 1.2, 1.2);
+                    scene.add(t2);
+                    break;
+                } else if (intersects[i].object == p1.get_mesh()) {
+                    //scales up the hover text
+                    scene.remove(t1);
+                    t1.scale.set(1.2, 1.2, 1.2);
+                    scene.add(t1);
+                    break;
+                }
+            }
         }
 
         function updateState() {
-            if (state == 0) {
-                loadFont("Colour Mix", "");
-                p1.isReady = false;
-                p2.isReady = false;
-                p3.isReady = false;
-                scene.remove(t1);
-                scene.remove(t2);
-                scene.remove(t3);
-                scene.remove(returnToMain);
-                scene.remove(textgroup);
-                scene.remove(HelpRules);
-                scene.remove(p1.get_mesh());
-                scene.remove(p2.get_mesh());
-                scene.remove(p3.get_mesh());
-                console.log("t1" + t1);
-                NewText("Play", -210, 1);
-                //t1 = Tmesh;
-                NewText("Help", -35, 2);
-                NewText("Exit", 150, 3);
-                console.log("t1" + t1);
-                scene.add(p1.get_mesh());
-                scene.add(p2.get_mesh());
-                scene.add(p3.get_mesh());
-            } else if (state == 1) {
+            if (state == 0) { //the initail screen
+                initailscene();
+            } else if (state == 1) { //play was pressed
+                refresh();
+                //changes the heading to add the select diff
                 loadFont("Colour Mix", "    Select Difficulty");
                 scene.remove(t1);
                 scene.remove(t2);
                 scene.remove(t3);
                 scene.remove(returnToMain);
-                NewText("Easy", -210, 1);
+                //adds the new text
+                NewText("Easy", -215, 1);
                 NewText("Avg", -35, 2);
-                NewText("Hard", 150, 3);
+                NewText("Hard", 140, 3);
                 NewText("Return To Main Screen", -180, 0);
             } else if (state == 2) {
-                // loadFont("Colour Mix", "    Select Difficulty");
+                //help screen
                 restartvid();
+                refresh();
                 scene.remove(p1.get_mesh());
                 scene.remove(p2.get_mesh());
                 scene.remove(p3.get_mesh());
@@ -291,15 +278,15 @@
                 scene.remove(t2);
                 scene.remove(t3);
                 scene.add(HelpRules);
-
                 NewText("Return To Main Screen", -180, 0);
             } else if (state == 3) {
-                //window.top.close(); does not work
+                //exit was pressed
                 window.open('index.html', '_top', replace = true);
 
             } else if (state > 10) {
+                //once a difficulty level is selected
                 loadFont("Colour Mix", "            Ready Up");
-                //scene.remove(returnToMain);
+                refresh();
                 scene.remove(t1);
                 scene.remove(t2);
                 scene.remove(t3);
@@ -307,10 +294,8 @@
                 NewText("P2", -15, 2);
                 NewText("P3", 160, 3);
                 scene.add(textgroup);
-                //scene.add(spritey);
             }
         }
-
 
         function onKeyDown(event) {
             event.stopPropagation();
@@ -320,7 +305,6 @@
                         /*W*/
                         p1.isReady = true;
                         scene.remove(p1.get_mesh());
-                        //p1.objectClickHandler();
                         scene.remove(t1);
                         NewText("Ready", -190, 1);
                         checkReady();
@@ -329,7 +313,6 @@
                         /*I*/
                         p2.isReady = true;
                         scene.remove(p2.get_mesh());
-                        //  p2.objectClickHandler();
                         scene.remove(t2);
                         NewText("Ready", -30, 2);
                         checkReady();
@@ -338,7 +321,6 @@
                         /*up*/
                         p3.isReady = true;
                         scene.remove(p3.get_mesh());
-                        // p3.objectClickHandler();
                         scene.remove(t3);
                         (NewText("Ready", 170, 3));
                         checkReady();
@@ -347,8 +329,39 @@
             }
         }
 
+        function initailscene() {
+            refresh();
+            loadFont("Colour Mix", "");
+            p1.isReady = false;
+            p2.isReady = false;
+            p3.isReady = false;
+            scene.remove(t1);
+            scene.remove(t2);
+            scene.remove(t3);
+            scene.remove(returnToMain);
+            scene.remove(textgroup);
+            scene.remove(HelpRules);
+            scene.remove(p1.get_mesh());
+            scene.remove(p2.get_mesh());
+            scene.remove(p3.get_mesh());
+            console.log("t1" + t1);
+            NewText("Play", -210, 1);
+            NewText("Help", -35, 2);
+            NewText("Exit", 150, 3);
+            console.log("t1" + t1);
+            scene.add(p1.get_mesh());
+            scene.add(p2.get_mesh());
+            scene.add(p3.get_mesh());
+        }
+
+        function refresh() {
+            scene.remove(t3);
+            scene.remove(t1);
+            scene.remove(t2);
+        }
+
         function onWindowResize() {
-            windowHalfX = window.innerWidth / 2;
+            var windowHalfX = window.innerWidth / 2;
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -359,13 +372,10 @@
             Players.forEach(element => {
                 if (element.isReady == false) {
                     tmp = false;
-                    //  break;
                 }
             });
             if (tmp) {
-                console.log("hello!!!!!!!!");
-                PlayGame();
-                //load game
+                PlayGame(); //load game
             }
         }
 
@@ -378,8 +388,6 @@
             render();
             updateSkybox();
             updateHelpvid();
-
-            // stats.update();
         }
 
         function render() {
@@ -388,53 +396,6 @@
             renderHelpvid();
             renderer.render(scene, camera);
         }
-
-
-
-        /*
-        An intersection has the following properties :
-            - object : intersected object (THREE.Mesh)
-            - distance : distance from camera to intersection (number)
-            - face : intersected face (THREE.Face3)
-            - faceIndex : intersected face index (number)
-            - point : intersection point (THREE.Vector3)
-            - uv : intersection point in the object's UV coordinates (THREE.Vector2)
-        */
-        //   }
-
-        //  }
-        // function onDocumentMouseDown(event) {
-        //     // the following line would stop any other event handler from firing
-        //     // (such as the mouse's TrackballControls)
-        //     // event.preventDefault();
-
-        //     console.log("Click.");
-
-        //     // update the mouse variable
-        //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        //     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        //     // find intersections
-        //     // create a Ray with origin at the mouse position
-        //     //   and direction into the scene (camera direction)
-        //     var vector = new THREE.Vector3(mouse.x, mouse.y, 1);
-        //     projector.unprojectVector(vector, camera);
-        //     var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-        //     // create an array containing all objects in the scene with which the ray intersects
-        //     var intersects = ray.intersectObjects(targetList);
-
-        //     // if there is one (or more) intersections
-        //     if (intersects.length > 0) {
-        //         console.log("Hit @ " + toString(intersects[0].point));
-        //         // change the color of the closest face.
-        //         intersects[0].face.color.setRGB(0.8 * Math.random() + 0.2, 0, 0);
-        //         intersects[0].object.geometry.colorsNeedUpdate = true;
-        //     }
-        // }
-
-        // function toString(v) {
-        //     return "[ " + v.x + ", " + v.y + ", " + v.z + " ]";
-        // }
     </script>
 
 </body>
