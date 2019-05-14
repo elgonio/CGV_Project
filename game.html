@@ -38,6 +38,9 @@ var controls;  // An OrbitControls object that is used to implement
 var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
 var globalDelta = clock.getDelta();
+var cameraInverted = false;
+var canInvert = true;
+var gamePaused = false;
 
 var lost = false; //Game over boolean
 
@@ -88,7 +91,7 @@ function onKeyDown( event ) {
         case 37: /*left*/yellow_ball.controls.moveLeft = true; event.preventDefault();break;
         case 39: /*right*/yellow_ball.controls.moveRight = true; event.preventDefault();break;
 
-        case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); break;
+        case 32: /*SPACEBAR*/ blue_ball.initiateJump(); red_ball.initiateJump(); yellow_ball.initiateJump(); event.preventDefault(); break;
 
         case 82: /*R*/ reloadGame();break;
 
@@ -226,10 +229,14 @@ function handleColours()
 
 function handleMovement()
 {
+    if(gamePaused == false){
+        level_Manager.handleMovement();
+        updateSkybox();
+    }
     red_ball.handleMovement();
     blue_ball.handleMovement();
     yellow_ball.handleMovement();
-    level_Manager.handleMovement();
+
     
 }
 
@@ -287,15 +294,35 @@ function handleCollisions()
                 PowerUpText.innerHTML = "SCREENSHAKE!";
                 break;
             case "Invert": //Invert the camera (controls are swapped)
-                PowerUpText.innerHTML = "Inverted View!";
+                if(cameraInverted == false && canInvert == true){
+                    PowerUpText.innerHTML = "Inverted View!";
 
-                camera.projectionMatrix.scale(new THREE.Vector3(-1, 1, 1));
-                camera.updateProjectionMatrix();
-                setTimeout(function(){
+                    camera.projectionMatrix.scale(new THREE.Vector3(-1, 1, 1));
+                    cameraInverted = true;
+                    canInvert = false;
+                    gamePaused = true;
+                    //camera.updateProjectionMatrix();
+                    setTimeout(function(){
+                        gamePaused = false;
+                    }, 1500);
+                    setTimeout(function(){
+                        canInvert = true;
+                    }, 3500);
+                }
+                else if(cameraInverted == true && canInvert == true){
                     PowerUpText.innerHTML = "";
-                    camera.projectionMatrix.scale(new THREE.Vector3(1, 1, 1));
-                    camera.updateProjectionMatrix();
-                }, 10000);
+                    camera.projectionMatrix.scale(new THREE.Vector3(-1, 1, 1));
+                    //camera.updateProjectionMatrix();
+                    cameraInverted = false;
+                    canInvert = false
+                    gamePaused = true;
+                    setTimeout(function(){
+                        gamePaused = false;
+                    }, 1500);
+                    setTimeout(function(){
+                        canInvert = true;
+                    }, 3500);
+                }
                 break;
         }
     }
@@ -563,10 +590,11 @@ function addFog() {
 function updateForFrame() {
     globalDelta = clock.getDelta();
     handleColours();
-    handleMovement();
+    handleMovement(); 
+    //Moved updateSkybox() to handleMovement method
     handleScoring()
     handleCameraMovement();
-    updateSkybox();
+
 
     //console.log("handling collisions");
     handleCollisions();
