@@ -273,6 +273,7 @@ class PlayerBall {
             if(this.isFalling == false){ //Ball is in upward motion of jump
                 if(this.group.position.y < 8){
                 moveDirection.set(0,1,0);
+                jumpSpeed = 15 - 15/(Math.abs(this.group.position.y - 8)+1);
                 this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
 
                     close_enough = (Math.abs(this.group.position.y - 8) < 0.2);
@@ -284,7 +285,9 @@ class PlayerBall {
             }
             else if(this.isFalling == true){ //Ball is in downward motion of jump
                 if(this.group.position.y > 0){
+
                     moveDirection.set(0,-1,0);
+                    jumpSpeed = 15 - 15/(Math.abs(this.group.position.y)+1);
                     this.group.position.addScaledVector(moveDirection, jumpSpeed*delta);
                     close_enough = (Math.abs(this.group.position.y) < 0.2);
                     if(close_enough == true){
