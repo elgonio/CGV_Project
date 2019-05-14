@@ -1,11 +1,10 @@
-var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
-var power_geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
+
 class PowerUp{
 
 	constructor(){
 
 
-		var randNum = 3//Math.floor(Math.random()*2 + 1) //Randomise number between 1 and 3 (for now only jump and screenshake enabled)
+		var randNum = 3// Math.floor(Math.random()*2 + 1) //Randomise number between 1 and 3 (for now only jump and screenshake enabled)
 		switch(randNum){
 			case 1: //Jump ability
 				this.type = "Jump";
@@ -19,7 +18,8 @@ class PowerUp{
 		}
 
 		
-		
+		var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
+		var power_geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
                                                         emissiveIntensity: 0.5,
@@ -96,6 +96,10 @@ class PowerUp{
 
 	get_type(){
 		return this.type;
+	}
+
+	disposeObject(){
+
 	}
 
 }

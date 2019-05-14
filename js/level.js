@@ -28,7 +28,7 @@ class LevelManager{
 
 			case "Easy":
 				this.speed = 35;
-				this.zSpawnDistInterval = 130;
+				this.zSpawnDistInterval = 120;
 				break;
 			case "Avg":
 				this.speed = 40;
@@ -54,9 +54,9 @@ class LevelManager{
 			switch(this.difficulty){
 				case "Easy":
 					scenarioNum = Math.floor(Math.random() *100 +1); //Generate number between 1 and 100
-					if (scenarioNum < 50) { //50% chance to generate 
+					if (scenarioNum < 40) { //50% chance to generate 
 						scenario1 ();
-					} else if (scenarioNum < 70) { //20% chance to generate 
+					} else if (scenarioNum < 70) { //30% chance to generate 
 						scenario2 ();
 					} else if (scenarioNum < 90) { //20% chance to generate 
 						scenario3 ();
