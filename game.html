@@ -291,8 +291,8 @@ function handleCollisions()
                     yellow_ball.disableJump();
                 }, 10000);
                 break;
-            case "Screenshake": //Screen shakes for 10 seconds
-                camera_shake_controller.shakeScreen(10); 
+            case "Screenshake": //Screen shakes for 7 seconds
+                camera_shake_controller.shakeScreen(7); 
                 PowerUpText.innerHTML = "SCREENSHAKE!";
                 break;
             case "Invert": //Invert the camera (controls are swapped)
@@ -439,7 +439,7 @@ function createWorld() {
     tracks = new Tracks(); //Creates tracks lines
     scene.add(tracks.get_TrackMeshes());
 
-    level_Manager = new LevelManager("Hard", -300); // create a controller which handles level generation and score
+    level_Manager = new LevelManager("Avg", -400); // create a controller which handles level generation and score
 
     camera_shake_controller = new CameraShake(camera, 0.5) // create a controller which handles camera shake
 

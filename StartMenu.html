@@ -31,7 +31,7 @@
         var t1, t2, t3; // the text associated with each ball
         var returnToMain, returnToMainB; //the main menu button
         var textgroup, HelpRules; // groups of display items
-        var raycaster, mouse = {
+        var raycaster, hoverraycaster, mouse = {
             x: 0,
             y: 0
         };
@@ -109,6 +109,7 @@
 
             window.addEventListener('resize', onWindowResize, false);
             raycaster = new THREE.Raycaster();
+            hoverraycaster = new THREE.Raycaster();
             renderer.domElement.addEventListener('click', raycast, false);
             renderer.domElement.addEventListener('mousemove', onMouseMove, false); // when the mouse moves, call the given function
 
@@ -175,10 +176,10 @@
             mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
             //2. set the picking ray from the camera position and mouse coordinates
-            raycaster.setFromCamera(mouse, camera);
+            hoverraycaster.setFromCamera(mouse, camera);
 
             //3. compute intersections 
-            var intersects = raycaster.intersectObjects(scene.children);
+            var intersects = hoverraycaster.intersectObjects(scene.children);
             for (var i = 0; i < scene.children.length; i++) {
                 //resets all display elements to origanal size
                 if (scene.children[i] == returnToMain) {
@@ -281,7 +282,7 @@
                 NewText("Return To Main Screen", -180, 0);
             } else if (state == 3) {
                 //exit was pressed
-                window.open('index.html', '_top', replace = true);
+                window.open('Credits.html', '_top', replace = true);
 
             } else if (state > 10) {
                 //once a difficulty level is selected
