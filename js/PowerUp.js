@@ -1,4 +1,4 @@
-
+var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
 class PowerUp{
 
 	constructor(){
@@ -18,7 +18,6 @@ class PowerUp{
 		}
 
 		
-		var power_texture = new THREE.TextureLoader().load( "assets/textures/artistic.jpg" );
 		var power_geometry = new THREE.BoxGeometry( 2.5, 2.5, 2.5 );
         var material = new THREE.MeshPhongMaterial( { color: 0x00ffff, //Power up will be cyan in colour for now
                                                         emissive: 0xffffff,
