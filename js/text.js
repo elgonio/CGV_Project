@@ -85,10 +85,13 @@ function NewText(txt, pos, Ts) {
 
             scene.add(returnToMainB);
         } else if (Ts == 1) {
+            scene.remove(t1);
             t1 = Tmesh;
         } else if (Ts == 2) {
+            scene.remove(t2);
             t2 = Tmesh;
         } else {
+            scene.remove(t3);
             t3 = Tmesh;
 
         }
